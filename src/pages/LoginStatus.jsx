@@ -14,6 +14,7 @@ const LoginStatus = () => {
       navigate("/mainPage"); // 메인 페이지 이동
     } else {
       alert("로그인 실패");
+      navigate("/"); // 로그인 페이지 이동
     }
   }, [location, navigate]);
 

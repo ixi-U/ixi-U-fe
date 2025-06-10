@@ -1,5 +1,5 @@
 import React from "react";
-import KakakoLoginBtn from "../assets/kakao-login.png";
+import KakaoLoginBtn from "../assets/kakao-login.png";
 
 const Login = () => {
   const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
@@ -14,7 +14,7 @@ const Login = () => {
     <div style={{ textAlign: "center", marginTop: "100px" }}>
       <h1>카카오 로그인</h1>
       <img
-        src={KakakoLoginBtn}
+        src={KakaoLoginBtn}
         alt="카카오 로그인 버튼"
         style={{ cursor: "pointer" }}
         onClick={handleLogin}
