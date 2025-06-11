@@ -1,0 +1,4 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Pretendard, sans-serif; background: #f7f7f7; color: #333; }
+button { cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }

@@ -1,0 +1,200 @@
+/* PlanListPage.css */
+/* ---- 페이지 레이아웃 --------------------------------------------------- */
+
+.plan-page {
+  padding: 24px;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 100px;   /* 하단 공백 늘리기 */
+}
+
+/* ---- 로고 & 타이틀 ---------------------------------------------------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 140px;
+  height: auto;
+}
+
+/* ---- 상단 헤더 -------------------------------------------------------- */
+
+.service-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 두 번째 줄: 탭 + 로그인 */
+.tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.service-header .title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ---- 탭 메뉴 ---------------------------------------------------------- */
+
+.service-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.service-tabs .tab {
+  padding: 8px 20px;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  font-size: 18px;
+  letter-spacing: -0.2px;
+}
+
+.service-tabs .tab:hover {
+  background: #f5f5f5;
+}
+
+.service-tabs .active {
+  border-bottom: 3px solid #ff007a;
+  color: #ff007a;
+}
+
+/* TODO : 탭과 로그인 같은 위치 */
+/* ---- 상단 로그인 버튼 ------------------------------------------- */
+
+.login-btn {
+  padding: 8px 24px;
+  border: 2px solid #ff007a;
+  border-radius: 24px;
+  background: #fff;
+  color: #ff007a;
+  font-weight: 700;
+  transition: background 0.2s, color 0.2s;
+  margin-left: auto;
+}
+
+.login-btn:hover {
+  background: #ff007a;
+  color: #fff;
+}
+
+/* ---- 회색 로그인 안내 배너 ------------------------------------------- */
+
+.login-banner {
+  background: #444;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login-banner button {
+  background: #ff007a;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+/* ---- 플랜 타입 네비 --------------------------------------------------- */
+
+.plan-type-nav {
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.plan-type-nav li {
+  padding: 6px 12px;
+  white-space: nowrap;
+  border-radius: 20px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  transition: all 0.15s;
+}
+
+.plan-type-nav li:hover {
+  background: #f5f5f5;
+}
+
+.plan-type-nav .active {
+  background: #ff007a;
+  border-color: #ff007a;
+  color: #fff;
+}
+
+/* ---- 정렬 바 ---------------------------------------------------------- */
+
+.sort-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ---- 검색어 입력 필드 -------------------------------------------------- */
+.search-input {
+  flex: 0 1 200px;          /* 적당한 너비(반응형) */
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  border-radius: 24px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.search-input:focus {
+  border-color: #ff007a;
+  box-shadow: 0 0 0 3px rgba(255, 0, 122, 0.2);
+}
+
+/* ---- 카드 리스트 ------------------------------------------------------ */
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---- 타입 + 정렬 한 줄 -------------------------------------------------- */
+.filter-bar {
+  display: flex;
+  align-items: center;    /* 수직 가운데 정렬 */
+  flex-wrap: nowrap;      /* 줄바꿈 방지 → 같은 행 유지 */
+  gap: 20px;
+}
+
+.load-more {
+  margin: 16px auto;
+  padding: 10px 24px;
+  border: 1px solid #ccc;
+  border-radius: 24px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ---- 더 이상 데이터 없음 메시지 --------------------------------------- */
+.no-more {
+  text-align: center;
+  margin: 40px 0;
+  font-weight: 400;
+  font-size: 20px;
+}
