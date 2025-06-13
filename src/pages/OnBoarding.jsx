@@ -40,7 +40,7 @@ const Onboarding = ({ onSubmit }) => {
         disabled={!email}
         onClick={handleSkip}
       >
-        건너뛰기
+        회원가입
       </button>
     </div>
   );
