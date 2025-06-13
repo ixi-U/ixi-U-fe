@@ -1,0 +1,156 @@
+/* 각 영역에 배경색 또는 박스 스타일 적용 */
+.menu-section {
+  background-color: #f9f9f9;
+  padding: 10px 20px;
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.login-section {
+  background-color: #fff;
+  padding: 40px 20px;
+  margin: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-container {
+  font-family: sans-serif;
+  position: relative;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+/* 1. 로고 이미지 */
+.login-header {
+  padding: 20px;
+}
+
+.login-logo {
+  height: 40px;
+  width: 80px;
+  height: auto;
+}
+
+/* 2. 모바일/마이페이지 탭은 왼쪽 정렬 */
+.login-tabs-left {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 20px;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.login-tab {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+/* 3. 가운데 정렬 영역 */
+.login-main-centered {
+  text-align: center;
+  align-items: center;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.login-subtext {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* .kakao-login-button {
+  width: 200px;
+  cursor: pointer;
+  margin-top: 80px;
+  margin-bottom: 20px;
+} */
+
+.admin-login {
+  font-size: 14px;
+  color: #222;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.admin-icon {
+  margin-right: 5px;
+}
+
+/* 고정된 챗봇 버튼 */
+.chatbot-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background-color: #ff007a;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.2;
+  white-space: pre-line;
+  cursor: pointer;
+}
+
+.login-role-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  background-color: #f1f2f6;
+  border-radius: 10px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.login-role-tab {
+  padding: 10px 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #999;
+  transition: all 0.2s;
+}
+
+.login-role-tab.active {
+  background-color: #ffffff;
+  color: #222;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.login-role-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px; /* 간격을 넓히는 핵심 부분 */
+  background-color: #f1f2f6;
+  border-radius: 10px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.login-button {
+  width: 200px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}

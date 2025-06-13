@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/kakao-login";
+import SocialLogin from "./pages/SocialLogin";
 import LoginStatus from "./pages/LoginStatus";
 import MainPage from "./pages/MainPage";
 import OnBoarding from "./pages/OnBoarding";
@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<SocialLogin />} />
         <Route path="/login/status" element={<LoginStatus />} />{" "}
         {/* 서버에서 리디렉션하는 경로 */}
         <Route path="/mainPage" element={<MainPage />} />{" "}
