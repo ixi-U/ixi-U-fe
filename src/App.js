@@ -5,6 +5,7 @@ import LoginStatus from "./pages/LoginStatus";
 import MainPage from "./pages/MainPage";
 import OnBoarding from "./pages/OnBoarding";
 import PlanListPage from "./components/PlanListPage";
+import Logout from "./pages/Logout";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Route path="/mainPage" element={<MainPage />} />{" "}
         {/* 로그인 성공 후 이동할 메인 페이지 */}
         <Route path="/plans" element={<PlanListPage />} />
+        <Route path="/onboarding" element={<OnBoarding />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </Router>
   );
