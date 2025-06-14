@@ -4,6 +4,7 @@ import Login from "./pages/kakao-login";
 import LoginStatus from "./pages/LoginStatus";
 import MainPage from "./pages/MainPage";
 import PlanListPage from './components/PlanListPage';
+import PlanDetailPage from './pages/PlanDetailPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/mainPage" element={<MainPage />} />{" "}
         {/* 로그인 성공 후 이동할 메인 페이지 */}
         <Route path="/plans" element={<PlanListPage />} />
+        <Route path="/plans/:planId" element={<PlanDetailPage />} />
       </Routes>
     </Router>
   );

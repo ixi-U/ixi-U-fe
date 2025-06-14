@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './PlanCard.css';
 
 export default function PlanCard({ plan }) {
+  const navigate = useNavigate();
   const {
+    id,
     name,
     mobileDataLimitMb,
     sharedMobileDataLimitMb,
@@ -12,8 +15,12 @@ export default function PlanCard({ plan }) {
     priority,
   } = plan;
 
+  const handleClick = () => {
+    navigate(`/plans/${id}`);
+  };
+
   return (
-    <article className="plan-card">
+    <article className="plan-card" onClick={handleClick}>
       <div className="card-head">
         <h3>{name}</h3>
       </div>
