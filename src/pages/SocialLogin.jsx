@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import KakaoLoginBtn from "../assets/kakao-login.png";
 import LogoImg from "../assets/ixi-u2.png";
-import "../styles/SocialLogin.css";
+import "../components/SocialLogin.css";
 
 const SocialLogin = () => {
   const [selectedRole, setSelectedRole] = useState("personal");

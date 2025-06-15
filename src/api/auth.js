@@ -1,11 +1,14 @@
-import axios from "axios";
+export const checkAuth = async () => {
+  const res = await fetch("http://localhost:8080/api/user/me", {
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error("Not authenticated");
+  return await res.json();
+};
 
-const api = axios.create({
-  baseURL: "http://localhost:8080",
-  withCredentials: true,
-});
-
-// 예시: 사용자 정보 요청
-export const fetchUserInfo = async () => {
-  return await api.get("/api/users/me");
+export const logout = async () => {
+  return await fetch("http://localhost:8080/api/auth/logout", {
+    method: "POST",
+    credentials: "include",
+  });
 };

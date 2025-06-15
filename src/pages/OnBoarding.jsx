@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/Onboarding.css";
+import "../components/Onboarding.css";
 
 const Onboarding = ({ onSubmit }) => {
   const [email, setEmail] = useState("");
