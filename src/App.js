@@ -4,7 +4,6 @@ import SocialLogin from "./pages/SocialLogin";
 import LoginStatus from "./pages/LoginStatus";
 import MainPage from "./pages/MainPage";
 import OnBoarding from "./pages/OnBoarding";
-import PlanListPage from "./components/PlanListPage";
 import Logout from "./pages/Logout";
 import PlanListPage from "./components/PlanListPage";
 import PlanDetailPage from "./pages/PlanDetailPage";
