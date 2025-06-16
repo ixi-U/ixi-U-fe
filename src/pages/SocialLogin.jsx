@@ -1,12 +1,19 @@
 import React, { useState } from "react";
+import logoImg from "../assets/ixi-u.png";
+import { useNavigate } from "react-router-dom";
 import KakaoLoginBtn from "../assets/kakao-login.png";
-import LogoImg from "../assets/ixi-u2.png";
 import "../components/SocialLogin.css";
 
-const SocialLogin = () => {
+export default function SocialLogin() {
+  const [activeTab, setActiveTab] = useState("모바일"); // 모바일 / 마이데이터
+  const [planType, setPlanType] = useState("5G/LTE");
+  const [sortOption, setSortOption] = useState("PRIORITY");
+
   const [selectedRole, setSelectedRole] = useState("personal");
   const [adminKey, setAdminKey] = useState("");
   const [isAdminVerified, setIsAdminVerified] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     const kakaoAuthUrl = `http://localhost:8080/oauth2/authorization/kakao?role=${selectedRole}`;
@@ -35,17 +42,30 @@ const SocialLogin = () => {
   };
 
   return (
-    <div className="login-container">
-      {/* 로고 */}
-      <header className="login-header">
-        <img src={LogoImg} alt="서비스 로고" className="login-logo" />
-      </header>
+    <main className="plan-page">
+      {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
+      <header className="service-header">
+        {/* 좌측 로고 */}
+        <img src={logoImg} alt="ixi-U logo" className="logo" />
 
-      {/* 메뉴 */}
-      <section className="menu-section">
-        <button className="login-tab">모바일</button>
-        <button className="login-tab">마이페이지</button>
-      </section>
+        {/* 가운데 메뉴 */}
+        <nav className="service-tabs">
+          {["모바일", "마이페이지"].map((tab) => (
+            <button
+              key={tab}
+              className={tab === activeTab ? "tab active" : "tab"}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
+        </nav>
+
+        {/* 우측 로그인 */}
+        <button className="login-btn" onClick={() => navigate("/")}>
+          로그인
+        </button>
+      </header>
 
       {/* 로그인 */}
       <section className="login-section">
@@ -106,8 +126,6 @@ const SocialLogin = () => {
         <br />
         버튼
       </button>
-    </div>
+    </main>
   );
-};
-
-export default SocialLogin;
+}
