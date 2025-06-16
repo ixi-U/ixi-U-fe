@@ -12,11 +12,12 @@ export default function PlanCard({ plan }) {
     callLimitMinutes,
     messageLimit,
     monthlyPrice,
-    priority,
+    singleBenefits,
+    bundledBenefits
   } = plan;
 
   const handleClick = () => {
-    navigate(`/plans/${id}`);
+    navigate(`/plans/details/${id}`);
   };
 
   return (
@@ -42,14 +43,27 @@ export default function PlanCard({ plan }) {
           </dd>
         </dl>
 
-        {/* 오른쪽: 음성, 문자, 기본혜택 */}
+      {/* 오른쪽: 음성, 문자, 기본혜택 */}
         <dl className="specs-right">
           <dt>음성 통화</dt>
           <dd>{callLimitMinutes === -1 ? '집/이동전화 무제한' : `${callLimitMinutes} 분`}</dd>
+
           <dt>문자 메시지</dt>
           <dd>{messageLimit === -1 ? '기본제공' : `${messageLimit} 건`}</dd>
+
           <dt>기본혜택</dt>
-          <dd>U+ 모바일tv 기본 월정액 무료</dd>
+          <dd>
+            {(!singleBenefits || singleBenefits.length === 0)
+            ? '기본제공'
+            : singleBenefits.map(b => b.name).join(', ')}
+          </dd>
+
+          {bundledBenefits && bundledBenefits.length > 0 && (
+            <>
+              <dt>프리미엄 혜택</dt>
+              <dd>{bundledBenefits.map(b => b.name).join(', ')}</dd>
+            </>
+          )}
         </dl>
       </div>
 
