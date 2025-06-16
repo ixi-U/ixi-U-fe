@@ -6,8 +6,6 @@ import "../components/SocialLogin.css";
 
 export default function SocialLogin() {
   const [activeTab, setActiveTab] = useState("모바일"); // 모바일 / 마이데이터
-  const [planType, setPlanType] = useState("5G/LTE");
-  const [sortOption, setSortOption] = useState("PRIORITY");
 
   const [selectedRole, setSelectedRole] = useState("personal");
   const [adminKey, setAdminKey] = useState("");
