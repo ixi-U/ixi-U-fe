@@ -95,16 +95,7 @@ const ChatBotPage = () => {
                 key={index}
                 className={`message-row ${msg.type === 'user' ? 'message-user' : 'message-bot'}`}
               >
-                <div
-                  className={`message-bubble ${msg.type}`}
-                  style={{
-                    fontFamily: 'inherit',
-                    display: 'inline-block',
-                    maxWidth: '100%',
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-wrap'
-                  }}
-                >
+                <div className={`message-bubble ${msg.type}`}>
                   {msg.text}
                   {msg.loading && <span className="spinner" />}
                 </div>

@@ -149,7 +149,7 @@
   padding: 10px 16px;
   border-radius: 20px;
   font-size: 14px;
-  white-space: pre-line;
+  white-space: pre-wrap;
 }
 
 .message-bubble.user {
