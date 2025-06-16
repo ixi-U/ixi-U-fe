@@ -16,7 +16,7 @@ export default function PlanCard({ plan }) {
   } = plan;
 
   const handleClick = () => {
-    navigate(`/plans/${id}`);
+    navigate(`/plans/details/${id}`);
   };
 
   return (

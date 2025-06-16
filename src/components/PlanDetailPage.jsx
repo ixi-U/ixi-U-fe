@@ -1,29 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './PlanDetailPage.css';
 import { useLocation } from 'react-router-dom';
 import logoImg from '../assets/ixi-u.png';
-
-// 더미 리뷰 데이터
-const dummyReviews = [
-  {
-    userName: "홍길동",
-    point: 5,
-    comment: "정말 만족스러운 요금제예요. 속도도 빠르고 혜택도 많아요!",
-    createdAt: "2024-06-10T12:34:56"
-  },
-  {
-    userName: "김철수",
-    point: 3,
-    comment: "괜찮긴 한데 가격이 조금 아쉬워요.",
-    createdAt: "2024-06-09T08:21:10"
-  },
-  {
-    userName: null,
-    point: 4,
-    comment: "혜택이 다양해서 좋네요. 추천합니다.",
-    createdAt: "2024-06-08T14:00:00"
-  }
-];
+import { fetchReviews, fetchReviewStats, deleteReview } from '../api/planReviewApi';
+import ReviewModal from './ReviewModal';
 
 const sortOptions = [
   { label: '최신순', value: 'createdAt,desc' },
@@ -37,8 +17,16 @@ const PlanDetailPage = () => {
 
   const [reviews, setReviews] = useState([]);
   const [reviewStats, setReviewStats] = useState({ avg: 0, count: 0 });
+  const [myReview, setMyReview] = useState(null);
   const [sort, setSort] = useState('createdAt,desc');
   const [showSortMenu, setShowSortMenu] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingReview, setEditingReview] = useState(null);
 
   const [planData] = useState({
     name: "5G 프리미어 레귤러",
@@ -72,26 +60,97 @@ const PlanDetailPage = () => {
     ]
   });
 
-  // 리뷰 초기화
-  useEffect(() => {
-    const total = dummyReviews.length;
-    const avg = total === 0 ? 0 : dummyReviews.reduce((sum, r) => sum + r.point, 0) / total;
-    setReviewStats({ avg, count: total });
-    sortAndSetReviews(sort);
-  }, []);
+  // 리뷰 데이터 로드 함수를 useCallback으로 메모이제이션
+  const loadReviews = useCallback(async (pageNum = 0, sortValue = sort) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      // 리뷰 통계 가져오기
+      const statsData = await fetchReviewStats(planId);
+      console.log('리뷰 통계:', statsData);
+      
+      // 통계 정보 설정
+      const stats = statsData.showReviewStatsResponse;
+      setReviewStats({
+        avg: stats.averagePoint || 0,
+        count: stats.totalCount || 0
+      });
+      
+      // 내가 작성한 리뷰가 있는 경우에만 설정
+      if (statsData.myReviewResponse) {
+        setMyReview(statsData.myReviewResponse);
+      } else {
+        setMyReview(null);
+      }
 
-  const sortAndSetReviews = (sortValue) => {
-    const sorted = [...dummyReviews];
-    if (sortValue === 'point,desc') sorted.sort((a, b) => b.point - a.point);
-    else if (sortValue === 'point,asc') sorted.sort((a, b) => a.point - b.point);
-    else sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    setReviews(sorted);
-  };
+      // 리뷰 목록 가져오기
+      const data = await fetchReviews(planId, pageNum, 5, sortValue);
+      console.log('리뷰 목록:', data);
+      
+      // API 응답 구조에 맞게 데이터 설정
+      const reviewsData = data.reviewResponseList || [];
+      console.log('설정할 리뷰 데이터:', reviewsData);
+      
+      setReviews(prev => pageNum === 0 ? reviewsData : [...prev, ...reviewsData]);
+      setHasMore(data.hasNextPage);
+      setPage(pageNum);
+    } catch (err) {
+      console.error('리뷰 로드 실패:', err);
+      setError('리뷰를 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.');
+      setReviews([]);
+      setReviewStats({ avg: 0, count: 0 });
+      setMyReview(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [planId, sort]);
+
+  // 초기 로드
+  useEffect(() => {
+    loadReviews(0, sort);
+  }, [loadReviews, sort]);
 
   const handleSortChange = (newSort) => {
     setSort(newSort);
-    sortAndSetReviews(newSort);
     setShowSortMenu(false);
+  };
+
+  // 더보기 버튼 클릭 핸들러
+  const handleLoadMore = () => {
+    if (!isLoading && hasMore) {
+      loadReviews(page + 1);
+    }
+  };
+
+  // 재시도 핸들러
+  const handleRetry = () => {
+    loadReviews(0, sort);
+  };
+
+  const handleReviewCreated = () => {
+    loadReviews(0, sort); // 리뷰 목록 새로고침
+  };
+
+  const handleEditClick = (review) => {
+    setEditingReview(review);
+    setIsEditModalOpen(true);
+  };
+
+  const handleDeleteClick = async (reviewId) => {
+    if (window.confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+      try {
+        await deleteReview(reviewId);
+        loadReviews(0, sort); // 리뷰 목록 새로고침
+      } catch (err) {
+        console.error('리뷰 삭제 실패:', err);
+        alert(err.response?.data?.message || '리뷰 삭제에 실패했습니다.');
+      }
+    }
+  };
+
+  const handleReviewUpdated = () => {
+    loadReviews(0, sort); // 리뷰 목록 새로고침
   };
 
   return (
@@ -176,37 +235,99 @@ const PlanDetailPage = () => {
       <section className="review-section">
         <div className="review-header">
           <span className="review-title">리뷰</span>
-          <span className="review-star">⭐ <b>{reviewStats.avg.toFixed(1)}</b></span>
-          <span className="review-count">{reviewStats.count}개</span>
-          <div className="review-sort">
-            <button className="review-sort-btn" onClick={() => setShowSortMenu(!showSortMenu)}>
-              {sortOptions.find(opt => opt.value === sort)?.label || '최신순'} ▼
+          <span className="review-star">⭐ <b>{(reviewStats?.avg || 0).toFixed(1)}</b></span>
+          <span className="review-count">{reviewStats?.count || 0}개</span>
+          <div className="review-controls">
+            <div className="review-sort">
+              <button className="review-sort-btn" onClick={() => setShowSortMenu(!showSortMenu)}>
+                {sortOptions.find(opt => opt.value === sort)?.label || '최신순'} ▼
+              </button>
+              {showSortMenu && (
+                <ul className="sort-menu">
+                  {sortOptions.map(option => (
+                    <li key={option.value} className={option.value === sort ? 'active' : ''} onClick={() => handleSortChange(option.value)}>
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <button className="write-review-btn" onClick={() => setIsReviewModalOpen(true)}>
+              리뷰 작성
             </button>
-            {showSortMenu && (
-              <ul className="sort-menu">
-                {sortOptions.map(option => (
-                  <li key={option.value} className={option.value === sort ? 'active' : ''} onClick={() => handleSortChange(option.value)}>
-                    {option.label}
-                  </li>
-                ))}
-              </ul>
-            )}
           </div>
         </div>
         <div className="review-list">
-          {reviews.length === 0 && <div className="review-empty">리뷰가 없습니다.</div>}
-          {reviews.map((r, idx) => (
-            <div className="review-item" key={idx}>
-              <div className="review-meta">
-                <span className="review-nickname">{r.userName || '익명'}</span>
-                <span className="review-point">{'★'.repeat(r.point)}{'☆'.repeat(5 - r.point)}</span>
-                <span className="review-date">{r.createdAt?.slice(0, 10)}</span>
-              </div>
-              <div className="review-content">{r.comment}</div>
+          {error && (
+            <div className="review-error">
+              <p>{error}</p>
+              <button className="retry-btn" onClick={handleRetry}>다시 시도</button>
             </div>
-          ))}
+          )}
+          {!error && myReview && (
+            <div className="my-review">
+              <h3>내가 작성한 리뷰</h3>
+              <div className="review-item">
+                <div className="review-header-row">
+                  <div className="review-meta">
+                    <span className="review-nickname">{myReview.userName || '익명'}</span>
+                    <span className="review-point">{'★'.repeat(myReview.point)}{'☆'.repeat(5 - myReview.point)}</span>
+                    <span className="review-date">{myReview.createdAt?.slice(0, 10)}</span>
+                  </div>
+                  <div className="review-actions">
+                    <button className="edit-btn" onClick={() => handleEditClick(myReview)}>수정</button>
+                    <button className="delete-btn" onClick={() => handleDeleteClick(myReview.reviewId)}>삭제</button>
+                  </div>
+                </div>
+                <div className="review-content">{myReview.comment}</div>
+              </div>
+            </div>
+          )}
+          {!error && (!Array.isArray(reviews) || reviews.length === 0) && !isLoading && <div className="review-empty">리뷰가 없습니다.</div>}
+          {!error && Array.isArray(reviews) && reviews.map((r, idx) => {
+            console.log('렌더링할 리뷰:', r);
+            return (
+              <div className="review-item" key={r.reviewId || idx}>
+                <div className="review-header-row">
+                  <div className="review-meta">
+                    <span className="review-nickname">{r.userName || '익명'}</span>
+                    <span className="review-point">{'★'.repeat(r.point)}{'☆'.repeat(5 - r.point)}</span>
+                    <span className="review-date">{r.createdAt?.slice(0, 10)}</span>
+                  </div>
+                </div>
+                <div className="review-content">{r.comment}</div>
+              </div>
+            );
+          })}
+          {isLoading && <div className="review-loading">로딩 중...</div>}
+          {!error && hasMore && !isLoading && (
+            <button className="load-more-btn" onClick={handleLoadMore}>
+              더보기
+            </button>
+          )}
         </div>
       </section>
+
+      <ReviewModal
+        isOpen={isReviewModalOpen}
+        onClose={() => setIsReviewModalOpen(false)}
+        planId={planId}
+        onReviewCreated={handleReviewCreated}
+      />
+
+      {editingReview && (
+        <ReviewModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setEditingReview(null);
+          }}
+          planId={planId}
+          onReviewCreated={handleReviewUpdated}
+          isEdit={true}
+          review={editingReview}
+        />
+      )}
     </div>
   );
 };
