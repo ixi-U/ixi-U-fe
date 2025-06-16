@@ -14,7 +14,6 @@ import PlanDetailPage from './components/PlanDetailPage';
 import ChatBotPage from './components/ChatBotPage';
 import OnBoarding from "./pages/OnBoarding";
 import Logout from "./pages/Logout";
-import PlanListPage from "./components/PlanListPage";
 
 function AppContent() {
   const location = useLocation();
