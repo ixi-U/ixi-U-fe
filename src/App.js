@@ -9,9 +9,11 @@ import Header from "./components/Header";
 import SocialLogin from "./pages/SocialLogin";
 import LoginStatus from "./pages/LoginStatus";
 import MainPage from "./pages/MainPage";
+import PlanListPage from './components/PlanListPage';
+import PlanDetailPage from './components/PlanDetailPage';
+import ChatBotPage from './components/ChatBotPage';
 import OnBoarding from "./pages/OnBoarding";
 import Logout from "./pages/Logout";
-import PlanListPage from "./components/PlanListPage";
 
 function AppContent() {
   const location = useLocation();
@@ -28,6 +30,7 @@ function AppContent() {
         <Route path="/plans" element={<PlanListPage />} />
         <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/chatbot" element={<ChatBotPage />} />
       </Routes>
     </>
   );
