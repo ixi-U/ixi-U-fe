@@ -13,6 +13,7 @@ import OnBoarding from "./pages/OnBoarding";
 import Logout from "./pages/Logout";
 import PlanListPage from "./components/PlanListPage";
 import PlanDetailPage from "./pages/PlanDetailPage";
+import Test from "./pages/test";
 
 function AppContent() {
   const location = useLocation();
@@ -30,6 +31,7 @@ function AppContent() {
         <Route path="/plans/:planId" element={<PlanDetailPage />} />
         <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
     </>
   );
