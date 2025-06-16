@@ -38,6 +38,11 @@ export default function PlanListPage() {
 
       const data = await fetchPlans(query);
 
+      /* ====== 디버그용 출력 ====== */
+      console.log('[loadPlans] query →', query);
+      console.log('[loadPlans] response →', data);
+      /* ========================= */
+
       setPlans(prev =>
         isNext ? [...prev, ...data.plans.content] : data.plans.content
       );
