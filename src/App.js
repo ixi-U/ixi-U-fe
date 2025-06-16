@@ -12,7 +12,6 @@ import MainPage from "./pages/MainPage";
 import OnBoarding from "./pages/OnBoarding";
 import Logout from "./pages/Logout";
 import PlanListPage from "./components/PlanListPage";
-import PlanDetailPage from "./pages/PlanDetailPage";
 
 function AppContent() {
   const location = useLocation();
@@ -27,7 +26,6 @@ function AppContent() {
         <Route path="/login/status" element={<LoginStatus />} />
         <Route path="/mainPage" element={<MainPage />} />
         <Route path="/plans" element={<PlanListPage />} />
-        <Route path="/plans/:planId" element={<PlanDetailPage />} />
         <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/logout" element={<Logout />} />
       </Routes>
