@@ -11,19 +11,20 @@ import LoginStatus from "./pages/LoginStatus";
 import MainPage from "./pages/MainPage";
 import PlanListPage from './components/PlanListPage';
 import PlanDetailPage from './components/PlanDetailPage';
+import MyPage from './pages/MyPage';
 import ChatBotPage from './components/ChatBotPage';
 import OnBoarding from "./pages/OnBoarding";
 import Logout from "./pages/Logout";
 import SingleBenefitRegisterForm from "./components/SingleBenefitRegisterForm";
 import BundledBenefitRegisterForm from "./components/BundledBenefitRegisterForm";
 
-function AppContent() {
-  const location = useLocation();
-  // const hideHeaderRoutes = ["/", "/onboarding"]; # Header 적용안하는 페이지
+function App() {
+  // const location = useLocation();
+  // const hideHeaderRoutes = ["/", "/onboarding"]; // Header 적용안하는 페이지
   // const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
 
   return (
-    <>
+    <Router>
       {/* {!shouldHideHeader && <Header />} */}
       <Routes>
         <Route path="/" element={<SocialLogin />} />
@@ -33,17 +34,11 @@ function AppContent() {
         <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/chatbot" element={<ChatBotPage />} />
+        <Route path="/plans/details/:planId" element={<PlanDetailPage />} />
+        <Route path="/mypage" element={<MyPage />} />
         <Route path="/admin/benefits/single-benefits" element={<SingleBenefitRegisterForm/>}/>
         <Route path="/admin/benefits/bundled-benefits" element={<BundledBenefitRegisterForm/>}/>
       </Routes>
-    </>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <AppContent />
     </Router>
   );
 }
