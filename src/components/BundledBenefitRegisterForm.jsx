@@ -20,7 +20,14 @@ const BundledBenefitRegisterForm = () => {
   useEffect(() => {
     axios
       .get(`${SERVER_URL}/api/benefits/single`)
-      .then((res) => setSingleBenefits(res.data))
+      .then((res) => {
+        if(Array.isArray(res.data)) {
+          setSingleBenefits(res.data);
+        } else {
+            console.error('Unexpected response format:', res.data);
+            setSingleBenefits([]);
+        }
+      })
       .catch(console.error);
   }, []);
 
