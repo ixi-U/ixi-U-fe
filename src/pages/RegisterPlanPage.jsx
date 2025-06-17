@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import "../components/RegisterPlan.css";
 
 const initialState = {
-  name: "", // 요금제 이름
-  planType: "", // 요금제 분류
-  usageCautions: "", // 요금제 설명 (usage cautions)
-  mobileDataLimitMb: "", // 데이터량
-  callLimitMinutes: "", // 음성(통화량)
-  messageLimit: "", // 문자량
-  monthlyPrice: "", // 월금액(정가)
-  priority: "", // 판매 우선순위
-  planState: "ABLE", // 요금제 상태
-  sharedMobileDataLimitMb: "", // 공유 데이터량
-  mobileDataThrottleSpeedKbps: "", // 속도 제한
-  minAge: "", // 최소 연령
-  maxAge: "", // 최대 연령
-  isActiveDuty: false, // 현역 여부(군인 혜택)
+  name: "",
+  type: "",
+  usageCautions: "",
+  mobileDataLimitMb: "",
+  callLimitMinutes: "",
+  messageLimit: "",
+  monthlyPrice: "",
+  priority: "",
+  state: "ABLE",
+  sharedMobileDataLimitMb: "",
+  mobileDataThrottleSpeedKbps: "",
+  minAge: "",
+  maxAge: "",
+  isActiveDuty: false,
   pricePerKb: "",
   etcInfo: "",
 };
@@ -35,12 +35,12 @@ const RegisterPlan = () => {
   const validate = () => {
     const {
       name,
-      planType,
+      type,
       mobileDataLimitMb,
       callLimitMinutes,
       messageLimit,
       monthlyPrice,
-      planState,
+      state,
       sharedMobileDataLimitMb,
       mobileDataThrottleSpeedKbps,
       minAge,
@@ -56,7 +56,7 @@ const RegisterPlan = () => {
       /^\d+(\.\d+)?$/.test(value) || value === "";
 
     if (!isLengthIn(name, 1, 10)) return "요금제 이름은 1~10자여야 합니다.";
-    if (!planType) return "요금제 분류를 선택해주세요.";
+    if (!type) return "요금제 분류를 선택해주세요.";
     if (!isValidNumberOrUnlimited(mobileDataLimitMb))
       return "데이터량은 1~3자 양의 정수 또는 '무제한'이어야 합니다.";
     if (!isValidNumberOrUnlimited(callLimitMinutes))
@@ -64,7 +64,7 @@ const RegisterPlan = () => {
     if (!isValidNumberOrUnlimited(messageLimit))
       return "문자량은 1~3자 양의 정수 또는 '무제한'이어야 합니다.";
     if (!isLengthIn(monthlyPrice, 1, 7)) return "월금액은 1~7자여야 합니다.";
-    if (!["ABLE", "DISABLED"].includes(planState))
+    if (!["ABLE", "DISABLED"].includes(state))
       return "요금제 상태를 선택해주세요.";
     if (sharedMobileDataLimitMb && !isValidNumber(sharedMobileDataLimitMb))
       return "공유 데이터량은 숫자만 입력 가능합니다.";
@@ -85,16 +85,51 @@ const RegisterPlan = () => {
     return null;
   };
 
+  const convertToNumberOrNull = (v) => {
+    if (v === "") return null;
+    if (v === "무제한") return -1;
+    return Number(v);
+  };
+
   const handleSubmit = async () => {
     const error = validate();
     if (error) return alert(error);
 
+    const requestBody = {
+      name: form.name,
+      type: form.type,
+      state: form.state,
+      usageCautions: form.usageCautions,
+      mobileDataLimitMb: convertToNumberOrNull(form.mobileDataLimitMb),
+      callLimitMinutes: convertToNumberOrNull(form.callLimitMinutes),
+      messageLimit: convertToNumberOrNull(form.messageLimit),
+      monthlyPrice: form.monthlyPrice === "" ? null : Number(form.monthlyPrice),
+      priority: form.priority === "" ? null : Number(form.priority),
+      sharedMobileDataLimitMb: convertToNumberOrNull(
+        form.sharedMobileDataLimitMb
+      ),
+      mobileDataThrottleSpeedKbps: convertToNumberOrNull(
+        form.mobileDataThrottleSpeedKbps
+      ),
+      minAge: convertToNumberOrNull(form.minAge),
+      maxAge: convertToNumberOrNull(form.maxAge),
+      isActiveDuty: form.isActiveDuty,
+      pricePerKb: form.pricePerKb === "" ? null : Number(form.pricePerKb),
+      etcInfo: form.etcInfo,
+      singleBenefits: [],
+      bundledBenefits: [],
+    };
+
+    Object.keys(requestBody).forEach(
+      (k) => requestBody[k] === null && delete requestBody[k]
+    );
+
     try {
-      const response = await fetch("/api/admin/plans", {
+      const response = await fetch("/admin/plans/save", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(requestBody),
       });
 
       if (response.status === 409) {
@@ -119,10 +154,12 @@ const RegisterPlan = () => {
         </label>
         <label>
           요금제 분류
-          <select name="planType" value={form.planType} onChange={handleChange}>
+          <select name="type" value={form.type} onChange={handleChange}>
             <option value="">선택</option>
-            <option value="MOBILE">MOBILE</option>
-            <option value="INTERNET">INTERNET</option>
+            <option value="FIVE_G_LTE">5G/LTE</option>
+            <option value="ONLINE">ONLINE</option>
+            <option value="TABLET_SMARTWATCH">TABLET/SMARTWATCH</option>
+            <option value="DUAL_NUMBER">DUAL NUMBER</option>
           </select>
         </label>
         <label>
@@ -175,11 +212,7 @@ const RegisterPlan = () => {
         </label>
         <label>
           요금제 상태
-          <select
-            name="planState"
-            value={form.planState}
-            onChange={handleChange}
-          >
+          <select name="state" value={form.state} onChange={handleChange}>
             <option value="ABLE">ABLE</option>
             <option value="DISABLED">DISABLED</option>
           </select>
@@ -208,15 +241,6 @@ const RegisterPlan = () => {
           최대 연령
           <input name="maxAge" value={form.maxAge} onChange={handleChange} />
         </label>
-        {/* <label className="inline-label">
-          <span>현역 여부 (군인 혜택)</span>
-          <input
-            type="checkbox"
-            name="isActiveDuty"
-            checked={form.isActiveDuty}
-            onChange={handleChange}
-          />
-        </label> */}
         <div className="form-group">
           <label htmlFor="isActiveDuty">현역 여부 (군인 혜택)</label>
           <input
@@ -227,6 +251,72 @@ const RegisterPlan = () => {
             onChange={handleChange}
           />
         </div>
+        <fieldset className="form-group">
+          <legend>단일 혜택 선택 (Single Benefits)</legend>
+          {["DEVICE", "DISCOUNT", "SUBSCRIPTION"].map((type) => (
+            <div
+              key={`single-${type}`}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "4px",
+              }}
+            >
+              <input
+                type="checkbox"
+                value={type}
+                checked={
+                  form.singleBenefits && form.singleBenefits.includes(type)
+                }
+                onChange={(e) => {
+                  const updated = e.target.checked ? [type] : [];
+                  setForm({ ...form, singleBenefits: updated });
+                }}
+              />
+              <label style={{ marginLeft: "8px" }}>
+                {type === "DEVICE"
+                  ? "스마트 기기"
+                  : type === "DISCOUNT"
+                  ? "할인"
+                  : "구독"}
+              </label>
+            </div>
+          ))}
+        </fieldset>
+        <fieldset className="form-group">
+          <legend>묶음 혜택 선택 (Bundled Benefits)</legend>
+          {["DEVICE", "DISCOUNT", "SUBSCRIPTION"].map((type) => (
+            <div
+              key={`bundled-${type}`}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "4px",
+              }}
+            >
+              <input
+                type="checkbox"
+                value={type}
+                checked={
+                  form.bundledBenefits && form.bundledBenefits.includes(type)
+                }
+                onChange={(e) => {
+                  const updated = e.target.checked
+                    ? [...(form.bundledBenefits || []), type]
+                    : (form.bundledBenefits || []).filter((t) => t !== type);
+                  setForm({ ...form, bundledBenefits: updated });
+                }}
+              />
+              <label style={{ marginLeft: "8px" }}>
+                {type === "DEVICE"
+                  ? "스마트 기기"
+                  : type === "DISCOUNT"
+                  ? "할인"
+                  : "구독"}
+              </label>
+            </div>
+          ))}
+        </fieldset>
         <label>
           1KB당 요금
           <input

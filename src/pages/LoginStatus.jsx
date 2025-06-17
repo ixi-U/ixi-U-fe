@@ -39,7 +39,7 @@ const LoginStatus = () => {
 
   return (
     <div>
-      <h2>나의 요금제</h2>
+      <h2>요금제 목록 페이지 이동중 ...</h2>
     </div>
   );
 };
