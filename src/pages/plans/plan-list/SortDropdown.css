@@ -1,0 +1,72 @@
+/* SortDropdown.css */
+
+.sort-dropdown {
+  position: relative;
+}
+
+/* ---- 버튼 스타일 ------------------------------------------------------ */
+.sort-dropdown button {
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sort-dropdown button:hover {
+  background: #f7f7f7;
+}
+
+/* ---- 메뉴 팝업 ------------------------------------------------------- */
+
+.sort-dropdown .menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 160px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+
+  /* remove default ul padding/indent */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sort-dropdown .menu li {
+  list-style: none;
+  padding: 10px 16px;
+  margin: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sort-dropdown .menu li:hover {
+  background: #f5f5f5;
+}
+
+.sort-dropdown .menu li.active {
+  font-weight: 700;
+  background: #ffe5f1;
+  color: #ff007a;
+}
+
+/* ---- 두 컬럼 레이아웃 -------------------------------------------------- */
+.specs {
+  display: flex;
+  justify-content: space-between;   /* 좌측 정보 ↔ 우측 정보 끝 정렬 */
+  gap: 40px;
+}
+
+.specs-left,
+.specs-right {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  row-gap: 6px;
+}

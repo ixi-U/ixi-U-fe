@@ -1,0 +1,455 @@
+/* ---- 페이지 레이아웃 --------------------------------------------------- */
+.plan-detail-container {
+  padding: 24px;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 100px;
+}
+
+/* ---- 요금제 헤더 영역 -------------------------------------------------- */
+.plan-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.plan-title {
+  text-align: center;
+  margin: 32px 0;
+}
+
+.plan-title h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.plan-title .monthly-price {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ff007a;
+}
+
+.plan-title .monthly-price span {
+  font-size: 16px;
+  margin-right: 4px;
+}
+.plan-price {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ff007a;
+}
+
+.plan-price span {
+  font-size: 16px;
+  margin-right: 4px;
+}
+
+/* ---- 섹션 공통 스타일 ------------------------------------------------- */
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+/* ---- 기본 제공 서비스 섹션 -------------------------------------------- */
+.service-section {
+  margin-bottom: 40px;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.service-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.service-card:hover {
+  border-color: #ff007a;
+  box-shadow: 0 2px 8px rgba(255, 0, 122, 0.1);
+}
+
+.service-icon {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.service-name {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.service-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ff007a;
+}
+
+/* ---- 혜택 섹션 ------------------------------------------------------ */
+.benefits-section {
+  margin-bottom: 40px;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.benefit-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.benefit-card:hover {
+  border-color: #ff007a;
+  box-shadow: 0 2px 8px rgba(255, 0, 122, 0.1);
+}
+
+.benefit-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: #ff007a;
+  color: #fff;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.benefit-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.benefit-desc {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* ---- 이용 안내 섹션 ------------------------------------------------- */
+.info-section {
+  margin-bottom: 40px;
+}
+
+.info-content {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.info-content p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+/* ---- 반응형 디자인 -------------------------------------------------- */
+@media (max-width: 768px) {
+  .service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-detail-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .plan-title {
+    font-size: 24px;
+  }
+
+  .plan-price {
+    font-size: 20px;
+  }
+}
+
+/* ---- 리뷰 섹션 ------------------------------------------------------ */
+.review-section {
+  margin-top: 40px;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.review-controls {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.review-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+}
+
+.review-star {
+  font-size: 16px;
+  color: #ff007a;
+}
+
+.review-count {
+  font-size: 14px;
+  color: #666;
+}
+
+.review-sort {
+  position: relative;
+}
+
+.review-sort-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sort-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 140px;
+  margin-top: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.sort-menu li {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.sort-menu li:hover,
+.sort-menu li.active {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-item {
+  border: 1px solid #eee;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.review-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.review-meta .review-nickname {
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.review-meta .review-point {
+  margin-right: 12px;
+  white-space: nowrap;
+}
+
+.review-meta .review-date {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.review-point {
+  color: #ff007a;
+}
+
+.review-content {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.review-empty {
+  text-align: center;
+  padding: 24px 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.review-error {
+  text-align: center;
+  padding: 24px;
+  font-size: 14px;
+  color: #ff4444;
+  background: #fff5f5;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-error p {
+  margin: 0;
+}
+
+.retry-btn {
+  padding: 8px 16px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retry-btn:hover {
+  background: #ff2222;
+}
+
+.review-loading {
+  text-align: center;
+  padding: 24px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.load-more-btn {
+  margin: 16px auto;
+  padding: 10px 24px;
+  border: 1px solid #ddd;
+  border-radius: 24px;
+  background: #fff;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.load-more-btn:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+.load-more-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.my-review {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.my-review h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.my-review .review-item {
+  background: #fff;
+  border: 1px solid #eee;
+  margin: 0;
+}
+
+.write-review-btn {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.write-review-btn:hover {
+  background-color: #0056b3;
+}
+
+.review-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.edit-btn, .delete-btn {
+  padding: 0.25rem 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.edit-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #5a6268;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
