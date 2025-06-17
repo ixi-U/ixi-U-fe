@@ -1,15 +1,4 @@
 /* PlanListPage.css */
-/* ---- 페이지 레이아웃 --------------------------------------------------- */
-
-.plan-page {
-  padding: 24px;
-  max-width: 1080px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding-bottom: 100px;   /* 하단 공백 늘리기 */
-}
 
 /* ---- 회색 로그인 안내 배너 ------------------------------------------- */
 
