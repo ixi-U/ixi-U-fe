@@ -1,0 +1,89 @@
+.benefit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.benefit-form h2 {
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #fafafa;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button[type='submit'] {
+  align-self: flex-start;
+  padding: 10px 20px;
+  background-color: #ff007a;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button[type='submit']:hover {
+  background-color: #e6006d;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success-msg {
+  color: #2c8c4c;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.form-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ff007a;
+  margin-bottom: 12px;
+}
+
+.benefit-card.selected {
+  border: 2px solid #ff007a;
+  background-color: #fff0f5;
+  box-shadow: 0 0 0 2px rgba(255, 0, 122, 0.2);
+}
