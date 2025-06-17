@@ -14,6 +14,8 @@ import PlanDetailPage from './components/PlanDetailPage';
 import ChatBotPage from './components/ChatBotPage';
 import OnBoarding from "./pages/OnBoarding";
 import Logout from "./pages/Logout";
+import SingleBenefitRegisterForm from "./components/SingleBenefitRegisterForm";
+import BundledBenefitRegisterForm from "./components/BundledBenefitRegisterForm";
 
 function AppContent() {
   const location = useLocation();
@@ -31,6 +33,8 @@ function AppContent() {
         <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/chatbot" element={<ChatBotPage />} />
+        <Route path="/admin/benefits/single-benefits" element={<SingleBenefitRegisterForm/>}/>
+        <Route path="/admin/benefits/bundled-benefits" element={<BundledBenefitRegisterForm/>}/>
       </Routes>
     </>
   );
