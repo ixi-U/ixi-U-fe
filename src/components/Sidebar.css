@@ -1,0 +1,7 @@
+.mypage-sidebar { width: 100%; max-width: 220px; min-width: 160px; background: #fff; border-right: 1px solid #eee; min-height: 600px; }
+.sidebar-nav { padding: 48px 16px 0 16px; }
+.sidebar-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 24px; }
+.sidebar-menu { list-style: none; padding: 0; margin: 0; }
+.sidebar-menu-item { display: block; padding: 8px 0 8px 8px; border-radius: 4px; font-size: 1rem; color: #666; font-weight: 500; transition: background 0.2s, color 0.2s; }
+.sidebar-menu-item.active { background: #f3f3f3; color: #222; border-left: 4px solid #222; font-weight: bold; }
+@media (max-width: 768px) { .mypage-sidebar { max-width: 100%; min-width: 0; border-right: none; border-bottom: 1px solid #eee; min-height: unset; } .sidebar-nav { padding: 24px 8px 0 8px; } } 
