@@ -5,6 +5,7 @@ import PlanCard from './PlanCard';
 import SortDropDown from './SortDropdown';
 import './PlanListPage.css';
 import Header from '../../../components/header/Header';
+import "../../../assets/styles/layout.css"
 
 export default function PlanListPage() {
   const [planType, setPlanType] = useState('5G/LTE');
@@ -75,10 +76,8 @@ export default function PlanListPage() {
   }, [hasNext, lastCursor, loadPlans]);
 
   return (
-    <main className="plan-page">
-      <div className="container">
-        <Header />
-      </div>  
+    <main className="container">
+      <Header />
       {/* 회색 로그인 안내 영역 */}
       <section className="login-banner">
         <span>로그인하고 현재 가입 조건으로 이용하세요.</span>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/header/Header";
 import Sidebar from "./Sidebar";
-import InfoCard from "../InfoCard";
+import InfoCard from "./InfoCard";
 import ChatbotButton from "../chatbot/ChatbotButton";
 import PlanHistoryList from "../user/PlanHistoryList";
 import { deleteUser, getMyInfo, getMyPlan } from "../../api/userApi";
 import './MyPage.css';
+import "../../assets/styles/layout.css"
 
 // // 예시 데이터 (향후 API 연동 예정)
 // const user = {
@@ -57,7 +58,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="mypage-root">
+    <main className="container">
       <Header />
       <div className="mypage-body">
         <Sidebar activeMenu={activeMenu} onMenuClick={setActiveMenu} />
@@ -163,7 +164,7 @@ const MyPage = () => {
         </main>
       </div>
       <ChatbotButton />
-    </div>
+      </main>
   );
 };
 
