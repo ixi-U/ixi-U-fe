@@ -81,3 +81,9 @@ button[disabled] {
   color: #ff007a;
   margin-bottom: 12px;
 }
+
+.benefit-card.selected {
+  border: 2px solid #ff007a;
+  background-color: #fff0f5;
+  box-shadow: 0 0 0 2px rgba(255, 0, 122, 0.2);
+}
