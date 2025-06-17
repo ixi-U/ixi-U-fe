@@ -23,6 +23,12 @@ const initialState = {
 const RegisterPlan = () => {
   const [form, setForm] = useState(initialState);
 
+  const bundledBenefitOptions = [
+    { id: 1, name: "지니 6개월" },
+    { id: 2, name: "넷플릭스 3개월" },
+    { id: 3, name: "왓챠 프리미엄" },
+  ];
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -50,7 +56,7 @@ const RegisterPlan = () => {
     const isLengthIn = (value, min, max) =>
       value.length >= min && value.length <= max;
     const isValidNumberOrUnlimited = (value) =>
-      /^[0-9]{1,3}$/.test(value) || value === "무제한";
+      /^[0-9]{1,10000}$/.test(value) || value === "무제한";
     const isValidNumber = (value) => /^\d*$/.test(value);
     const isValidPricePerKb = (value) =>
       /^\d+(\.\d+)?$/.test(value) || value === "";
@@ -82,6 +88,10 @@ const RegisterPlan = () => {
     if (pricePerKb && !isValidPricePerKb(pricePerKb))
       return "1KB당 요금은 숫자 또는 소수점 숫자만 입력 가능합니다.";
 
+    if (!form.singleBenefitInput?.trim()) {
+      return "단일 혜택은 비워둘 수 없습니다.";
+    }
+
     return null;
   };
 
@@ -100,24 +110,22 @@ const RegisterPlan = () => {
       type: form.type,
       state: form.state,
       usageCautions: form.usageCautions,
-      mobileDataLimitMb: convertToNumberOrNull(form.mobileDataLimitMb),
-      callLimitMinutes: convertToNumberOrNull(form.callLimitMinutes),
-      messageLimit: convertToNumberOrNull(form.messageLimit),
-      monthlyPrice: form.monthlyPrice === "" ? null : Number(form.monthlyPrice),
-      priority: form.priority === "" ? null : Number(form.priority),
-      sharedMobileDataLimitMb: convertToNumberOrNull(
-        form.sharedMobileDataLimitMb
-      ),
-      mobileDataThrottleSpeedKbps: convertToNumberOrNull(
-        form.mobileDataThrottleSpeedKbps
-      ),
-      minAge: convertToNumberOrNull(form.minAge),
-      maxAge: convertToNumberOrNull(form.maxAge),
+      mobileDataLimitMb: convertToNumberOrNull(form.mobileDataLimitMb) ?? 0,
+      callLimitMinutes: convertToNumberOrNull(form.callLimitMinutes) ?? 0,
+      messageLimit: convertToNumberOrNull(form.messageLimit) ?? 0,
+      monthlyPrice: form.monthlyPrice === "" ? 0 : Number(form.monthlyPrice),
+      priority: form.priority === "" ? 0 : Number(form.priority),
+      sharedMobileDataLimitMb:
+        convertToNumberOrNull(form.sharedMobileDataLimitMb) ?? 0,
+      mobileDataThrottleSpeedKbps:
+        convertToNumberOrNull(form.mobileDataThrottleSpeedKbps) ?? 0,
+      minAge: convertToNumberOrNull(form.minAge) ?? 0,
+      maxAge: convertToNumberOrNull(form.maxAge) ?? 200,
       isActiveDuty: form.isActiveDuty,
-      pricePerKb: form.pricePerKb === "" ? null : Number(form.pricePerKb),
-      etcInfo: form.etcInfo,
-      singleBenefits: [],
-      bundledBenefits: [],
+      pricePerKb: form.pricePerKb === "" ? 0 : Number(form.pricePerKb),
+      etcInfo: form.etcInfo || "",
+      singleBenefits: [form.singleBenefitInput.trim()],
+      bundledBenefits: form.bundledBenefits || [],
     };
 
     Object.keys(requestBody).forEach(
@@ -250,7 +258,8 @@ const RegisterPlan = () => {
           최대 연령
           <input name="maxAge" value={form.maxAge} onChange={handleChange} />
         </label>
-        <div className="form-group">
+
+        <div className="form-group-inline">
           <label htmlFor="isActiveDuty">현역 여부 (군인 혜택)</label>
           <input
             id="isActiveDuty"
@@ -258,74 +267,47 @@ const RegisterPlan = () => {
             name="isActiveDuty"
             checked={form.isActiveDuty}
             onChange={handleChange}
+            className="checkbox-input"
           />
         </div>
-        <fieldset className="form-group">
-          <legend>단일 혜택 선택 (Single Benefits)</legend>
-          {["DEVICE", "DISCOUNT", "SUBSCRIPTION"].map((type) => (
-            <div
-              key={`single-${type}`}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "4px",
-              }}
-            >
-              <input
-                type="checkbox"
-                value={type}
-                checked={
-                  form.singleBenefits && form.singleBenefits.includes(type)
-                }
-                onChange={(e) => {
-                  const updated = e.target.checked ? [type] : [];
-                  setForm({ ...form, singleBenefits: updated });
-                }}
-              />
-              <label style={{ marginLeft: "8px" }}>
-                {type === "DEVICE"
-                  ? "스마트 기기"
-                  : type === "DISCOUNT"
-                  ? "할인"
-                  : "구독"}
-              </label>
-            </div>
-          ))}
-        </fieldset>
-        <fieldset className="form-group">
-          <legend>묶음 혜택 선택 (Bundled Benefits)</legend>
-          {["DEVICE", "DISCOUNT", "SUBSCRIPTION"].map((type) => (
-            <div
-              key={`bundled-${type}`}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "4px",
-              }}
-            >
-              <input
-                type="checkbox"
-                value={type}
-                checked={
-                  form.bundledBenefits && form.bundledBenefits.includes(type)
-                }
-                onChange={(e) => {
-                  const updated = e.target.checked
-                    ? [...(form.bundledBenefits || []), type]
-                    : (form.bundledBenefits || []).filter((t) => t !== type);
-                  setForm({ ...form, bundledBenefits: updated });
-                }}
-              />
-              <label style={{ marginLeft: "8px" }}>
-                {type === "DEVICE"
-                  ? "스마트 기기"
-                  : type === "DISCOUNT"
-                  ? "할인"
-                  : "구독"}
-              </label>
-            </div>
-          ))}
-        </fieldset>
+        <label>
+          단일 혜택 (Single Benefit)
+          <input
+            type="text"
+            name="singleBenefitInput"
+            value={form.singleBenefitInput || ""}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                singleBenefitInput: e.target.value,
+                singleBenefits: e.target.value ? [e.target.value] : [],
+              })
+            }
+            className="single-benefit-input"
+          />
+        </label>
+        <label>
+          묶음 혜택 (Bundled)
+          <div className="form-group">
+            {bundledBenefitOptions.map((benefit) => (
+              <div key={benefit.id} className="benefit-row">
+                <input
+                  type="checkbox"
+                  id={`bundled-${benefit.id}`}
+                  checked={(form.bundledBenefits || []).includes(benefit.id)}
+                  onChange={(e) => {
+                    const current = form.bundledBenefits || [];
+                    const updated = e.target.checked
+                      ? [...current, benefit.id]
+                      : current.filter((id) => id !== benefit.id);
+                    setForm({ ...form, bundledBenefits: updated });
+                  }}
+                />
+                <label htmlFor={`bundled-${benefit.id}`}>{benefit.name}</label>
+              </div>
+            ))}
+          </div>
+        </label>
         <label>
           1KB당 요금
           <input

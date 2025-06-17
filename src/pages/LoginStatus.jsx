@@ -8,9 +8,12 @@ const LoginStatus = () => {
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/user/me", {
-          credentials: "include", // 쿠키 포함
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_BASE}/api/user/info`,
+          {
+            credentials: "include", // 쿠키 포함
+          }
+        );
 
         const text = await response.text();
 
