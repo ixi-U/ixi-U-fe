@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Header.css';
+import logoImg from '../assets/ixi-u.png';
 
 const Header = () => {
   const [user, setUser] = useState(null); // 사용자 상태 저장
   const navigate = useNavigate();
 
-  // page 처음 랜더링 시 로그인 여부 확인
+  // 로그인 여부 확인 (경로 최신화)
   useEffect(() => {
-    fetch("http://localhost:8080/api/user/me", {
+    fetch("http://localhost:8080/api/user/info", {
       credentials: "include", // 쿠키 포함 (access_token)
     })
       .then(async (res) => {
@@ -31,10 +32,16 @@ const Header = () => {
   return (
     <header className="mypage-header">
       <div className="header-left">
-        <span className="logo-text">서비스 로고</span>
+        <img
+          src={logoImg}
+          alt="ixi-U logo"
+          className="logo-text"
+          style={{ cursor: 'pointer', width: 120, height: 'auto' }}
+          onClick={() => navigate('/mainPage')}
+        />
         <button className="mobile-btn">모바일 버튼</button>
         <div className="tab-group">
-          <button className="tab active">마이페이지</button>
+          <button className="tab active" onClick={() => navigate('/mypage')}>마이페이지</button>
         </div>
       </div>
       <div className="header-user" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
