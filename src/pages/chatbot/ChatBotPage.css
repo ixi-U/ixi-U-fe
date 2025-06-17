@@ -80,10 +80,13 @@
 /* 말풍선 스타일 */
 .message-bubble {
   max-width: 75%;
-  padding: 10px 16px;
+  padding: 8px 16px;
   border-radius: 20px;
   font-size: 14px;
   white-space: pre-wrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);  /* 입체감 */
+  letter-spacing: 0.04em;      /* 글자 간격 추가 */
+  line-height: 1.5;            /* 행간 늘림 */
 }
 
 .message-bubble.user {
