@@ -9,11 +9,13 @@ import Header from "./components/Header";
 import SocialLogin from "./pages/SocialLogin";
 import LoginStatus from "./pages/LoginStatus";
 import MainPage from "./pages/MainPage";
-import PlanListPage from './components/PlanListPage';
-import PlanDetailPage from './components/PlanDetailPage';
-import ChatBotPage from './components/ChatBotPage';
+import PlanListPage from "./components/PlanListPage";
+import PlanDetailPage from "./components/PlanDetailPage";
+import ChatBotPage from "./components/ChatBotPage";
 import OnBoarding from "./pages/OnBoarding";
 import Logout from "./pages/Logout";
+import RegisterPlan from "./pages/RegisterPlanPage";
+import AdminLayout from "./components/AdminLayout";
 
 function AppContent() {
   const location = useLocation();
@@ -31,6 +33,9 @@ function AppContent() {
         <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/chatbot" element={<ChatBotPage />} />
+        <Route path="/mypage/plan" element={<AdminLayout />}>
+          <Route path="register" element={<RegisterPlan />} />
+        </Route>
       </Routes>
     </>
   );
