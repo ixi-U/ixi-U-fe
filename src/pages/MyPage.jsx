@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import InfoCard from "../components/InfoCard";
 import ChatbotButton from "../components/ChatbotButton";
 import PlanHistoryList from "../components/PlanHistoryList";
+import { deleteUser } from "../api/userApi";
 import './MyPage.css';
 
 // 예시 데이터 (향후 API 연동 예정)
@@ -18,6 +19,21 @@ const preferredPlan = null; // 선호 요금제 정보 (없음)
 
 const MyPage = () => {
   const [activeMenu, setActiveMenu] = useState("나의 정보");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // 회원 탈퇴 요청 함수
+  const handleDeleteUser = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteUser();
+      alert('회원 탈퇴가 완료되었습니다.');
+      window.location.href = '/';
+    } catch (err) {
+      alert('탈퇴에 실패했습니다. 다시 시도해 주세요.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className="mypage-root">
@@ -74,6 +90,19 @@ const MyPage = () => {
             </section>
           </>}
           {activeMenu === "요금제 히스토리" && <PlanHistoryList />}
+          {activeMenu === "회원 탈퇴" && (
+            <div style={{ textAlign: 'center', marginTop: 80 }}>
+              <p style={{ fontSize: '1.1rem', marginBottom: 24 }}>정말 탈퇴하시겠습니까?</p>
+              <button
+                className="plan-history-change-btn"
+                style={{ background: '#f3e1ec', color: '#e91e63', fontWeight: 600, fontSize: '1.1rem', padding: '12px 32px', border: 'none', borderRadius: 8, cursor: 'pointer' }}
+                onClick={handleDeleteUser}
+                disabled={isDeleting}
+              >
+                {isDeleting ? '처리 중...' : '탈퇴 신청'}
+              </button>
+            </div>
+          )}
         </main>
       </div>
       <ChatbotButton />
