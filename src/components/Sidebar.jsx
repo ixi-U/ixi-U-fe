@@ -16,7 +16,7 @@ const Sidebar = ({ activeMenu = "나의 정보", onMenuClick }) => {
           {menus.map((menu) => (
             <li key={menu}>
               <span
-                className={`sidebar-menu-item${activeMenu === menu ? " active" : ""}`}
+                className={`sidebar-menu-item${activeMenu === menu ? " active" : ""}${menu === "회원 탈퇴" ? " member-leave" : ""}`}
                 onClick={() => onMenuClick && onMenuClick(menu)}
                 style={{ cursor: 'pointer' }}
               >
