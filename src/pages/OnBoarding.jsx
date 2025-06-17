@@ -39,11 +39,12 @@ const Onboarding = ({ onSubmit }) => {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, planId: selectedPlanId }),
+          body: JSON.stringify({ email, planId: selectedPlanId }), // planid가 null로 가는 문제 -> dto 변수랑 맞춰줌
         }
       );
 
       if (!response.ok) {
+        // try-catch로 하니까 둘 다 실행되는 문제 발생
         const errorText = await response.text();
         throw new Error(errorText || "회원가입 실패");
       }
