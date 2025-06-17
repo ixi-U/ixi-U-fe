@@ -16,6 +16,7 @@ import OnBoarding from "./pages/OnBoarding";
 import Logout from "./pages/Logout";
 import RegisterPlan from "./pages/RegisterPlanPage";
 import AdminLayout from "./components/AdminLayout";
+import DeletePlan from "./pages/DeletePlanPage";
 
 function AppContent() {
   const location = useLocation();
@@ -35,6 +36,7 @@ function AppContent() {
         <Route path="/chatbot" element={<ChatBotPage />} />
         <Route path="/mypage/plan" element={<AdminLayout />}>
           <Route path="register" element={<RegisterPlan />} />
+          <Route path="delete" element={<DeletePlan />} />
         </Route>
       </Routes>
     </>
