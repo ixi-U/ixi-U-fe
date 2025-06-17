@@ -64,7 +64,7 @@ const RegisterPlan = () => {
     if (!isValidNumberOrUnlimited(messageLimit))
       return "문자량은 1~3자 양의 정수 또는 '무제한'이어야 합니다.";
     if (!isLengthIn(monthlyPrice, 1, 7)) return "월금액은 1~7자여야 합니다.";
-    if (!["ABLE", "DISABLED"].includes(state))
+    if (!["ABLE", "DISABLE"].includes(state))
       return "요금제 상태를 선택해주세요.";
     if (sharedMobileDataLimitMb && !isValidNumber(sharedMobileDataLimitMb))
       return "공유 데이터량은 숫자만 입력 가능합니다.";
