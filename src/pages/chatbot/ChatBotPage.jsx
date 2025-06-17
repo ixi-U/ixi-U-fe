@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import './ChatBotPage.css';
-import logoImg from '../assets/ixi-u.png';
+import Header from '../../components/header/Header';
 
 const ChatBotPage = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
@@ -69,20 +69,7 @@ const ChatBotPage = () => {
 
   return (
     <div className="chatbot-page">
-      <header className="service-header">
-        <div className="brand">
-          <img src={logoImg} alt="LG U+ Logo" className="logo" />
-        </div>
-        <div className="tabs-row">
-          <nav className="service-tabs">
-            <button className="tab">요금제</button>
-            <button className="tab">휴대폰</button>
-            <button className="tab">액세서리</button>
-            <button className="tab active">챗봇</button>
-          </nav>
-          <button className="login-btn">로그인</button>
-        </div>
-      </header>
+      <Header />
 
       <div className="chatbot-wrapper">
         <div className="chatbot-container">

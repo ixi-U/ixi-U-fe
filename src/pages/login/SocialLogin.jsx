@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import logoImg from "../assets/ixi-u.png";
+import logoImg from "../../assets/imgs/ixi-u.png";
 import { useNavigate } from "react-router-dom";
-import KakaoLoginBtn from "../assets/kakao-login.png";
-import "../components/SocialLogin.css";
+import KakaoLoginBtn from "../../assets/imgs/kakao-login.png";
+import "../../pages/login/SocialLogin.css";
 
 export default function SocialLogin() {
   const [activeTab, setActiveTab] = useState("모바일"); // 모바일 / 마이데이터
