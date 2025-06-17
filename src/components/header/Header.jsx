@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import './Header.css';
-import logoImg from '../../assets/imgs/ixi-u.png';
+import logoImg from '../../assets/imgs/ixi-u2.png';
 
 const Header = () => {
   const [user, setUser] = useState(null); // 사용자 상태 저장
@@ -71,7 +71,7 @@ const Header = () => {
         {user ? (
           <button onClick={handleLogout} className="login-btn">로그아웃</button>
         ) : (
-          <button onClick={() => navigate("/")} className="login-btn">로그인</button>
+          <button onClick={() => navigate("/login")} className="login-btn">로그인</button>
         )}
       </div>
     </header>
