@@ -40,3 +40,27 @@ const Header = () => {
 };
 
 export default Header;
+<header className="service-header">
+        {/* 좌측 로고 */}
+        <img src={logoImg} alt="ixi-U logo" className="logo" />
+
+        {/* 가운데 메뉴 */}
+        <nav className="service-tabs">
+          {['모바일', '마이페이지'].map(
+            (tab) => (
+              <button
+                key={tab}
+                className={tab === activeTab ? 'tab active' : 'tab'}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
+            )
+          )}
+        </nav>
+
+        {/* 우측 로그인 */}
+        <button className="login-btn" onClick={() => navigate('/')}>
+          로그인
+        </button>
+      </header>

@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import './PlanDetailPage.css';
 import { useLocation } from 'react-router-dom';
 import logoImg from '../assets/ixi-u.png';
-import { fetchReviews, fetchReviewStats, deleteReview } from '../api/planReviewApi';
-import ReviewModal from './ReviewModal';
+import { fetchReviews, fetchReviewStats, deleteReview } from '../../../api/planReviewApi';
+import ReviewModal from '../ReviewModal';
 
 const sortOptions = [
   { label: '최신순', value: 'createdAt,desc' },
