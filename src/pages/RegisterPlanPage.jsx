@@ -125,22 +125,31 @@ const RegisterPlan = () => {
     );
 
     try {
-      const response = await fetch("/admin/plans/save", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE}/admin/plans/save`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (response.status === 409) {
         alert("이미 존재하는 요금제입니다.");
       } else if (response.ok) {
         alert("요금제가 등록되었습니다.");
         setForm(initialState);
+      } else if (response.status === 302) {
+        alert("권한이 없습니다.");
       } else {
         alert("등록 실패");
       }
     } catch (err) {
+      console.log(
+        "요청 주소: ",
+        `${process.env.REACT_APP_API_BASE}/admin/plans/save`
+      );
       alert("서버 오류");
     }
   };
@@ -214,7 +223,7 @@ const RegisterPlan = () => {
           요금제 상태
           <select name="state" value={form.state} onChange={handleChange}>
             <option value="ABLE">ABLE</option>
-            <option value="DISABLED">DISABLED</option>
+            <option value="DISABLE">DISABLE</option>
           </select>
         </label>
         <label>
