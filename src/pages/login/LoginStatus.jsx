@@ -12,13 +12,17 @@ const LoginStatus = () => {
     if (!isLoggedIn || isLoading) return;
     const fetchPlan = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/user/me", {
-          credentials: "include", // 쿠키 포함
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_BASE}/api/user/info`,
+          {
+            credentials: "include", // 쿠키 포함
+          }
+        );
+
         const text = await response.text();
         try {
           const json = JSON.parse(text); // 응답이 JSON일 경우
-          setPlan(json);
+          navigate("/plans");
         } catch (e) {
           if (text === "사용자 정보를 찾을 수 없습니다.") {
             navigate("/onboarding");
@@ -40,13 +44,7 @@ const LoginStatus = () => {
 
   return (
     <div>
-      <h2>나의 요금제</h2>
-      {plan && (
-        <div>
-          <p>요금제 이름: {plan.name}</p>
-          <p>요금제 상태: {plan.state}</p>
-        </div>
-      )}
+      <h2>요금제 목록 페이지 이동중 ...</h2>
     </div>
   );
 };
