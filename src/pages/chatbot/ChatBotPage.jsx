@@ -40,13 +40,15 @@ const ChatBotPage = () => {
   }, [messages]);
 
   const updateBotMessage = (textChunk) => {
+    const safeChunk = textChunk === '' ? '\u00A0' : textChunk; // 공백 처리
+
     setMessages(prev => {
       const updated = [...prev];
       const index = latestBotMessageRef.current;
       if (index >= 0 && updated[index]) {
         updated[index] = {
           ...updated[index],
-          text: updated[index].text + textChunk,
+          text: updated[index].text + safeChunk,
           loading: false
         };
       }
