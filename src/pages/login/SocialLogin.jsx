@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import KakaoLoginBtn from "../../assets/imgs/kakao-login.png";
 import "../../pages/login/SocialLogin.css";
-import Header from "../../components/header/Header"
-import "../../assets/styles/layout.css"
+import Header from "../../components/header/Header";
+import "../../assets/styles/layout.css";
 
 export default function SocialLogin() {
   const [selectedRole, setSelectedRole] = useState("personal");
@@ -10,17 +10,20 @@ export default function SocialLogin() {
   const [isAdminVerified, setIsAdminVerified] = useState(false);
 
   const handleLogin = () => {
-    const kakaoAuthUrl = `http://localhost:8080/oauth2/authorization/kakao?role=${selectedRole}`;
+    const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth2/authorization/kakao?role=${selectedRole}`;
     window.location.href = kakaoAuthUrl;
   };
 
   const handleAdminVerify = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/auth/verify-admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ adminKey }),
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE}/api/auth/verify-admin`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ adminKey }),
+        }
+      );
 
       if (res.ok) {
         setIsAdminVerified(true);

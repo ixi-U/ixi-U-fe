@@ -1,28 +1,15 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import logoImg from "../assets/imgs/ixi-u.png";
-import centerLogo from "../assets/imgs/ixi-u2.png";
 import "./Main.css";
+import centerLogo from "../assets/imgs/ixi-u2.png";
+import Header from "../components/header/Header";
 
 export default function MainPage() {
-  const navigate = useNavigate();
-
   return (
     <main className="main-wrapper">
-      <header className="main-header">
-        <img src={logoImg} alt="ixi-U logo" className="header-logo" />
-        <nav className="header-tabs">
-          {["모바일", "마이페이지"].map((tab) => (
-            <button key={tab} className="tab-btn">
-              {tab}
-            </button>
-          ))}
-        </nav>
-        <button className="login-outline" onClick={() => navigate("/")}>
-          로그인
-        </button>
-      </header>
+      {/* 전역 헤더 */}
+      <Header />
 
+      {/* 메인 히어로 영역 */}
       <section className="hero-section">
         <button className="nav-arrow left">❮</button>
 
