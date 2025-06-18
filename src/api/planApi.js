@@ -27,6 +27,7 @@ export const fetchPlans = async ({
   });
   return res.data;
 };
+
 export const fetchPlanHistory = async () => {
   const res = await client.get(`/subscribed/history`);
   return res.data; // [{subscribedId, planName, subscribedAt}]
