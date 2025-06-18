@@ -88,7 +88,7 @@ export default function PlanListPage() {
     <main className="container">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
       <Header />
-      // 이 아래부분은 로그인 제한 복구 전 코드
+      {/* 이 아래부분은 로그인 제한 복구 전 코드 */}
       <section className="login-banner">
           <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
           <button onClick={() => navigate('/login')}>로그인하기</button>
