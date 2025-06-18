@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import logoImg from "../../assets/imgs/ixi-u.png";
 import { useNavigate } from "react-router-dom";
 import "../../pages/login/Onboarding.css";
+import useAuth from '../../hooks/useAuth';
 
 const Onboarding = ({ onSubmit }) => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ const Onboarding = ({ onSubmit }) => {
   const [plans, setPlans] = useState([]);
 
   const navigate = useNavigate();
+  const { isLoggedIn, isLoading } = useAuth();
 
   useEffect(() => {
     const fetchPlanNames = async () => {
@@ -69,6 +71,11 @@ const Onboarding = ({ onSubmit }) => {
       alert("회원가입 실패");
     }
   };
+
+  // TODO: 로그인 제한 복구
+  // if (isLoading) return <div>로그인 상태 확인 중...</div>;
+  // if (isLoggedIn) return <div style={{padding:40, textAlign:'center'}}>이미 로그인된 사용자입니다.<br/><a href="/plans">요금제 페이지로 이동</a></div>;
+  // 로그인 여부와 상관없이 항상 컨텐츠 렌더
 
   return (
     <main className="plan-page">

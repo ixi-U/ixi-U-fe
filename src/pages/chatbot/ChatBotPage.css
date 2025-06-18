@@ -62,6 +62,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: relative;
 }
 
 /* 사용자/봇 말풍선 라인 */
@@ -147,4 +148,70 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* 스크롤 버튼 */
+.scroll-to-bottom-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #ff007a;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+
+
+/* 스크롤 버튼 아래쪽 가운데 고정 */
+.scroll-to-bottom-btn--center {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  bottom: 16px;
+  top: auto;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  background: none;
+  padding: 0;
+  border: none;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-to-bottom-btn--center svg {
+  display: block;
+}
+
+/* 스크롤 버튼 채팅방 하단 중앙 고정 */
+.scroll-to-bottom-btn--fixed {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 72px; /* 입력창 높이+여백만큼 위 */
+  z-index: 30;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  background: none;
+  padding: 0;
+  border: none;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-to-bottom-btn--fixed svg {
+  display: block;
 }

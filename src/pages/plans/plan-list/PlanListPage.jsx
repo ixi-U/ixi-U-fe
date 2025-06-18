@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import logoImg from "../../../assets/imgs/ixi-u.png";
 import { useNavigate } from "react-router-dom";
-import { fetchPlans } from "../../../api/planApi";
-import { PLAN_TYPES, SORT_OPTIONS } from "../../../constants/planOptions";
-import PlanCard from "./PlanCard";
-import SortDropDown from "./SortDropdown";
-import "./PlanListPage.css";
-import Header from "../../../components/header/Header";
+import { fetchPlans } from '../../../api/planApi';
+import { PLAN_TYPES, SORT_OPTIONS } from '../../../constants/planOptions';
+import PlanCard from './PlanCard';
+import SortDropDown from './SortDropdown';
+import './PlanListPage.css';
+import Header from '../../../components/header/Header';
+import "../../../assets/styles/layout.css"
+import useAuth from '../../../hooks/useAuth';
 
 export default function PlanListPage() {
   const navigate = useNavigate();
@@ -24,6 +26,7 @@ export default function PlanListPage() {
 
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
+  const { isLoggedIn, isLoading } = useAuth();
 
   const loadPlans = useCallback(
     async (cursor = null, isNext = false) => {
@@ -85,11 +88,20 @@ export default function PlanListPage() {
     <main className="container">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
       <Header />
-      {/* 회색 로그인 안내 영역 */}
+      {/* 이 아래부분은 로그인 제한 복구 전 코드 */}
       <section className="login-banner">
-        <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
-        <button>로그인하기</button>
-      </section>
+          <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
+          <button onClick={() => navigate('/login')}>로그인하기</button>
+        </section>
+      {/* 회색 로그인 안내 영역 */}
+      {/* TODO: 로그인 제한 복구
+      {!isLoading && !isLoggedIn && (
+        <section className="login-banner">
+          <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
+          <button onClick={() => navigate('/login')}>로그인하기</button>
+        </section>
+      )}
+      */}
 
       {/* 플랜 종류 네비게이션 */}
       <ul className="plan-type-nav">
