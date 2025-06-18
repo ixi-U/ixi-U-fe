@@ -10,14 +10,11 @@ import PlanDetailPage from "./pages/plans/plan-detail/PlanDetailPage";
 import ChatBotPage from "./pages/chatbot/ChatBotPage";
 import OnBoarding from "./pages/login/OnBoarding";
 import Logout from "./pages/login/Logout";
-import SingleBenefitRegisterForm from "./pages/admin/SingleBenefitRegisterForm";
-import BundledBenefitRegisterForm from "./pages/admin/BundledBenefitRegisterForm";
 import RegisterPlan from "./pages/admin/RegisterPlanPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import DeletePlan from "./pages/admin/DeletePlanPage";
 import SingleBenefitRegisterForm from "./pages/admin/SingleBenefitRegisterForm";
 import BundledBenefitRegisterForm from "./pages/admin/BundledBenefitRegisterForm";
-import RegisterPlan from "./pages/admin/RegisterPlanPage";
 
 function App() {
   // const location = useLocation();
