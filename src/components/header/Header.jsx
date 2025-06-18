@@ -32,7 +32,7 @@ const Header = () => {
   };
 
   return (
-    <header className="mypage-header">
+    <header className="service-header">
       <div className="header-left">
         <img
           src={logoImg}
