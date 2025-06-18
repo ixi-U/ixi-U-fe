@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import KakaoLoginBtn from "../../assets/imgs/kakao-login.png";
 import "../../pages/login/SocialLogin.css";
 import Header from "../../components/header/Header"
@@ -40,7 +39,6 @@ export default function SocialLogin() {
     <main className="container">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
       <Header />
-
       {/* 로그인 */}
       <section className="login-section">
         <h1 className="login-title">로그인</h1>
