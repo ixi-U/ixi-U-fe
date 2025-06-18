@@ -15,7 +15,7 @@ const BundledBenefitRegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const SERVER_URL = process.env.REACT_APP_API_BASE_URL || '/api';
+  const SERVER_URL = process.env.REACT_APP_API_BASE;
 
   useEffect(() => {
     axios
