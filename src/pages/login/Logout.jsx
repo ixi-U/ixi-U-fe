@@ -7,7 +7,7 @@ const Logout = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/user/me", {
+        const res = await fetch("http://localhost:8080/api/user/info", {
           credentials: "include",
         });
         setIsAuthenticated(res.ok);
