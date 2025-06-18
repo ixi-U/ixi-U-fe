@@ -39,7 +39,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
@@ -79,7 +79,7 @@
 
 /* 말풍선 스타일 */
 .message-bubble {
-  max-width: 75%;
+  max-width: 70%;
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 14px;
@@ -123,7 +123,7 @@
   border: none;
   padding: 10px 16px;
   font-size: 14px;
-  border-radius: 9999px 9999px; /* 오른쪽만 둥글게 (button) */
+  border-radius: 9999px;
   cursor: pointer;
 }
 
