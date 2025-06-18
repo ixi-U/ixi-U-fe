@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import "./PlanDetailPage.css";
-import { useLocation } from "react-router-dom";
 import {
   fetchReviews,
   fetchReviewStats,
@@ -9,6 +8,7 @@ import {
 import ReviewModal from "./ReviewModal";
 import Header from "../../../components/header/Header";
 import { fetchPlanDetail } from "../../../api/planDetail";
+import { useParams } from "react-router-dom";
 
 const sortOptions = [
   { label: "최신순", value: "createdAt,desc" },
@@ -17,11 +17,11 @@ const sortOptions = [
 ];
 
 const PlanDetailPage = () => {
-  const location = useLocation();
-  const planId = location.pathname.split("/").pop();
+  const { planId } = useParams();
+
 
   const [planData, setPlanData] = useState(null);
-  const [planError, setPlanError] = useState(null)
+  const [planError, setPlanError] = useState(null);
 
   const [reviews, setReviews] = useState([]);
   const [reviewStats, setReviewStats] = useState({ avg: 0, count: 0 });
@@ -36,14 +36,15 @@ const PlanDetailPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingReview, setEditingReview] = useState(null);
 
-useEffect(() => {
+  useEffect(() => {
     const loadPlanDetail = async () => {
       try {
-        const data = await fetchPlanDetail(planId);
-        setPlanData(data);
+        const response = await fetchPlanDetail(planId);
+        setPlanData(response);
       } catch (err) {
-        console.error('요금제 상세 정보 로딩 실패:', err);
-        setPlanError('요금제 정보를 불러오지 못했습니다.');
+        console.error("요금제 상세 정보 로딩 실패:", err);
+        setPlanError("요금제 정보를 불러오지 못했습니다.");
+      } finally {
       }
     };
     loadPlanDetail();
@@ -147,6 +148,30 @@ useEffect(() => {
     loadReviews(0, sort); // 리뷰 목록 새로고침
   };
 
+  if(!planData && !planError) {
+    return (
+      <div className="plan-page">
+        <Header />
+        <div className="loading-container">
+          <div className="loading">요금제 정보를 불러오는 중...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태 처리
+  if (planError) {
+    return (
+      <div className="plan-page">
+        <Header />
+        <div className="error-container">
+          <div className="error">{planError}</div>
+          <button onClick={() => window.location.reload()}>다시 시도</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="plan-page">
       <Header />
@@ -177,23 +202,25 @@ useEffect(() => {
             <div className="service-icon">📱</div>
             <div className="service-name">데이터</div>
             <div className="service-value">
-              {planData.mobileDataLimitMb >= 1000000
+              {planData.mobileDataLimitMb === -1
                 ? "무제한"
-                : `${planData.mobileDataLimitMb}MB`}
+                : `${Math.round(planData.mobileDataLimitMb / 1024)} GB`}
             </div>
           </div>
           <div className="service-card">
             <div className="service-icon">🔄</div>
             <div className="service-name">테더링/공유</div>
             <div className="service-value">
-              {Math.floor(planData.sharedMobileDataLimitMb / 1024)}GB
+              {planData.sharedMobileDataLimitMb === -1
+                ? "무제한"
+                : `${Math.round(planData.sharedMobileDataLimitMb / 1024)} GB`}
             </div>
           </div>
           <div className="service-card">
             <div className="service-icon">📞</div>
             <div className="service-name">음성통화</div>
             <div className="service-value">
-              {planData.callLimitMinutes >= 1000000
+              {planData.callLimitMinutes === -1
                 ? "무제한"
                 : `${planData.callLimitMinutes}분`}
             </div>
@@ -202,7 +229,7 @@ useEffect(() => {
             <div className="service-icon">✉️</div>
             <div className="service-name">문자</div>
             <div className="service-value">
-              {planData.messageLimit >= 1000000
+              {planData.messageLimit === -1
                 ? "무제한"
                 : `${planData.messageLimit}건`}
             </div>
