@@ -6,6 +6,8 @@ import SortDropDown from './SortDropdown';
 import './PlanListPage.css';
 import Header from '../../../components/header/Header';
 import "../../../assets/styles/layout.css"
+import { useNavigate } from "react-router-dom";
+import useAuth from '../../../hooks/useAuth';
 
 export default function PlanListPage() {
   const [planType, setPlanType] = useState('5G/LTE');
@@ -18,6 +20,9 @@ export default function PlanListPage() {
 
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
+
+  const navigate = useNavigate();
+  const isLoggedIn = useAuth();
 
   const loadPlans = useCallback(
     async (cursor = null, isNext = false) => {
@@ -79,10 +84,12 @@ export default function PlanListPage() {
     <main className="container">
       <Header />
       {/* 회색 로그인 안내 영역 */}
-      <section className="login-banner">
-        <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
-        <button>로그인하기</button>
-      </section>
+      {!isLoggedIn && (
+        <section className="login-banner">
+          <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
+          <button onClick={() => navigate('/login')}>로그인하기</button>
+        </section>
+      )}
 
       {/* 플랜 종류 네비게이션 */}
       <ul className="plan-type-nav">
