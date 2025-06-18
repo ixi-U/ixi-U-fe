@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import MainPage from "./pages/MainPage";
 import SocialLogin from "./pages/login/SocialLogin";
 import LoginStatus from "./pages/login/LoginStatus";
 import MyPage from "./pages/user/MyPage";
@@ -11,7 +12,6 @@ import OnBoarding from "./pages/login/OnBoarding";
 import Logout from "./pages/login/Logout";
 import SingleBenefitRegisterForm from "./pages/admin/SingleBenefitRegisterForm";
 import BundledBenefitRegisterForm from "./pages/admin/BundledBenefitRegisterForm";
-
 import RegisterPlan from "./pages/admin/RegisterPlanPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import DeletePlan from "./pages/admin/DeletePlanPage";
@@ -25,12 +25,14 @@ function App() {
     <Router>
       {/* {!shouldHideHeader && <Header />} */}
       <Routes>
+        <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<SocialLogin />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/login/status" element={<LoginStatus />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/plans" element={<PlanListPage />} />
-        <Route path="/plans/details" element={<PlanDetailPage />} />
+        <Route path="/plans" element={<PlanListPage />} />
+        {/* <Route path="/plans/details" element={<PlanDetailPage />} /> */}
         <Route path="/onboarding" element={<OnBoarding />} />
         <Route path="/chatbot" element={<ChatBotPage />} />
         <Route path="/mypage/plan" element={<AdminLayout />}>
