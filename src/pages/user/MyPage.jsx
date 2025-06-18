@@ -7,6 +7,7 @@ import PlanHistoryList from "../user/PlanHistoryList";
 import { deleteUser, getMyInfo, getMyPlan } from "../../api/userApi";
 import './MyPage.css';
 import "../../assets/styles/layout.css"
+import useAuth from '../../hooks/useAuth';
 
 // // 예시 데이터 (향후 API 연동 예정)
 // const user = {
@@ -19,6 +20,7 @@ const currentPlan = null; // 사용중인 요금제 정보 (없음)
 const preferredPlan = null; // 선호 요금제 정보 (없음)
 
 const MyPage = () => {
+  const { isLoggedIn, isLoading } = useAuth();
   const [activeMenu, setActiveMenu] = useState("나의 정보");
   const [isDeleting, setIsDeleting] = useState(false);
   const [user, setUser] = useState(null);
@@ -56,6 +58,9 @@ const MyPage = () => {
       setIsDeleting(false);
     }
   };
+
+  if (isLoading) return <div>로그인 상태 확인 중...</div>;
+  if (!isLoggedIn) return <div style={{padding:40, textAlign:'center'}}>로그인 후 이용 가능한 서비스입니다.<br/><a href="/login">로그인하러 가기</a></div>;
 
   return (
     <main className="container">

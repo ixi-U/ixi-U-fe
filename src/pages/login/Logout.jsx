@@ -1,38 +1,22 @@
 import React, { useEffect, useState } from "react";
+import useAuth from '../../hooks/useAuth';
 
 const Logout = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null); // null: 로딩 중
-
-  // 로그인 상태 확인
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/api/user/info", {
-          credentials: "include",
-        });
-        setIsAuthenticated(res.ok);
-      } catch (e) {
-        setIsAuthenticated(false);
-      }
-    };
-    checkAuth();
-  }, []);
+  const { isLoggedIn, isLoading } = useAuth();
 
   const handleLogout = async () => {
-    if (!isAuthenticated) {
+    if (!isLoggedIn) {
       alert("현재 로그아웃 상태입니다.");
       return;
     }
-
     try {
       const res = await fetch("http://localhost:8080/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
-
       if (res.ok) {
         alert("로그아웃 되었습니다.");
-        window.location.href = "/plans"; // PlanListPage로 이동
+        window.location.href = "/plans";
       } else {
         alert("로그아웃 중 오류가 발생했습니다.");
       }
@@ -41,8 +25,8 @@ const Logout = () => {
     }
   };
 
-  if (isAuthenticated === null) {
-    return <p>로그인 상태 확인 중...</p>; // 로딩 중 표시
+  if (isLoading) {
+    return <p>로그인 상태 확인 중...</p>;
   }
 
   return <button onClick={handleLogout}>로그아웃</button>;

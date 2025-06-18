@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
-import Footer from "../components/Footer";
 import "./MainPage.css";
 import screenshot1 from "../assets/Main-Banner1.png";
 import screenshot2 from "../assets/Main-Banner2.png";
 import screenshot3 from "../assets/Main-Banner3.png";
+import useAuth from '../hooks/useAuth';
 
 const MainPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, isLoading } = useAuth();
 
   useEffect(() => {
-    // 로그인 상태 확인
-    const token = document.cookie.includes('token=');
-    setIsLoggedIn(token);
-
     // 배너 자동 슬라이드
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % 3);

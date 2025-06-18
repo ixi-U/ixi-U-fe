@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from '../../hooks/useAuth';
 
 const LoginStatus = () => {
+  const { isLoggedIn, isLoading } = useAuth();
   const [plan, setPlan] = useState(null);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isLoggedIn || isLoading) return;
     const fetchPlan = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/user/me", {
           credentials: "include", // 쿠키 포함
         });
-
         const text = await response.text();
-
         try {
           const json = JSON.parse(text); // 응답이 JSON일 경우
           setPlan(json);
         } catch (e) {
-          // 문자열인 경우: 사용자 없음, 또는 요금제 없음 등
           if (text === "사용자 정보를 찾을 수 없습니다.") {
-            // 신규 유저 → 온보딩 페이지로 이동
             navigate("/onboarding");
           } else {
-            setMessage(text); // e.g. "아직 등록된 요금제가 없습니다."
+            setMessage(text);
           }
         }
       } catch (error) {
@@ -32,10 +31,11 @@ const LoginStatus = () => {
         setMessage("요금제 조회에 실패했습니다.");
       }
     };
-
     fetchPlan();
-  }, [navigate]);
+  }, [navigate, isLoggedIn, isLoading]);
 
+  if (isLoading) return <div>로그인 상태 확인 중...</div>;
+  if (!isLoggedIn) return <div style={{padding:40, textAlign:'center'}}>로그인 후 이용 가능한 서비스입니다.<br/><a href="/login">로그인하러 가기</a></div>;
   if (message) return <div>{message}</div>;
 
   return (
