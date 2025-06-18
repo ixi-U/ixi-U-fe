@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/components/PlanListPage.jsx
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import logoImg from "../assets/ixi-u.png";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +12,20 @@ export default function PlanListPage() {
   const [activeTab, setActiveTab] = useState("모바일"); // 모바일 / 마이데이터
   const [planType, setPlanType] = useState("5G/LTE");
   const [sortOption, setSortOption] = useState("PRIORITY");
+=======
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { fetchPlans } from '../../../api/planApi';
+import { PLAN_TYPES, SORT_OPTIONS } from '../../../constants/planOptions';
+import PlanCard from './PlanCard';
+import SortDropDown from './SortDropdown';
+import './PlanListPage.css';
+import Header from '../../../components/header/Header';
+import "../../../assets/styles/layout.css"
+
+export default function PlanListPage() {
+  const [planType, setPlanType] = useState('5G/LTE');
+  const [sortOption, setSortOption] = useState('PRIORITY');
+>>>>>>> origin/dev:src/pages/plans/plan-list/PlanListPage.jsx
   const [plans, setPlans] = useState([]);
   // Pagination state
   const [lastCursor, setLastCursor] = useState({
@@ -22,8 +37,6 @@ export default function PlanListPage() {
 
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
-
-  const navigate = useNavigate();
 
   const loadPlans = useCallback(
     async (cursor = null, isNext = false) => {
@@ -82,6 +95,7 @@ export default function PlanListPage() {
   }, [hasNext, lastCursor, loadPlans]);
 
   return (
+<<<<<<< HEAD:src/components/PlanListPage.jsx
     <main className="plan-page">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
       <header className="service-header">
@@ -107,6 +121,10 @@ export default function PlanListPage() {
         </button>
       </header>
 
+=======
+    <main className="container">
+      <Header />
+>>>>>>> origin/dev:src/pages/plans/plan-list/PlanListPage.jsx
       {/* 회색 로그인 안내 영역 */}
       <section className="login-banner">
         <span>로그인하고 현재 가입 조건으로 이용하세요.</span>

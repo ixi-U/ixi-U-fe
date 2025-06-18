@@ -1,8 +1,14 @@
 import axios from "axios";
 
 const client = axios.create({
+<<<<<<< HEAD
   baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:8080",
   headers: { "Content-Type": "application/json" },
+=======
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080',
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
+>>>>>>> origin/dev
 });
 
 export const fetchPlans = async ({
@@ -26,3 +32,11 @@ export const fetchPlans = async ({
   });
   return res.data;
 };
+<<<<<<< HEAD
+=======
+
+export const fetchPlanHistory = async () => {
+  const res = await client.get(`/subscribed/history`);
+  return res.data; // [{subscribedId, planName, subscribedAt}]
+};
+>>>>>>> origin/dev

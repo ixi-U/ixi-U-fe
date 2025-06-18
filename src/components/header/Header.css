@@ -1,0 +1,87 @@
+/* ────────────────────────────────────────── */
+/*  Global Header (logo + 탭 + 로그인 버튼)   */
+/* ────────────────────────────────────────── */
+
+.service-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+  padding: 10px 20px;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  gap: 32px;
+  box-sizing: border-box;
+}
+
+/* ─ logo ─────────────────────────────────── */
+.logo-text {
+  width: 120px;
+  height: auto;
+  cursor: pointer;
+}
+
+/* ─ 좌측 영역: logo + tabs ───────────────── */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+/* ─ 탭 그룹 ──────────────────────────────── */
+.tab-group {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.tab {
+  font-size: 20px;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: 0.18s, color 0.18s;
+  letter-spacing: 0px;
+}
+
+.tab:hover {
+  color: #ff007a;
+}
+
+.tab.active {
+  color: #ff007a;
+  border-bottom: 3px solid #ff007a;
+}
+
+/* ─ 우측 영역: 유저 info + 버튼 ───────────── */
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-svg {
+  width: 24px;
+  height: 24px;
+  stroke: #555;
+}
+
+/* 로그인/로그아웃 버튼 */
+.login-btn {
+  padding: 8px 24px;
+  border: 1px solid #ff007a;
+  border-radius: 24px;
+  background: #fff;
+  color: #ff007a;
+  font-weight: 700;
+  transition: background 0.18s, color 0.18s;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background: #ff007a;
+  color: #fff;
+}

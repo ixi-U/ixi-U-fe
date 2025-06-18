@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-import logoImg from "../assets/ixi-u.png";
-import { useNavigate } from "react-router-dom";
-import KakaoLoginBtn from "../assets/kakao-login.png";
-import "../components/SocialLogin.css";
+import KakaoLoginBtn from "../../assets/imgs/kakao-login.png";
+import "../../pages/login/SocialLogin.css";
+import Header from "../../components/header/Header"
+import "../../assets/styles/layout.css"
 
 export default function SocialLogin() {
-  const [activeTab, setActiveTab] = useState("모바일"); // 모바일 / 마이데이터
-
   const [selectedRole, setSelectedRole] = useState("personal");
   const [adminKey, setAdminKey] = useState("");
   const [isAdminVerified, setIsAdminVerified] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleLogin = () => {
     const kakaoAuthUrl = `http://localhost:8080/oauth2/authorization/kakao?role=${selectedRole}`;
@@ -40,31 +36,9 @@ export default function SocialLogin() {
   };
 
   return (
-    <main className="plan-page">
+    <main className="container">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
-      <header className="service-header">
-        {/* 좌측 로고 */}
-        <img src={logoImg} alt="ixi-U logo" className="logo" />
-
-        {/* 가운데 메뉴 */}
-        <nav className="service-tabs">
-          {["모바일", "마이페이지"].map((tab) => (
-            <button
-              key={tab}
-              className={tab === activeTab ? "tab active" : "tab"}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-
-        {/* 우측 로그인 */}
-        <button className="login-btn" onClick={() => navigate("/")}>
-          로그인
-        </button>
-      </header>
-
+      <Header />
       {/* 로그인 */}
       <section className="login-section">
         <h1 className="login-title">로그인</h1>

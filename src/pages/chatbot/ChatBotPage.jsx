@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './ChatBotPage.css';
-import logoImg from '../assets/ixi-u.png';
+import Header from '../../components/header/Header';
+import "../../assets/styles/layout.css"
 
 const ChatBotPage = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
@@ -11,6 +12,15 @@ const ChatBotPage = () => {
   const [isFirstMessage, setIsFirstMessage] = useState(true);
   const eventSourceRef = useRef(null);
   const latestBotMessageRef = useRef(null);
+  const inputRef = useRef(null);               // 입력창 포커스용
+  const messagesEndRef = useRef(null);         // 자동 스크롤용
+
+  useEffect(() => {
+    // 새 메시지가 생기면 스크롤을 맨 아래로 이동
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +28,8 @@ const ChatBotPage = () => {
 
     const query = input.trim();
     setInput('');
+    // 전송 후 입력칸 포커스
+    if (inputRef.current) inputRef.current.focus();
     setIsStreaming(true);
 
     setMessages(prev => [...prev, { type: 'user', text: query }, { type: 'bot', text: '', loading: true }]);
@@ -68,22 +80,8 @@ const ChatBotPage = () => {
   };
 
   return (
-    <div className="chatbot-page">
-      <header className="service-header">
-        <div className="brand">
-          <img src={logoImg} alt="LG U+ Logo" className="logo" />
-        </div>
-        <div className="tabs-row">
-          <nav className="service-tabs">
-            <button className="tab">요금제</button>
-            <button className="tab">휴대폰</button>
-            <button className="tab">액세서리</button>
-            <button className="tab active">챗봇</button>
-          </nav>
-          <button className="login-btn">로그인</button>
-        </div>
-      </header>
-
+    <main className="container">
+      <Header />
       <div className="chatbot-wrapper">
         <div className="chatbot-container">
           <div className="chatbot-header">
@@ -101,9 +99,11 @@ const ChatBotPage = () => {
                 </div>
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
           <form onSubmit={handleSubmit} className="chatbot-input-form">
             <input
+              ref={inputRef}
               type="text"
               className="chatbot-input"
               placeholder="메시지를 입력하세요..."
@@ -117,7 +117,7 @@ const ChatBotPage = () => {
           </form>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

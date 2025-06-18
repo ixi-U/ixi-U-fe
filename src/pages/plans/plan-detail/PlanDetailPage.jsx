@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './PlanDetailPage.css';
 import { useLocation } from 'react-router-dom';
-import logoImg from '../assets/ixi-u.png';
-import { fetchReviews, fetchReviewStats, deleteReview } from '../api/planReviewApi';
+import { fetchReviews, fetchReviewStats, deleteReview } from '../../../api/planReviewApi';
 import ReviewModal from './ReviewModal';
+import Header from '../../../components/header/Header';
 
 const sortOptions = [
   { label: '최신순', value: 'createdAt,desc' },
@@ -155,19 +155,7 @@ const PlanDetailPage = () => {
 
   return (
     <div className="plan-page">
-      <header className="service-header">
-        <div className="brand">
-          <img src={logoImg} alt="LG U+ Logo" className="logo" />
-        </div>
-        <div className="tabs-row">
-          <nav className="service-tabs">
-            <button className="tab active">요금제</button>
-            <button className="tab">휴대폰</button>
-            <button className="tab">액세서리</button>
-          </nav>
-          <button className="login-btn">로그인</button>
-        </div>
-      </header>
+      <Header />
 
       <div className="login-banner">
         <span>로그인하고 더 많은 혜택을 확인하세요!</span>
