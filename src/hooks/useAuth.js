@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function useAuth() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/user/info", { credentials: "include" })
@@ -10,8 +11,9 @@ export default function useAuth() {
         return res.json();
       })
       .then(() => setIsLoggedIn(true))
-      .catch(() => setIsLoggedIn(false));
+      .catch(() => setIsLoggedIn(false))
+      .finally(() => setIsLoading(false));
   }, []);
 
-  return isLoggedIn;
+  return { isLoggedIn, isLoading };
 } 

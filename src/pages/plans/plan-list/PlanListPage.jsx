@@ -22,7 +22,7 @@ export default function PlanListPage() {
   const sentinelRef = useRef(null);
 
   const navigate = useNavigate();
-  const isLoggedIn = useAuth();
+  const { isLoggedIn, isLoading } = useAuth();
 
   const loadPlans = useCallback(
     async (cursor = null, isNext = false) => {
@@ -84,7 +84,7 @@ export default function PlanListPage() {
     <main className="container">
       <Header />
       {/* 회색 로그인 안내 영역 */}
-      {!isLoggedIn && (
+      {!isLoading && !isLoggedIn && (
         <section className="login-banner">
           <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
           <button onClick={() => navigate('/login')}>로그인하기</button>
