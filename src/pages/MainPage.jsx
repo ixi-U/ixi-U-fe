@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/Footer";
 import "./MainPage.css";
-import screenshot1 from "../assets/스크린샷 2025-06-18 101248.png";
-import screenshot2 from "../assets/스크린샷 2025-06-18 101310.png";
-import screenshot3 from "../assets/스크린샷 2025-06-18 101319.png";
+import screenshot1 from "../assets/Main-Banner1.png";
+import screenshot2 from "../assets/Main-Banner2.png";
+import screenshot3 from "../assets/Main-Banner3.png";
 
 const MainPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
