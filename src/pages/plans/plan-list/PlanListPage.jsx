@@ -85,30 +85,9 @@ export default function PlanListPage() {
   }, [hasNext, lastCursor, loadPlans]);
 
   return (
-    <main className="plan-page">
+    <main className="container">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
-      <header className="service-header">
-        {/* 좌측 로고 */}
-        <img src={logoImg} alt="ixi-U logo" className="logo" />
-
-        {/* 가운데 메뉴 */}
-        <nav className="service-tabs">
-          {["모바일", "마이페이지"].map((tab) => (
-            <button
-              key={tab}
-              className={tab === activeTab ? "tab active" : "tab"}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-
-        {/* 우측 로그인 */}
-        <button className="login-btn" onClick={() => navigate("/")}>
-          로그인
-        </button>
-      </header>
+      <Header />
       {/* 회색 로그인 안내 영역 */}
       {!isLoading && !isLoggedIn && (
         <section className="login-banner">

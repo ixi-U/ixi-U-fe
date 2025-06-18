@@ -26,7 +26,7 @@ function App() {
     <Router>
       {/* {!shouldHideHeader && <Header />} */}
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/main" element={<MainPage />} />
         <Route path="/login" element={<SocialLogin />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/login/status" element={<LoginStatus />} />
