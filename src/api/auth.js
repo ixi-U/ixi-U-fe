@@ -1,5 +1,5 @@
 export const checkAuth = async () => {
-  const res = await fetch("http://localhost:8080/api/user/me", {
+  const res = await fetch("http://localhost:8080/api/user/info", {
     credentials: "include",
   });
   if (!res.ok) throw new Error("Not authenticated");
