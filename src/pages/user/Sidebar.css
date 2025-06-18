@@ -2,9 +2,14 @@
 .sidebar-nav { padding: 48px 16px 0 16px; }
 .sidebar-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 24px; }
 .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-.sidebar-menu-item { display: block; padding: 8px 0 8px 8px; border-radius: 4px; font-size: 1rem; color: #666; font-weight: 500; transition: background 0.18s, color 0.18s, border 0.18s; cursor: pointer; }
-.sidebar-menu-item.active { background: #f3f3f3; color: #222; border-left: 4px solid #222; font-weight: bold; }
-.sidebar-menu-item:last-child, .sidebar-menu-item.member-leave { color: #e91e63; font-weight: bold; }
-.sidebar-menu-item:hover, .sidebar-menu-item.member-leave:focus { background: #ffe5ef; color: #fff; border-left: 4px solid #e91e63; }
-.sidebar-menu-item:active { background: #e91e63; color: #fff; border-left: 4px solid #e91e63; }
+.sidebar-menu-item { display: block; padding: 8px 0 8px 8px; font-size: 1rem; color: #222; font-weight: 500; transition: background 0.18s, color 0.18s, border 0.18s; cursor: pointer; }
+.sidebar-menu-item.active { background: transparent; color: #ff007a; font-weight: 700; }
+.sidebar-menu-item:last-child, .sidebar-menu-item.member-leave { color: #222; font-weight: bold; }
+.sidebar-menu-item:hover,
+.sidebar-menu-item.member-leave:focus {
+  color: #ff007a;           /* 글자색 핑크 */
+}
+.sidebar-menu-item.active {
+    border-left: 3px solid #ff007a;
+}
 @media (max-width: 768px) { .mypage-sidebar { max-width: 100%; min-width: 0; border-right: none; border-bottom: 1px solid #eee; min-height: unset; } .sidebar-nav { padding: 24px 8px 0 8px; } } 

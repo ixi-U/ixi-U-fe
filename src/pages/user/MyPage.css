@@ -1,6 +1,6 @@
 .mypage-root { min-height: 100vh; background: #fff; display: flex; flex-direction: column; }
 .mypage-body { flex: 1; display: flex; flex-direction: column; background: #fff; }
-.mypage-main { flex: 1; padding: 32px 16px; max-width: 800px; margin: 0 auto; width: 100%; }
-.mypage-greeting { font-size: 1.5rem; font-weight: 800; margin-bottom: 32px; }
-@media (min-width: 768px) { .mypage-body { flex-direction: row; } .mypage-main { padding: 48px 48px; } }
-@media (max-width: 768px) { .mypage-main { padding: 18px 2vw; } .mypage-greeting { font-size: 1.13rem; margin-bottom: 18px; } } 
+.mypage-main { flex: 1; padding: 32px 8px; max-width: 800px; margin: 0 auto; width: 100%; }
+.mypage-greeting { font-size: 1.5rem; font-weight: 700; margin-bottom: 32px; }
+@media (min-width: 768px) { .mypage-body { flex-direction: row; } .mypage-main { padding: 48px 24px; } }
+@media (max-width: 768px) { .mypage-main { padding: 18px 2vw; } .mypage-greeting { font-size: 1.13rem; margin-bottom: 18px; } }
