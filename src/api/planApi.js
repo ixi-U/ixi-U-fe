@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
 const client = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:8080",
+  headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
 
@@ -14,7 +14,7 @@ export const fetchPlans = async ({
   planId,
   cursorSortValue,
 }) => {
-  const res = await client.get('/plans', {
+  const res = await client.get("/plans", {
     params: {
       size,
       planTypeStr: planType,
@@ -23,6 +23,7 @@ export const fetchPlans = async ({
       planId,
       cursorSortValue,
     },
+    withCredentials: true,
   });
   return res.data;
 };

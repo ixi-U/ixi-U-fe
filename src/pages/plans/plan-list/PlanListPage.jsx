@@ -1,20 +1,25 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { fetchPlans } from '../../../api/planApi';
-import { PLAN_TYPES, SORT_OPTIONS } from '../../../constants/planOptions';
-import PlanCard from './PlanCard';
-import SortDropDown from './SortDropdown';
-import './PlanListPage.css';
-import Header from '../../../components/header/Header';
-import "../../../assets/styles/layout.css"
+import React, { useEffect, useState, useCallback, useRef } from "react";
+import logoImg from "../../../assets/imgs/ixi-u.png";
+import { useNavigate } from "react-router-dom";
+import { fetchPlans } from "../../../api/planApi";
+import { PLAN_TYPES, SORT_OPTIONS } from "../../../constants/planOptions";
+import PlanCard from "./PlanCard";
+import SortDropDown from "./SortDropdown";
+import "./PlanListPage.css";
 
 export default function PlanListPage() {
-  const [planType, setPlanType] = useState('5G/LTE');
-  const [sortOption, setSortOption] = useState('PRIORITY');
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("모바일"); // 모바일 / 마이데이터
+  const [planType, setPlanType] = useState("5G/LTE");
+  const [sortOption, setSortOption] = useState("PRIORITY");
   const [plans, setPlans] = useState([]);
   // Pagination state
-  const [lastCursor, setLastCursor] = useState({ planId: null, sortValue: null });
+  const [lastCursor, setLastCursor] = useState({
+    planId: null,
+    sortValue: null,
+  });
   const [hasNext, setHasNext] = useState(false);
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
 
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
@@ -36,11 +41,11 @@ export default function PlanListPage() {
       const data = await fetchPlans(query);
 
       /* ====== 디버그용 출력 ====== */
-      console.log('[loadPlans] query →', query);
-      console.log('[loadPlans] response →', data);
+      console.log("[loadPlans] query →", query);
+      console.log("[loadPlans] response →", data);
       /* ========================= */
 
-      setPlans(prev =>
+      setPlans((prev) =>
         isNext ? [...prev, ...data.plans.content] : data.plans.content
       );
       setLastCursor({
@@ -59,7 +64,7 @@ export default function PlanListPage() {
 
   // 무한 스크롤: sentinel 이 화면에 보이면 다음 페이지 로드
   useEffect(() => {
-    if (!hasNext) return;            // 더 불러올 게 없으면 관찰하지 않음
+    if (!hasNext) return; // 더 불러올 게 없으면 관찰하지 않음
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -76,8 +81,30 @@ export default function PlanListPage() {
   }, [hasNext, lastCursor, loadPlans]);
 
   return (
-    <main className="container">
-      <Header />
+    <main className="plan-page">
+      {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
+      <header className="service-header">
+        {/* 좌측 로고 */}
+        <img src={logoImg} alt="ixi-U logo" className="logo" />
+
+        {/* 가운데 메뉴 */}
+        <nav className="service-tabs">
+          {["모바일", "마이페이지"].map((tab) => (
+            <button
+              key={tab}
+              className={tab === activeTab ? "tab active" : "tab"}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
+        </nav>
+
+        {/* 우측 로그인 */}
+        <button className="login-btn" onClick={() => navigate("/")}>
+          로그인
+        </button>
+      </header>
       {/* 회색 로그인 안내 영역 */}
       <section className="login-banner">
         <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
@@ -86,10 +113,10 @@ export default function PlanListPage() {
 
       {/* 플랜 종류 네비게이션 */}
       <ul className="plan-type-nav">
-        {PLAN_TYPES.map(pt => (
+        {PLAN_TYPES.map((pt) => (
           <li
             key={pt.value}
-            className={pt.value === planType ? 'active' : ''}
+            className={pt.value === planType ? "active" : ""}
             onClick={() => setPlanType(pt.value)}
           >
             {pt.label}
