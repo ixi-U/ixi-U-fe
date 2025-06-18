@@ -7,6 +7,7 @@ import PlanHistoryList from "../user/PlanHistoryList";
 import { deleteUser, getMyInfo, getMyPlan } from "../../api/userApi";
 import './MyPage.css';
 import "../../assets/styles/layout.css"
+import useAuth from '../../hooks/useAuth';
 
 // // 예시 데이터 (향후 API 연동 예정)
 // const user = {
@@ -19,6 +20,7 @@ const currentPlan = null; // 사용중인 요금제 정보 (없음)
 const preferredPlan = null; // 선호 요금제 정보 (없음)
 
 const MyPage = () => {
+  const { isLoggedIn, isLoading } = useAuth();
   const [activeMenu, setActiveMenu] = useState("나의 정보");
   const [isDeleting, setIsDeleting] = useState(false);
   const [user, setUser] = useState(null);
@@ -57,6 +59,8 @@ const MyPage = () => {
     }
   };
 
+  // TODO: 로그인 제한 복구
+  // 로그인 여부와 상관없이 항상 컨텐츠 렌더
   return (
     <main className="container">
       <Header />
@@ -164,7 +168,7 @@ const MyPage = () => {
         </main>
       </div>
       <ChatbotButton />
-      </main>
+    </main>
   );
 };
 

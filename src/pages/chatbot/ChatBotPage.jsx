@@ -4,16 +4,33 @@ import Header from '../../components/header/Header';
 import "../../assets/styles/layout.css"
 
 const ChatBotPage = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE;
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [isFirstMessage, setIsFirstMessage] = useState(true);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const eventSourceRef = useRef(null);
   const latestBotMessageRef = useRef(null);
-  const inputRef = useRef(null);               // 입력창 포커스용
-  const messagesEndRef = useRef(null);         // 자동 스크롤용
+  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+
+  // 스크롤 위치 감지
+  const handleScroll = () => {
+    if (messagesContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+      setShowScrollButton(!isNearBottom);
+    }
+  };
+
+  // 스크롤을 맨 아래로 이동
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     // 새 메시지가 생기면 스크롤을 맨 아래로 이동
@@ -28,8 +45,6 @@ const ChatBotPage = () => {
 
     const query = input.trim();
     setInput('');
-    // 전송 후 입력칸 포커스
-    if (inputRef.current) inputRef.current.focus();
     setIsStreaming(true);
 
     setMessages(prev => [...prev, { type: 'user', text: query }, { type: 'bot', text: '', loading: true }]);
@@ -136,11 +151,15 @@ const ChatBotPage = () => {
     <main className="container">
       <Header />
       <div className="chatbot-wrapper">
-        <div className="chatbot-container">
+        <div className="chatbot-container" style={{position: 'relative'}}>
           <div className="chatbot-header">
             챗봇 상담
           </div>
-          <div className="chatbot-messages">
+          <div 
+            className="chatbot-messages" 
+            ref={messagesContainerRef}
+            onScroll={handleScroll}
+          >
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -154,9 +173,21 @@ const ChatBotPage = () => {
             ))}
             <div ref={messagesEndRef} />
           </div>
+          {showScrollButton && (
+            <button 
+              className="scroll-to-bottom-btn scroll-to-bottom-btn--fixed"
+              onClick={scrollToBottom}
+              title="맨 아래로 이동"
+            >
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="14" cy="14" r="13" stroke="#eee" strokeWidth="2" fill="#fff"/>
+                <path d="M14 8V20" stroke="#222" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M9 15L14 20L19 15" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          )}
           <form onSubmit={handleSubmit} className="chatbot-input-form">
             <input
-              ref={inputRef}
               type="text"
               className="chatbot-input"
               placeholder="메시지를 입력하세요..."

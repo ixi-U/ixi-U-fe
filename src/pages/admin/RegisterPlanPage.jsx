@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./RegisterPlan.css";
-
 const initialState = {
   name: "",
   type: "",
@@ -19,16 +18,13 @@ const initialState = {
   pricePerKb: "",
   etcInfo: "",
 };
-
 const RegisterPlan = () => {
   const [form, setForm] = useState(initialState);
-
   const bundledBenefitOptions = [
     { id: 1, name: "지니 6개월" },
     { id: 2, name: "넷플릭스 3개월" },
     { id: 3, name: "왓챠 프리미엄" },
   ];
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -37,7 +33,6 @@ const RegisterPlan = () => {
       setForm({ ...form, [name]: value });
     }
   };
-
   const validate = () => {
     const {
       name,
@@ -60,7 +55,6 @@ const RegisterPlan = () => {
     const isValidNumber = (value) => /^\d*$/.test(value);
     const isValidPricePerKb = (value) =>
       /^\d+(\.\d+)?$/.test(value) || value === "";
-
     if (!isLengthIn(name, 1, 10)) return "요금제 이름은 1~10자여야 합니다.";
     if (!type) return "요금제 분류를 선택해주세요.";
     if (!isValidNumberOrUnlimited(mobileDataLimitMb))
@@ -87,51 +81,55 @@ const RegisterPlan = () => {
       return "최소 연령은 최대 연령보다 작거나 같아야 합니다.";
     if (pricePerKb && !isValidPricePerKb(pricePerKb))
       return "1KB당 요금은 숫자 또는 소수점 숫자만 입력 가능합니다.";
-
     if (!form.singleBenefitInput?.trim()) {
       return "단일 혜택은 비워둘 수 없습니다.";
     }
-
     return null;
   };
-
   const convertToNumberOrNull = (v) => {
     if (v === "") return null;
     if (v === "무제한") return -1;
     return Number(v);
   };
-
   const handleSubmit = async () => {
     const error = validate();
     if (error) return alert(error);
-
     const requestBody = {
       name: form.name,
       type: form.type,
       state: form.state,
-      usageCautions: form.usageCautions,
-      mobileDataLimitMb: convertToNumberOrNull(form.mobileDataLimitMb) ?? 0,
+      usageCautions: form.usageCautions || null,
+      mobileDataLimitMb:
+        form.mobileDataLimitMb === ""
+          ? null
+          : convertToNumberOrNull(form.mobileDataLimitMb),
       callLimitMinutes: convertToNumberOrNull(form.callLimitMinutes) ?? 0,
       messageLimit: convertToNumberOrNull(form.messageLimit) ?? 0,
       monthlyPrice: form.monthlyPrice === "" ? 0 : Number(form.monthlyPrice),
       priority: form.priority === "" ? 0 : Number(form.priority),
       sharedMobileDataLimitMb:
-        convertToNumberOrNull(form.sharedMobileDataLimitMb) ?? 0,
+        form.sharedMobileDataLimitMb === ""
+          ? null
+          : convertToNumberOrNull(form.sharedMobileDataLimitMb),
       mobileDataThrottleSpeedKbps:
-        convertToNumberOrNull(form.mobileDataThrottleSpeedKbps) ?? 0,
-      minAge: convertToNumberOrNull(form.minAge) ?? 0,
-      maxAge: convertToNumberOrNull(form.maxAge) ?? 200,
+        form.mobileDataThrottleSpeedKbps === ""
+          ? null
+          : convertToNumberOrNull(form.mobileDataThrottleSpeedKbps),
+      minAge: form.minAge === "" ? null : convertToNumberOrNull(form.minAge),
+      maxAge: form.maxAge === "" ? null : convertToNumberOrNull(form.maxAge),
       isActiveDuty: form.isActiveDuty,
-      pricePerKb: form.pricePerKb === "" ? 0 : Number(form.pricePerKb),
-      etcInfo: form.etcInfo || "",
-      singleBenefits: [form.singleBenefitInput.trim()],
-      bundledBenefits: form.bundledBenefits || [],
+      pricePerKb: form.pricePerKb === "" ? null : Number(form.pricePerKb),
+      etcInfo: form.etcInfo || null,
+      singleBenefits: form.singleBenefitInput?.trim()
+        ? [form.singleBenefitInput.trim()]
+        : null,
+      bundledBenefits: form.bundledBenefits?.length
+        ? form.bundledBenefits
+        : null,
     };
-
     Object.keys(requestBody).forEach(
       (k) => requestBody[k] === null && delete requestBody[k]
     );
-
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_BASE}/admin/plans/save`,
@@ -142,7 +140,6 @@ const RegisterPlan = () => {
           body: JSON.stringify(requestBody),
         }
       );
-
       if (response.status === 409) {
         alert("이미 존재하는 요금제입니다.");
       } else if (response.ok) {
@@ -161,7 +158,6 @@ const RegisterPlan = () => {
       alert("서버 오류");
     }
   };
-
   return (
     <section className="admin-content">
       <div className="plan-form-wrapper">
@@ -258,7 +254,6 @@ const RegisterPlan = () => {
           최대 연령
           <input name="maxAge" value={form.maxAge} onChange={handleChange} />
         </label>
-
         <div className="form-group-inline">
           <label htmlFor="isActiveDuty">현역 여부 (군인 혜택)</label>
           <input
@@ -327,5 +322,4 @@ const RegisterPlan = () => {
     </section>
   );
 };
-
 export default RegisterPlan;
