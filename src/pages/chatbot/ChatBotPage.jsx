@@ -15,6 +15,7 @@ const ChatBotPage = () => {
   const latestBotMessageRef = useRef(null);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
+  const inputRef = useRef(null);
 
   // 스크롤 위치 감지
   const handleScroll = () => {
@@ -25,19 +26,30 @@ const ChatBotPage = () => {
     }
   };
 
-  // 스크롤을 맨 아래로 이동
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+// 탭 눌렀을때 살짝 아래로 이동 (끝 요소를 부드럽게 노출)
+const scrollToBottom = () => {
+  if (messagesEndRef.current) {
+    messagesEndRef.current.scrollIntoView({
+      behavior: "smooth",
+    });
+  }
+};
 
   useEffect(() => {
-    // 새 메시지가 생기면 스크롤을 맨 아래로 이동
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      const container = messagesContainerRef.current;
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }, [messages]);
+
+    useEffect(() => {
+    if (!isStreaming) {
+      inputRef.current?.focus();
+    }
+  }, [isStreaming]);
 
   const updateBotMessage = (textChunk) => {
     const safeChunk = textChunk === '' ? '\u00A0' : textChunk; // 공백 처리
@@ -62,6 +74,7 @@ const ChatBotPage = () => {
 
     const query = input.trim();
     setInput('');
+    inputRef.current?.focus();
     setIsStreaming(true);
 
     setMessages(prev => [...prev, { type: 'user', text: query }, { type: 'bot', text: '', loading: true }]);
@@ -224,8 +237,6 @@ const ChatBotPage = () => {
     }
   };
 
-
-
   return (
     <main className="container">
       <Header />
@@ -268,6 +279,8 @@ const ChatBotPage = () => {
           <form onSubmit={handleSubmit} className="chatbot-input-form">
             <input
               type="text"
+              ref={inputRef}
+              autoFocus
               className="chatbot-input"
               placeholder="메시지를 입력하세요..."
               value={input}
