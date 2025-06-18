@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 
 const Logout = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null: 로딩 중
+  const SERVER_URL = process.env.REACT_APP_API_BASE;
 
   // 로그인 상태 확인
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/user/me", {
+        const res = await fetch(`${SERVER_URL}/api/user/me`, {
           credentials: "include",
         });
         setIsAuthenticated(res.ok);
@@ -25,7 +26,7 @@ const Logout = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/auth/logout", {
+      const res = await fetch(`${SERVER_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
