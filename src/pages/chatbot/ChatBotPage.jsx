@@ -71,17 +71,67 @@ const ChatBotPage = () => {
       });
     };
 
-    const endpoint = isFirstMessage ? '/api/chatbot/welcome' : '/api/chatbot/stream';
-    const eventSource = new EventSource(`${API_BASE_URL}${endpoint}?message=${encodeURIComponent(query)}`);
-    eventSourceRef.current = eventSource;
+    try {
+      if (isFirstMessage) {
+        // welcome은 GET + EventSource
+        const eventSource = new EventSource(`${API_BASE_URL}/api/chatbot/welcome`);
+        eventSourceRef.current = eventSource;
 
-    eventSource.onmessage = (event) => {
-      updateBotMessage(event.data);
-    };
+        eventSource.onmessage = (event) => {
+          updateBotMessage(event.data);
+        };
 
-    eventSource.onerror = (error) => {
+        eventSource.onerror = (error) => {
+          console.error('SSE 오류:', error);
+          eventSource.close();
+          setIsStreaming(false);
+          setMessages(prev => {
+            const updated = [...prev];
+            const lastIndex = updated.length - 1;
+            if (updated[lastIndex]?.loading) {
+              updated.splice(lastIndex, 1);
+            }
+            return [...updated, { type: 'bot', text: '오류가 발생했어요. 다시 시도해주세요.' }];
+          });
+        };
+      } else {
+        // recommend는 POST + fetch + stream
+        const response = await fetch(`${API_BASE_URL}/api/chatbot/recommend`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userQuery: query
+          }),
+          credentials: 'include'
+        });
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        let buffer = '';
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+
+          // 여러 줄이 한 번에 들어올 수도 있으니 줄 단위로 파싱
+          const lines = buffer.split('\n');
+          buffer = lines.pop(); // 마지막 줄은 아직 완성되지 않았을 수 있음
+
+          for (let line of lines) {
+            if (line.startsWith('data:')) {
+              let text = line.replace(/^data:/, '').trim();
+              if (text === '') text = '\u00A0'; // 공백 처리
+              if (text) updateBotMessage(text);
+            }
+          }
+        }
+      }
+    } catch (error) {
       console.error('SSE 오류:', error);
-      eventSource.close();
       setIsStreaming(false);
       setMessages(prev => {
         const updated = [...prev];
@@ -91,9 +141,10 @@ const ChatBotPage = () => {
         }
         return [...updated, { type: 'bot', text: '오류가 발생했어요. 다시 시도해주세요.' }];
       });
-    };
+    }
 
     setIsFirstMessage(false);
+    setIsStreaming(false);
   };
 
   return (
