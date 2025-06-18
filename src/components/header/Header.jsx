@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import './Header.css';
-import logoImg from '../assets/ixi-u.png';
+import logoImg from '../../assets/imgs/ixi-u2.png';
 
 const Header = () => {
   const [user, setUser] = useState(null); // 사용자 상태 저장
   const navigate = useNavigate();
+  const location = useLocation();
 
   // 로그인 여부 확인 (경로 최신화)
   useEffect(() => {
@@ -30,18 +32,34 @@ const Header = () => {
   };
 
   return (
-    <header className="mypage-header">
+    <header className="service-header">
       <div className="header-left">
         <img
           src={logoImg}
           alt="ixi-U logo"
           className="logo-text"
           style={{ cursor: 'pointer', width: 120, height: 'auto' }}
-          onClick={() => navigate('/mainPage')}
+          onClick={() => navigate('/main')}
         />
-        <button className="mobile-btn">모바일 버튼</button>
         <div className="tab-group">
-          <button className="tab active" onClick={() => navigate('/mypage')}>마이페이지</button>
+          <button
+            className={`tab ${location.pathname.startsWith('/plans') ? 'active' : ''}`}
+            onClick={() => navigate('/plans')}
+          >
+            모바일
+          </button>
+          <button
+            className={`tab ${location.pathname.startsWith('/chatbot') ? 'active' : ''}`}
+            onClick={() => navigate('/chatbot')}
+          >
+            챗봇
+          </button>
+          <button
+            className={`tab ${location.pathname.startsWith('/mypage') ? 'active' : ''}`}
+            onClick={() => navigate('/mypage')}
+          >
+            마이페이지
+          </button>
         </div>
       </div>
       <div className="header-user" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
@@ -53,7 +71,7 @@ const Header = () => {
         {user ? (
           <button onClick={handleLogout} className="login-btn">로그아웃</button>
         ) : (
-          <button onClick={() => navigate("/")} className="login-btn">로그인</button>
+          <button onClick={() => navigate("/login")} className="login-btn">로그인</button>
         )}
       </div>
     </header>

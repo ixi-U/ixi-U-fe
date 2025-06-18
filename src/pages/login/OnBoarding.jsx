@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import logoImg from "../assets/ixi-u.png";
+import logoImg from "../../assets/imgs/ixi-u.png";
 import { useNavigate } from "react-router-dom";
-import "../components/Onboarding.css";
+import "../../pages/login/Onboarding.css";
 
 const Onboarding = ({ onSubmit }) => {
   const [email, setEmail] = useState("");

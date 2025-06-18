@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import logoImg from '../assets/ixi-u.png';
-import { useNavigate } from 'react-router-dom';
-import { fetchPlans } from '../api/planApi';
-import { PLAN_TYPES, SORT_OPTIONS } from '../constants/planOptions';
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { fetchPlans } from '../../../api/planApi';
+import { PLAN_TYPES, SORT_OPTIONS } from '../../../constants/planOptions';
 import PlanCard from './PlanCard';
 import SortDropDown from './SortDropdown';
 import './PlanListPage.css';
+import Header from '../../../components/header/Header';
+import "../../../assets/styles/layout.css"
 
 export default function PlanListPage() {
-  const [activeTab, setActiveTab] = useState('모바일'); // 모바일 / 마이데이터
   const [planType, setPlanType] = useState('5G/LTE');
   const [sortOption, setSortOption] = useState('PRIORITY');
   const [plans, setPlans] = useState([]);
@@ -19,8 +18,6 @@ export default function PlanListPage() {
 
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
-
-  const navigate = useNavigate();
 
   const loadPlans = useCallback(
     async (cursor = null, isNext = false) => {
@@ -79,33 +76,8 @@ export default function PlanListPage() {
   }, [hasNext, lastCursor, loadPlans]);
 
   return (
-    <main className="plan-page">
-      {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
-      <header className="service-header">
-        {/* 좌측 로고 */}
-        <img src={logoImg} alt="ixi-U logo" className="logo" />
-
-        {/* 가운데 메뉴 */}
-        <nav className="service-tabs">
-          {['모바일', '마이페이지'].map(
-            (tab) => (
-              <button
-                key={tab}
-                className={tab === activeTab ? 'tab active' : 'tab'}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-              </button>
-            )
-          )}
-        </nav>
-
-        {/* 우측 로그인 */}
-        <button className="login-btn" onClick={() => navigate('/')}>
-          로그인
-        </button>
-      </header>
-
+    <main className="container">
+      <Header />
       {/* 회색 로그인 안내 영역 */}
       <section className="login-banner">
         <span>로그인하고 현재 가입 조건으로 이용하세요.</span>

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
-import InfoCard from "../components/InfoCard";
-import ChatbotButton from "../components/ChatbotButton";
-import PlanHistoryList from "../components/PlanHistoryList";
-import { deleteUser, getMyInfo, getMyPlan } from "../api/userApi";
+import Header from "../../components/header/Header";
+import Sidebar from "./Sidebar";
+import InfoCard from "./InfoCard";
+import ChatbotButton from "../chatbot/ChatbotButton";
+import PlanHistoryList from "../user/PlanHistoryList";
+import { deleteUser, getMyInfo, getMyPlan } from "../../api/userApi";
 import './MyPage.css';
+import "../../assets/styles/layout.css"
 
-// 예시 데이터 (향후 API 연동 예정)
-const user = {
-  name: "임*현",
-  joinDate: "2023-01-01",
-  partner: "-",
-  lastReview: "-",
-};
+// // 예시 데이터 (향후 API 연동 예정)
+// const user = {
+//   name: "임*현",
+//   joinDate: "2023-01-01",
+//   partner: "-",
+//   lastReview: "-",
+// };
 const currentPlan = null; // 사용중인 요금제 정보 (없음)
 const preferredPlan = null; // 선호 요금제 정보 (없음)
 
@@ -57,7 +58,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="mypage-root">
+    <main className="container">
       <Header />
       <div className="mypage-body">
         <Sidebar activeMenu={activeMenu} onMenuClick={setActiveMenu} />
@@ -163,7 +164,7 @@ const MyPage = () => {
         </main>
       </div>
       <ChatbotButton />
-    </div>
+      </main>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createReview, updateReview } from '../api/planReviewApi';
+import { createReview, updateReview } from '../../../api/planReviewApi';
 import './ReviewModal.css';
 
 const ReviewModal = ({ isOpen, onClose, planId, onReviewCreated, isEdit = false, review = null }) => {

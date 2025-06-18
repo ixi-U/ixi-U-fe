@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchPlanHistory } from '../api/planApi';
+import { fetchPlanHistory } from '../../api/planApi';
 import PlanHistoryItem from './PlanHistoryItem';
 import './PlanHistoryList.css';
 
