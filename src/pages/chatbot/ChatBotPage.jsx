@@ -40,13 +40,15 @@ const ChatBotPage = () => {
   }, [messages]);
 
   const updateBotMessage = (textChunk) => {
+    const safeChunk = textChunk === '' ? '\u00A0' : textChunk; // 공백 처리
+
     setMessages(prev => {
       const updated = [...prev];
       const index = latestBotMessageRef.current;
       if (index >= 0 && updated[index]) {
         updated[index] = {
           ...updated[index],
-          text: updated[index].text + textChunk,
+          text: updated[index].text + safeChunk,
           loading: false
         };
       }
@@ -77,6 +79,13 @@ const ChatBotPage = () => {
 
         eventSource.onmessage = (event) => {
           updateBotMessage(event.data);
+          // Welcome 메시지를 모두 받았는지 체크
+          if (event.data.includes('마지막 메시지')) { // 예시
+            eventSource.close();
+            setIsStreaming(false);
+            // 그 다음 recommend(POST) 요청을 보내는 로직
+            handleRecommendRequest(query);
+          }
           // Welcome 메시지를 모두 받았는지 체크
           if (event.data.includes('마지막 메시지')) { // 예시
             eventSource.close();
@@ -122,6 +131,17 @@ const ChatBotPage = () => {
             if (line.startsWith('data:')) {
               let text = line.replace(/^data:/, '').trim();
               if (text === '') text = '\u00A0'; // 공백 처리
+
+              // 배열 형태라면 합쳐서 문자열로 변환
+              try {
+                const parsed = JSON.parse(text);
+                if (Array.isArray(parsed)) {
+                  text = parsed.join('');
+                }
+              } catch (e) {
+                // JSON 파싱 실패 시 원본 text 그대로 사용
+              }
+
               if (text) updateBotMessage(text);
             }
           }
@@ -175,6 +195,17 @@ const ChatBotPage = () => {
           if (line.startsWith('data:')) {
             let text = line.replace(/^data:/, '').trim();
             if (text === '') text = '\u00A0'; // 공백 처리
+
+            // 배열 형태라면 합쳐서 문자열로 변환
+            try {
+              const parsed = JSON.parse(text);
+              if (Array.isArray(parsed)) {
+                text = parsed.join('');
+              }
+            } catch (e) {
+              // JSON 파싱 실패 시 원본 text 그대로 사용
+            }
+
             if (text) updateBotMessage(text);
           }
         }
@@ -192,6 +223,8 @@ const ChatBotPage = () => {
       });
     }
   };
+
+
 
   return (
     <main className="container">
