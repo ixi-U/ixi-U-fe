@@ -25,6 +25,7 @@ export default function MainPage() {
           <button className="nav-arrow right">❯</button>
         </section>
       </div>
+
     </main>
   );
 }
