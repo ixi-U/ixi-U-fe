@@ -38,9 +38,11 @@ const LoginStatus = () => {
     fetchPlan();
   }, [navigate, isLoggedIn, isLoading]);
 
-  if (isLoading) return <div>로그인 상태 확인 중...</div>;
-  if (!isLoggedIn) return <div style={{padding:40, textAlign:'center'}}>로그인 후 이용 가능한 서비스입니다.<br/><a href="/login">로그인하러 가기</a></div>;
-  if (message) return <div>{message}</div>;
+  // TODO: 로그인 제한 복구
+  // if (isLoading) return <div>로그인 상태 확인 중...</div>;
+  // if (!isLoggedIn) return <div style={{padding:40, textAlign:'center'}}>로그인 후 이용 가능한 서비스입니다.<br/><a href="/login">로그인하러 가기</a></div>;
+  // if (message) return <div>{message}</div>;
+  // 로그인 여부와 상관없이 항상 컨텐츠 렌더
 
   return (
     <div>

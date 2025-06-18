@@ -59,17 +59,8 @@ const MyPage = () => {
     }
   };
 
-  if (isLoading) return <div>로그인 상태 확인 중...</div>;
-
-  // 헤더는 항상 렌더링, 안내 메시지는 헤더 아래에만 표시
-  if (!isLoggedIn) return <>
-    <Header />
-    <div style={{padding: "240px 0 360px 0", textAlign: "center"}}>
-      로그인 후 이용 가능한 서비스입니다.<br/>
-      <a href="/login">로그인하러 가기</a>
-    </div>
-  </>;
-
+  // TODO: 로그인 제한 복구
+  // 로그인 여부와 상관없이 항상 컨텐츠 렌더
   return (
     <main className="container">
       <Header />
@@ -177,7 +168,7 @@ const MyPage = () => {
         </main>
       </div>
       <ChatbotButton />
-      </main>
+    </main>
   );
 };
 

@@ -5,7 +5,7 @@ export default function useAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/user/info", { credentials: "include" })
+    fetch(`${process.env.REACT_APP_API_BASE}/api/user/info`, { credentials: "include" })
       .then(res => {
         if (!res.ok) throw new Error();
         return res.json();
