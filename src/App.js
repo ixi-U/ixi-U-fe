@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/header/Header";
-import Footer from "./components/Footer";
+
 import MainPage from "./pages/MainPage";
+import Footer from "./components/Footer";
 import SocialLogin from "./pages/login/SocialLogin";
 import LoginStatus from "./pages/login/LoginStatus";
 import MyPage from "./pages/user/MyPage";
@@ -26,7 +26,7 @@ function App() {
     <Router>
       {/* {!shouldHideHeader && <Header />} */}
       <Routes>
-        <Route path="/main" element={<MainPage />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<SocialLogin />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/login/status" element={<LoginStatus />} />
