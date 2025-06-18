@@ -4,7 +4,7 @@ import Header from '../../components/header/Header';
 import "../../assets/styles/layout.css"
 
 const ChatBotPage = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE;
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -40,13 +40,15 @@ const ChatBotPage = () => {
     }
 
     const updateBotMessage = (textChunk) => {
+      const safeChunk = textChunk === '' ? '\u00A0' : textChunk; // 공백 처리
+
       setMessages(prev => {
         const updated = [...prev];
         const index = latestBotMessageRef.current;
         if (index >= 0 && updated[index]) {
           updated[index] = {
             ...updated[index],
-            text: updated[index].text + textChunk,
+            text: updated[index].text + safeChunk,
             loading: false
           };
         }
