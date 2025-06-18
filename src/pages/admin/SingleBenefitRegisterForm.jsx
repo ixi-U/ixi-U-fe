@@ -12,7 +12,7 @@ const SingleBenefitForm = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const SERVER_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+  const SERVER_URL = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
 
   const handleChange = (e) => {
     const { name, value } = e.target;

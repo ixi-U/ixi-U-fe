@@ -4,7 +4,7 @@ import Header from '../../components/header/Header';
 import "../../assets/styles/layout.css"
 
 const ChatBotPage = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE || 'http://localhost:8080';
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
