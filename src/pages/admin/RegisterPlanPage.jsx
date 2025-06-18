@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../components/RegisterPlan.css";
+import "./RegisterPlan.css";
 
 const initialState = {
   name: "",

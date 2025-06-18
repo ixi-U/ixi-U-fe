@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import "../components/RegisterPlan.css";
+import "./RegisterPlan.css";
 
 const DeletePlanPage = () => {
   const [plans, setPlans] = useState([]);

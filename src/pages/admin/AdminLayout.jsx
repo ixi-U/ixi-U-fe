@@ -1,8 +1,8 @@
 // src/components/AdminLayout.jsx
 import React, { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import logoImg from "../assets/ixi-u.png";
-import "../components/AdminLayout.css";
+import logoImg from "../../assets/imgs/ixi-u.png";
+import "./AdminLayout.css";
 
 const AdminLayout = () => {
   const location = useLocation();
