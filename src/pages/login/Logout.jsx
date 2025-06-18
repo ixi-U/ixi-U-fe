@@ -3,6 +3,7 @@ import useAuth from '../../hooks/useAuth';
 
 const Logout = () => {
   const { isLoggedIn, isLoading } = useAuth();
+  const SERVER_URL = process.env.REACT_APP_API_BASE;
 
   const handleLogout = async () => {
     if (!isLoggedIn) {
