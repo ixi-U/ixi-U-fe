@@ -131,6 +131,17 @@ const ChatBotPage = () => {
             if (line.startsWith('data:')) {
               let text = line.replace(/^data:/, '').trim();
               if (text === '') text = '\u00A0'; // 공백 처리
+
+              // 배열 형태라면 합쳐서 문자열로 변환
+              try {
+                const parsed = JSON.parse(text);
+                if (Array.isArray(parsed)) {
+                  text = parsed.join('');
+                }
+              } catch (e) {
+                // JSON 파싱 실패 시 원본 text 그대로 사용
+              }
+
               if (text) updateBotMessage(text);
             }
           }
@@ -184,6 +195,17 @@ const ChatBotPage = () => {
           if (line.startsWith('data:')) {
             let text = line.replace(/^data:/, '').trim();
             if (text === '') text = '\u00A0'; // 공백 처리
+
+            // 배열 형태라면 합쳐서 문자열로 변환
+            try {
+              const parsed = JSON.parse(text);
+              if (Array.isArray(parsed)) {
+                text = parsed.join('');
+              }
+            } catch (e) {
+              // JSON 파싱 실패 시 원본 text 그대로 사용
+            }
+
             if (text) updateBotMessage(text);
           }
         }
@@ -202,54 +224,7 @@ const ChatBotPage = () => {
     }
   };
 
-  const handleRecommendRequest = async (query) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/chatbot/recommend`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userQuery: query
-        }),
-        credentials: 'include'
-      });
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      let buffer = '';
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-
-        // 여러 줄이 한 번에 들어올 수도 있으니 줄 단위로 파싱
-        const lines = buffer.split('\n');
-        buffer = lines.pop(); // 마지막 줄은 아직 완성되지 않았을 수 있음
-
-        for (let line of lines) {
-          if (line.startsWith('data:')) {
-            let text = line.replace(/^data:/, '').trim();
-            if (text === '') text = '\u00A0'; // 공백 처리
-            if (text) updateBotMessage(text);
-          }
-        }
-      }
-    } catch (error) {
-      console.error('SSE 오류:', error);
-      setIsStreaming(false);
-      setMessages(prev => {
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.loading) {
-          updated.splice(lastIndex, 1);
-        }
-        return [...updated, { type: 'bot', text: '오류가 발생했어요. 다시 시도해주세요.' }];
-      });
-    }
-  };
 
   return (
     <main className="container">
