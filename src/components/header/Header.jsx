@@ -39,7 +39,7 @@ const Header = () => {
           alt="ixi-U logo"
           className="logo-text"
           style={{ cursor: "pointer", width: 120, height: "auto" }}
-          onClick={() => navigate("/main")}
+          onClick={() => navigate("/")}
         />
         <div className="tab-group">
           <button
