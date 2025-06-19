@@ -1,4 +1,4 @@
-/* 전체 페이지 */
+/* 전체 페이지 */More actions
 .main-wrapper {
   min-height: 100vh;
   display: flex;
@@ -155,7 +155,7 @@
   margin-bottom: 15px;
   color: #333;
 }
-
+Add commentMore actions
 .service-card p {
   color: #666;
   line-height: 1.6;

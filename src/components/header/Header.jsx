@@ -57,7 +57,6 @@ const Header = () => {
           </button>
         </div>
       </div>
-      {/* TODO: 로그인 제한 복구
       {!isLoginPage && !isLoading && (
         <div className="header-user" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <span className="user-icon">
@@ -72,8 +71,6 @@ const Header = () => {
           )}
         </div>
       )}
-      */}
-      {/* 로그인 여부와 상관없이 항상 컨텐츠 렌더 */}
     </header>
   );
 };

@@ -159,14 +159,13 @@ const PlanDetailPage = () => {
     <div className="plan-page">
       <Header />
 
-      // TODO: 로그인 제한 복구
       {/* 로그인 안내 배너 */}
-      {/* {!authLoading && !isLoggedIn && (
+      {!authLoading && !isLoggedIn && (
         <div className="login-banner">
           <span>로그인하고 더 많은 혜택을 확인하세요!</span>
           <button onClick={() => window.location.href = '/login'}>로그인하기</button>
         </div>
-      )} */}
+      )}
 
       <ul className="plan-type-nav">
         <li className="active">전체</li>

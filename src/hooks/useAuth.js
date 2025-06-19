@@ -5,12 +5,15 @@ export default function useAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE}/api/user/info`, { credentials: "include" })
+    fetch(`${process.env.REACT_APP_API_BASE}/api/user/info`, { credentials: "include", cache: 'no-store' })
       .then(res => {
         if (!res.ok) throw new Error();
         return res.json();
       })
-      .then(() => setIsLoggedIn(true))
+      .then(data => {
+        if (!data || !data.id || !data.email) throw new Error();
+        setIsLoggedIn(true);
+      })
       .catch(() => setIsLoggedIn(false))
       .finally(() => setIsLoading(false));
   }, []);
