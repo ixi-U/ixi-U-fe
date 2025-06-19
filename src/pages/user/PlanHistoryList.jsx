@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { fetchPlanHistory } from '../../api/planApi';
 import PlanHistoryItem from './PlanHistoryItem';
 import './PlanHistoryList.css';
+import { useNavigate } from 'react-router-dom';
 
 const PlanHistoryList = () => {
   const [history, setHistory] = useState([]);
   const [sort, setSort] = useState('desc'); // 'desc' = 최신순, 'asc' = 오래된순
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -40,7 +42,9 @@ const PlanHistoryList = () => {
       ) : (
         <div>
           {sortedHistory.length === 0 ? (
-            <div>이용 내역이 없습니다.</div>
+            <div style={{textAlign:'center', margin:'32px 0'}}>
+              <div>이용 내역이 없습니다.</div>
+            </div>
           ) : (
             sortedHistory.map(plan => (
               <PlanHistoryItem key={plan.subscribedId} plan={plan} />

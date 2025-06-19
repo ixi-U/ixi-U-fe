@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: 'https://api.ixiu.site',
+  baseURL: process.env.REACT_APP_API_BASE,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
