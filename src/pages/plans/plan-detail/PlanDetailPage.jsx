@@ -9,6 +9,8 @@ import ReviewModal from "./ReviewModal";
 import Header from "../../../components/header/Header";
 import { fetchPlanDetail } from "../../../api/planDetail";
 import { useParams } from "react-router-dom";
+import './PlanDetailPage.css';
+import useAuth from '../../../hooks/useAuth';
 
 const sortOptions = [
   { label: "최신순", value: "createdAt,desc" },
@@ -22,6 +24,7 @@ const PlanDetailPage = () => {
 
   const [planData, setPlanData] = useState(null);
   const [planError, setPlanError] = useState(null);
+  const { isLoggedIn, isLoading: authLoading } = useAuth();
 
   const [reviews, setReviews] = useState([]);
   const [reviewStats, setReviewStats] = useState({ avg: 0, count: 0 });
@@ -176,10 +179,14 @@ const PlanDetailPage = () => {
     <div className="plan-page">
       <Header />
 
-      <div className="login-banner">
-        <span>로그인하고 더 많은 혜택을 확인하세요!</span>
-        <button>로그인하기</button>
-      </div>
+      // TODO: 로그인 제한 복구
+      {/* 로그인 안내 배너 */}
+      {/* {!authLoading && !isLoggedIn && (
+        <div className="login-banner">
+          <span>로그인하고 더 많은 혜택을 확인하세요!</span>
+          <button onClick={() => window.location.href = '/login'}>로그인하기</button>
+        </div>
+      )} */}
 
       <ul className="plan-type-nav">
         <li className="active">전체</li>
