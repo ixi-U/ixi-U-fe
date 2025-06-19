@@ -31,7 +31,7 @@ export default function PlanListPage() {
   const loadPlans = useCallback(
     async (cursor = null, isNext = false) => {
       const query = {
-        size: 2,
+        size: 10,
         planType,
         sortOption,
         searchKeyword: keyword,
