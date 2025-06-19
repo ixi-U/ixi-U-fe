@@ -8,6 +8,9 @@ import { deleteUser, getMyInfo, getMyPlan } from "../../api/userApi";
 import './MyPage.css';
 import "../../assets/styles/layout.css"
 import useAuth from '../../hooks/useAuth';
+import { fetchPlans } from "../../api/planApi";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // // 예시 데이터 (향후 API 연동 예정)
 // const user = {
@@ -27,6 +30,11 @@ const MyPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPlan, setCurrentPlan] = useState(null);
+  const [showPlanModal, setShowPlanModal] = useState(false);
+  const [allPlans, setAllPlans] = useState([]);
+  const [registering, setRegistering] = useState(false);
+  const [planType, setPlanType] = useState('5G/LTE');
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -59,6 +67,38 @@ const MyPage = () => {
     }
   };
 
+  const openPlanModal = async () => {
+    setShowPlanModal(true);
+    const data = await fetchPlans({ size: 100, planType: planType, sortOption: 'PRIORITY' });
+    setAllPlans(data.plans?.content || []);
+  };
+
+  const handlePlanTypeChange = async (e) => {
+    const newType = e.target.value;
+    setPlanType(newType);
+    const data = await fetchPlans({ size: 100, planType: newType, sortOption: 'PRIORITY' });
+    setAllPlans(data.plans?.content || []);
+  };
+
+  const handleSubscribe = async (planId) => {
+    setRegistering(true);
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_BASE}/subscribed`,
+        { planId },
+        { withCredentials: true }
+      );
+      alert("요금제가 등록되었습니다!");
+      setShowPlanModal(false);
+      const planData = await getMyPlan();
+      setCurrentPlan(planData);
+    } catch (e) {
+      alert("등록 실패");
+    } finally {
+      setRegistering(false);
+    }
+  };
+
   // TODO: 로그인 제한 복구
   // 로그인 여부와 상관없이 항상 컨텐츠 렌더
   return (
@@ -73,7 +113,20 @@ const MyPage = () => {
             </h1>
 
             {/* 사용중인 요금제 */}
-            <InfoCard title="사용중인 요금제">
+            <InfoCard title={
+              <span>
+                사용중인 요금제
+                <button
+                  style={{
+                    marginLeft: 16, fontSize: "1rem", padding: "6px 18px",
+                    borderRadius: 8, background: "#e91e63", color: "#fff", border: "none", cursor: "pointer"
+                  }}
+                  onClick={openPlanModal}
+                >
+                  등록하기
+                </button>
+              </span>
+            }>
               {loading ? (
                 <div>로딩 중...</div>
               ) : error ? (
@@ -165,9 +218,40 @@ const MyPage = () => {
               </button>
             </div>
           )}
+          {showPlanModal && (
+            <div className="plan-modal-backdrop">
+              <div className="plan-modal">
+                <h3>요금제 선택</h3>
+                <div style={{marginBottom:16}}>
+                  <label style={{marginRight:8}}>플랜 타입:</label>
+                  <select value={planType} onChange={handlePlanTypeChange} style={{padding:'6px 12px', borderRadius:6}}>
+                    <option value="5G/LTE">5G/LTE</option>
+                    <option value="ONLINE">ONLINE</option>
+                    <option value="TABLET/SMARTWATCH">TABLET/SMARTWATCH</option>
+                    <option value="DUAL_NUMBER">DUAL_NUMBER</option>
+                  </select>
+                </div>
+                <ul>
+                  {allPlans.map(plan => (
+                    <li key={plan.id} style={{marginBottom:8}}>
+                      <span>{plan.name}</span>
+                      <button
+                        style={{marginLeft:12, padding:"4px 12px"}}
+                        disabled={registering}
+                        onClick={() => handleSubscribe(plan.id)}
+                      >
+                        선택
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={() => setShowPlanModal(false)}>닫기</button>
+              </div>
+            </div>
+          )}
         </main>
       </div>
-      <ChatbotButton />
+      <ChatbotButton onClick={() => navigate('/chatbot')} />
     </main>
   );
 };
