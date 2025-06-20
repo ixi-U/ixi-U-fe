@@ -10,6 +10,7 @@ import './PlanListPage.css';
 import Header from '../../../components/header/Header';
 import "../../../assets/styles/layout.css"
 import useAuth from '../../../hooks/useAuth';
+import { getMyInfo } from '../../../api/userApi';
 
 // 데이터 양을 포맷하는 헬퍼 함수
 const formatData = (mb) => {
@@ -35,6 +36,7 @@ export default function PlanListPage() {
   const [keyword, setKeyword] = useState("");
   const [currentPlan, setCurrentPlan] = useState(null);
   const [isPlanLoading, setIsPlanLoading] = useState(true);
+  const [userRole, setUserRole] = useState(null);
 
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
@@ -116,8 +118,19 @@ export default function PlanListPage() {
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      getMyInfo().then(data => setUserRole(data.userRole)).catch(() => setUserRole(null));
+    } else {
+      setUserRole(null);
+    }
+  }, [isLoggedIn]);
+
+
+
   return (
-    <main className="container">
+    
+      <main className="container">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
       <Header />
       
