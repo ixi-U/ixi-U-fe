@@ -4,11 +4,21 @@ import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logoImg from "../../assets/imgs/ixi-u2.png";
 import useAuth from '../../hooks/useAuth';
+import { getMyInfo } from '../../api/userApi';
 
 const Header = () => {
   const { isLoggedIn, isLoading } = useAuth();
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getMyInfo().then(data => setUserRole(data.userRole)).catch(() => setUserRole(null));
+    } else {
+      setUserRole(null);
+    }
+  }, [isLoggedIn]);
 
   const handleLogout = async () => {
     if (!isLoggedIn) {
@@ -63,22 +73,38 @@ const Header = () => {
           >
             모바일
           </button>
-          <button
-            className={`tab ${
-              location.pathname.startsWith("/chatbot") ? "active" : ""
-            }`}
-            onClick={() => navigate("/chatbot")}
-          >
-            챗봇
-          </button>
-          <button
-            className={`tab ${
-              location.pathname.startsWith("/mypage") ? "active" : ""
-            }`}
-            onClick={() => navigate("/mypage")}
-          >
-            마이페이지
-          </button>
+          {/* userRole이 null이고 로그인 중이면 탭을 잠시 숨김(로딩) */}
+          {isLoggedIn && userRole === null ? (
+            <div style={{ width: 180, height: 32 }} />
+          ) : userRole === 'ROLE_ADMIN' ? (
+            <button
+              className={`tab ${location.pathname.startsWith("/admin") ? "active" : ""}`}
+              onClick={() => navigate("/admin")}
+            >
+              요금제 관리
+            </button>
+          ) : (
+            <>
+              <button
+                className={`tab ${
+                  location.pathname.startsWith("/chatbot") ? "active" : ""
+                }`}
+                onClick={() => navigate("/chatbot")}
+              >
+                챗봇
+              </button>
+              {userRole !== 'ADMIN' && (
+                <button
+                  className={`tab ${
+                    location.pathname.startsWith("/mypage") ? "active" : ""
+                  }`}
+                  onClick={() => navigate("/mypage")}
+                >
+                  마이페이지
+                </button>
+              )}
+            </>
+          )}
         </div>
       </div>
       {!isLoginPage && !isLoading && (
