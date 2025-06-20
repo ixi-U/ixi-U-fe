@@ -16,6 +16,8 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import DeletePlan from "./pages/admin/DeletePlanPage";
 import SingleBenefitRegisterForm from "./pages/admin/SingleBenefitRegisterForm";
 import BundledBenefitRegisterForm from "./pages/admin/BundledBenefitRegisterForm";
+import AdminPage from './pages/admin/AdminPage';
+import Header from "./components/header/Header";
 
 function App() {
   // const location = useLocation();
@@ -36,8 +38,6 @@ function App() {
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/chatbot" element={<ChatBotPage />} />
         <Route path="/mypage/plan" element={<AdminLayout />}>
-          <Route path="register" element={<RegisterPlan />} />
-          <Route path="delete" element={<DeletePlan />} />
         </Route>
         <Route path="/plans/details/:planId" element={<PlanDetailPage />} />
         <Route
@@ -48,6 +48,9 @@ function App() {
           path="/admin/benefits/bundled-benefits"
           element={<BundledBenefitRegisterForm />}
         />
+        <Route path="/admin" element={<AdminPage />} />
+          <Route path="register" element={<RegisterPlan />} />
+          <Route path="delete" element={<DeletePlan />} />
       </Routes>
       <Footer />
     </Router>
