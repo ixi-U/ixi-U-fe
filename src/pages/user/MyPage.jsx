@@ -36,6 +36,30 @@ const MyPage = () => {
   const [planType, setPlanType] = useState('5G/LTE');
   const navigate = useNavigate();
 
+  // 혜택 데이터를 안전하게 렌더링하는 헬퍼 함수
+  const renderBenefit = (benefit) => {
+    if (typeof benefit === 'string') {
+      return benefit;
+    } else if (typeof benefit === 'object' && benefit !== null) {
+      // 객체인 경우 name, title, description 등의 속성을 찾아서 표시
+      if (benefit.name) return benefit.name;
+      if (benefit.title) return benefit.title;
+      if (benefit.description) return benefit.description;
+      if (benefit.benefitName) return benefit.benefitName;
+      if (benefit.benefitType) return benefit.benefitType;
+      // 객체의 첫 번째 문자열 속성을 찾아서 표시
+      for (const key in benefit) {
+        if (typeof benefit[key] === 'string' && benefit[key].trim()) {
+          return benefit[key];
+        }
+      }
+      // 문자열 속성이 없으면 JSON으로 표시
+      return JSON.stringify(benefit);
+    } else {
+      return String(benefit || '');
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     setError(null);
@@ -53,6 +77,24 @@ const MyPage = () => {
       .then(([userData, planData]) => {
         console.log('User data:', userData);
         console.log('Plan data:', planData);
+        
+        // 혜택 데이터 구조 확인
+        if (planData && planData.bundledBenefits) {
+          console.log('Bundled benefits structure:', planData.bundledBenefits);
+          console.log('Bundled benefits length:', planData.bundledBenefits.length);
+          planData.bundledBenefits.forEach((benefit, index) => {
+            console.log(`Bundled benefit ${index}:`, benefit);
+            console.log(`Bundled benefit ${index} name:`, benefit.name);
+          });
+        }
+        if (planData && planData.singleBenefits) {
+          console.log('Single benefits structure:', planData.singleBenefits);
+          console.log('Single benefits length:', planData.singleBenefits.length);
+          planData.singleBenefits.forEach((benefit, index) => {
+            console.log(`Single benefit ${index}:`, benefit);
+            console.log(`Single benefit ${index} name:`, benefit.name);
+          });
+        }
         
         // 데이터 검증
         if (userData && typeof userData === 'object') {
@@ -193,8 +235,24 @@ const MyPage = () => {
                     <div style={{ marginTop: 8 }}>
                       <b>묶음 혜택:</b>
                       <ul>
-                        {currentPlan.bundledBenefits.map((b, i) => (
-                          <li key={i}>{String(b || '')}</li>
+                        {currentPlan.bundledBenefits.map((bundledBenefit, i) => (
+                          <li key={i}>
+                            <div><strong>{bundledBenefit.name}</strong></div>
+                            {bundledBenefit.subscript && (
+                              <div style={{ fontSize: '0.9em', color: '#666', marginTop: 4 }}>
+                                {bundledBenefit.subscript}
+                              </div>
+                            )}
+                            {Array.isArray(bundledBenefit.singleBenefits) && bundledBenefit.singleBenefits.length > 0 && (
+                              <ul style={{ marginTop: 8, marginLeft: 20 }}>
+                                {bundledBenefit.singleBenefits.map((singleBenefit, j) => (
+                                  <li key={j} style={{ fontSize: '0.9em', marginBottom: 4 }}>
+                                    • {singleBenefit.name}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -203,8 +261,15 @@ const MyPage = () => {
                     <div style={{ marginTop: 8 }}>
                       <b>단일 혜택:</b>
                       <ul>
-                        {currentPlan.singleBenefits.map((b, i) => (
-                          <li key={i}>{String(b || '')}</li>
+                        {currentPlan.singleBenefits.map((singleBenefit, i) => (
+                          <li key={i}>
+                            <div>{singleBenefit.name}</div>
+                            {singleBenefit.subscript && (
+                              <div style={{ fontSize: '0.9em', color: '#666', marginTop: 4 }}>
+                                {singleBenefit.subscript}
+                              </div>
+                            )}
+                          </li>
                         ))}
                       </ul>
                     </div>
