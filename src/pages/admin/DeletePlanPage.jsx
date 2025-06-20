@@ -1,10 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
-import "./RegisterPlan.css";
+import "../plans/plan-list/PlanCard.css";
+import "../plans/plan-list/PlanListPage.css";
+
+const formatData = (mb) => {
+  if (typeof mb === "string") return mb; // 이미 문자열(단위 포함)로 오면 그대로 반환
+  if (mb === -1) return "무제한";
+  if (!mb) return "0MB";
+  if (mb < 1024) return `${mb}MB`;
+  const gb = (mb / 1024).toFixed(1);
+  return `${gb.endsWith('.0') ? Math.floor(mb / 1024) : gb}GB`;
+}
 
 const DeletePlanPage = () => {
   const [plans, setPlans] = useState([]);
 
-  const loadAdminPlans = useCallback(async () => {
+  // 요금제 id 목록만 받아오기
+  const loadAdminPlanIds = useCallback(async () => {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_BASE}/admin/plans`,
@@ -14,15 +25,44 @@ const DeletePlanPage = () => {
         }
       );
       const data = await response.json();
-      setPlans(data);
+      // id만 추출
+      return Array.isArray(data) ? data.map(p => p.id) : [];
     } catch (err) {
-      console.error("어드민 요금제 조회 실패:", err);
+      console.error("어드민 요금제 id 조회 실패:", err);
+      return [];
+    }
+  }, []);
+
+  // 각 id별로 상세 정보 불러오기
+  const loadPlanDetails = useCallback(async (ids) => {
+    try {
+      const detailPromises = ids.map(id =>
+        fetch(`${process.env.REACT_APP_API_BASE}/plans/details/${id}`, {
+          method: "GET",
+          credentials: "include",
+        })
+          .then(res => res.json())
+          .then(plan => ({ ...plan, id }))
+          .catch(() => null)
+      );
+      const details = await Promise.all(detailPromises);
+      // null(실패) 제외
+      setPlans(details.filter(Boolean));
+    } catch (err) {
+      console.error("요금제 상세 조회 실패:", err);
     }
   }, []);
 
   useEffect(() => {
-    loadAdminPlans();
-  }, [loadAdminPlans]);
+    (async () => {
+      const ids = await loadAdminPlanIds();
+      if (ids.length > 0) {
+        await loadPlanDetails(ids);
+      } else {
+        setPlans([]);
+      }
+    })();
+  }, [loadAdminPlanIds, loadPlanDetails]);
 
   const togglePlanState = async (planId) => {
     const confirmed = window.confirm(
@@ -32,7 +72,7 @@ const DeletePlanPage = () => {
 
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_BASE}/admin/plans/${planId}/toggle`,
+        `${process.env.REACT_APP_API_BASE}/admin/plans/${planId}/disable`,
         {
           method: "PATCH",
           credentials: "include",
@@ -44,6 +84,7 @@ const DeletePlanPage = () => {
 
       if (res.ok) {
         alert("요금제 상태가 변경되었습니다.");
+        // 상태만 토글 (다시 상세조회 안함)
         setPlans(
           plans.map((p) =>
             p.id === planId
@@ -64,52 +105,51 @@ const DeletePlanPage = () => {
 
   return (
     <section className="admin-content">
-      <div className="plan-form-wrapper">
-        <h2 className="section-title">요금제 삭제</h2>
-        <div className="plan-list">
+       <main className="container">
+        <h2 className="section-title">요금제 비활성화</h2>
+        <div className="card-list">
           {plans.map((plan) => (
-            <div key={plan.id} className="plan-card">
-              <div
-                className="plan-card-header"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "24px",
-                }}
-              >
-                <div>
-                  <strong className="plan-name" style={{ marginRight: "12px" }}>
-                    {plan.name}
-                  </strong>
-                  {plan.usageCautions && (
-                    <div
-                      className="plan-description"
-                      style={{
-                        marginTop: "4px",
-                        fontSize: "14px",
-                        color: "#666",
-                      }}
-                    >
-                      {plan.usageCautions}
+            <article key={plan.id} className="plan-card">
+              <div className="card-head">
+                <h3>{plan.name}</h3>
                     </div>
+              <div className="specs">
+                <dl className="specs-left">
+                  <dt>데이터</dt>
+                  <dd>{plan.mobileDataLimitMb !== undefined && plan.mobileDataLimitMb !== null && plan.mobileDataLimitMb !== '' ? plan.mobileDataLimitMb : '-'}</dd>
+                  <dt>테더링/쉐어링</dt>
+                  <dd>{plan.sharedMobileDataLimitMb !== undefined && plan.sharedMobileDataLimitMb !== null && plan.sharedMobileDataLimitMb !== '' ? plan.sharedMobileDataLimitMb : '-'}</dd>
+                </dl>
+                <dl className="specs-right">
+                  <dt>음성 통화</dt>
+                  <dd>{plan.callLimitMinutes !== undefined && plan.callLimitMinutes !== null && plan.callLimitMinutes !== '' ? plan.callLimitMinutes : '-'}</dd>
+                  <dt>문자 메시지</dt>
+                  <dd>{plan.messageLimit !== undefined && plan.messageLimit !== null && plan.messageLimit !== '' ? plan.messageLimit : '-'}</dd>
+                  <dt>기본혜택</dt>
+                  <dd>{(!plan.singleBenefits || plan.singleBenefits.length === 0)
+                    ? '기본제공'
+                    : plan.singleBenefits.map(b => b.name).join(', ')}</dd>
+                  {plan.bundledBenefits && plan.bundledBenefits.length > 0 && (
+                    <>
+                      <dt>프리미엄 혜택</dt>
+                      <dd>{plan.bundledBenefits.map(b => b.name).join(', ')}</dd>
+                    </>
                   )}
-                  <div
-                    className="plan-status"
-                    style={{
-                      marginTop: "4px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    상태: {plan.planState === "DISABLE" ? "비활성화" : "활성화"}
+                  <dt>상태</dt>
+                  <dd>{plan.planState === "DISABLE" ? "비활성화" : "활성화"}</dd>
+                </dl>
                   </div>
-                </div>
+              <div className="price-area">
+                <strong className="price">
+                  월&nbsp;
+                  {plan.monthlyPrice ? plan.monthlyPrice.toLocaleString() : '-'}원
+                </strong>
                 <button
-                  className="plan-disable-btn"
+                  className="plan-disable-btn primary"
                   onClick={() => togglePlanState(plan.id)}
                   disabled={false}
                   style={{
-                    backgroundColor: "#e91e63",
+                    backgroundColor: plan.planState === "DISABLE" ? "#4caf50" : "#e91e63",
                     color: "white",
                     border: "none",
                     borderRadius: "6px",
@@ -121,10 +161,10 @@ const DeletePlanPage = () => {
                   {plan.planState === "DISABLE" ? "활성화" : "비활성화"}
                 </button>
               </div>
-            </div>
+            </article>
           ))}
         </div>
-      </div>
+        </main>
     </section>
   );
 };

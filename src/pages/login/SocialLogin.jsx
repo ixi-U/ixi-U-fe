@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import KakaoLoginBtn from "../../assets/imgs/kakao-login.png";
+import ChatbotButton from "../chatbot/ChatbotButton";
 import "../../pages/login/SocialLogin.css";
 import Header from "../../components/header/Header";
 import "../../assets/styles/layout.css";
+import { useNavigate } from "react-router-dom";
 
 export default function SocialLogin() {
   const [selectedRole, setSelectedRole] = useState("personal");
   const [adminKey, setAdminKey] = useState("");
   const [isAdminVerified, setIsAdminVerified] = useState(false);
-
+  const navigate = useNavigate();
+  
   const handleLogin = () => {
     const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth2/authorization/kakao?role=${selectedRole}`;
     window.location.href = kakaoAuthUrl;
@@ -96,11 +99,7 @@ export default function SocialLogin() {
         />
       </section>
 
-      <button className="chatbot-button">
-        챗봇
-        <br />
-        버튼
-      </button>
+      <ChatbotButton onClick={() => navigate('/chatbot')} />
     </main>
   );
 }

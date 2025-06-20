@@ -50,45 +50,14 @@
   color: white;
 }
 
-/* --- 마이페이지 좌측 메뉴 --- */
-.admin-sidebar {
-  background: #fafafa;
-  padding: 24px;
-  min-height: calc(100vh - 80px); /* 상단 바 제외 */
-  border-right: 1px solid #ddd;
-}
 
-.admin-sidebar h2 {
-  font-size: 18px;
-  margin-bottom: 16px;
-}
-
-.admin-sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.admin-sidebar li {
-  margin-bottom: 12px;
-}
-
-.admin-sidebar a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-}
-
-.admin-sidebar .active a {
-  color: #ff007a;
-  font-weight: 700;
-}
 
 /* --- 콘텐츠 영역 --- */
 .admin-content {
   flex: 1;
   background: #fff;
-  padding: 32px;
+  padding: 32px 16px 32px 0;
+  margin: 0;
 }
 
 /* 페이지 전체 wrapper */
@@ -97,4 +66,56 @@
   flex-direction: column;
   min-height: 100vh;
   background: #fff;
+}
+
+.admin-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 40px auto 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 40px 32px;
+}
+
+.admin-main > .sidebar {
+  flex-shrink: 0;
+}
+
+.admin-main > .admin-content-wrap {
+  flex: 1;
+  min-width: 0;
+  padding: 0 16px;
+}
+
+.admin-header {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.admin-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #e91e63;
+}
+
+.admin-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.admin-main .mypage-main {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.admin-main .plan-form-card {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
 }

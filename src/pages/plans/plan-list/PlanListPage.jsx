@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import logoImg from "../../../assets/imgs/ixi-u.png";
 import { useNavigate } from "react-router-dom";
 import { fetchPlans } from '../../../api/planApi';
+import { getMyPlan } from '../../../api/userApi';
 import { PLAN_TYPES, SORT_OPTIONS } from '../../../constants/planOptions';
 import PlanCard from './PlanCard';
 import SortDropDown from './SortDropdown';
@@ -9,6 +10,16 @@ import './PlanListPage.css';
 import Header from '../../../components/header/Header';
 import "../../../assets/styles/layout.css"
 import useAuth from '../../../hooks/useAuth';
+import { getMyInfo } from '../../../api/userApi';
+
+// 데이터 양을 포맷하는 헬퍼 함수
+const formatData = (mb) => {
+  if (mb === -1) return "무제한";
+  if (!mb) return "0MB";
+  if (mb < 1024) return `${mb}MB`;
+  const gb = (mb / 1024).toFixed(1);
+  return `${gb.endsWith('.0') ? Math.floor(mb / 1024) : gb}GB`;
+}
 
 export default function PlanListPage() {
   const navigate = useNavigate();
@@ -23,6 +34,9 @@ export default function PlanListPage() {
   });
   const [hasNext, setHasNext] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const [currentPlan, setCurrentPlan] = useState(null);
+  const [isPlanLoading, setIsPlanLoading] = useState(true);
+  const [userRole, setUserRole] = useState(null);
 
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
@@ -84,15 +98,65 @@ export default function PlanListPage() {
     };
   }, [hasNext, lastCursor, loadPlans]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      setIsPlanLoading(true);
+      getMyPlan()
+        .then(data => {
+          setCurrentPlan(data);
+        })
+        .catch(err => {
+          console.error("Failed to fetch current plan", err);
+          setCurrentPlan(null); // 플랜이 없거나 에러 발생
+        })
+        .finally(() => {
+          setIsPlanLoading(false);
+        });
+    } else {
+      setIsPlanLoading(false);
+      setCurrentPlan(null);
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getMyInfo().then(data => setUserRole(data.userRole)).catch(() => setUserRole(null));
+    } else {
+      setUserRole(null);
+    }
+  }, [isLoggedIn]);
+
+
+
   return (
-    <main className="container">
+    
+      <main className="container">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
       <Header />
       
-      {!isLoading && !isLoggedIn && (
+      {/* 로딩 상태에 따른 배너 렌더링 */}
+      {isLoading || isPlanLoading ? (
+        <section className="current-plan-banner loading">
+          <span>사용자 정보를 확인하는 중...</span>
+        </section>
+      ) : isLoggedIn && currentPlan ? (
+        <section className="current-plan-banner">
+          <div className="plan-info-item">
+            <span className="label">이용중인 요금제</span>
+            <span className="value">{currentPlan.name}</span>
+          </div>
+          <div className="plan-info-item">
+            <span className="label">월정액</span>
+            <span className="value">월 {currentPlan.monthlyPrice.toLocaleString()}원</span>
+          </div>
+          <div className="plan-info-item">
+            <span className="label">데이터</span>
+            <span className="value">{formatData(currentPlan.mobileDataLimitMb)}</span>
+          </div>
+        </section>
+      ) : !isLoggedIn && (
         <section className="login-banner">
           <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
-          <button onClick={() => navigate('/login')}>로그인하기</button>
         </section>
       )}
 
