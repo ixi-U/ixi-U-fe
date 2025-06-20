@@ -38,16 +38,41 @@ const MyPage = () => {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
+    
     Promise.all([
-      getMyInfo(),
-      getMyPlan()
+      getMyInfo().catch(err => {
+        console.error('Error fetching user info:', err);
+        return null;
+      }),
+      getMyPlan().catch(err => {
+        console.error('Error fetching plan info:', err);
+        return null;
+      })
     ])
       .then(([userData, planData]) => {
-        setUser(userData);
-        setCurrentPlan(planData);
+        console.log('User data:', userData);
+        console.log('Plan data:', planData);
+        
+        // 데이터 검증
+        if (userData && typeof userData === 'object') {
+          setUser(userData);
+        } else {
+          console.warn('Invalid user data received:', userData);
+          setUser(null);
+        }
+        
+        if (planData && typeof planData === 'object') {
+          setCurrentPlan(planData);
+        } else {
+          console.warn('Invalid plan data received:', planData);
+          setCurrentPlan(null);
+        }
+        
         setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Error in useEffect:', error);
         setError('유저 정보를 불러오지 못했습니다.');
         setLoading(false);
       });
@@ -90,9 +115,23 @@ const MyPage = () => {
       );
       alert("요금제가 등록되었습니다!");
       setShowPlanModal(false);
-      const planData = await getMyPlan();
-      setCurrentPlan(planData);
+      
+      // 새로운 요금제 정보 가져오기
+      const planData = await getMyPlan().catch(err => {
+        console.error('Error fetching updated plan:', err);
+        return null;
+      });
+      
+      console.log('Updated plan data:', planData);
+      
+      if (planData && typeof planData === 'object') {
+        setCurrentPlan(planData);
+      } else {
+        console.warn('Invalid updated plan data:', planData);
+        setCurrentPlan(null);
+      }
     } catch (e) {
+      console.error('Subscribe error:', e);
       alert("등록 실패");
     } finally {
       setRegistering(false);
@@ -131,25 +170,31 @@ const MyPage = () => {
                 <div>로딩 중...</div>
               ) : error ? (
                 <div>{error}</div>
-              ) : currentPlan ? (
+              ) : currentPlan && typeof currentPlan === 'object' && currentPlan !== null ? (
                 <div>
-                  <div><b>요금제 이름:</b> {currentPlan.name}</div>
+                  <div><b>요금제 이름:</b> {String(currentPlan.name || '정보 없음')}</div>
                   <div>
-                    <b>데이터:</b> {currentPlan.mobileDataLimitMb !== null && currentPlan.mobileDataLimitMb !== undefined
-                      ? `${currentPlan.mobileDataLimitMb}MB`
-                      : currentPlan.pricePerKb !== undefined
-                        ? `1KB당 ${currentPlan.pricePerKb}원 과금`
-                        : '정보 없음'}
+                    <b>데이터:</b> {
+                      currentPlan.mobileDataLimitMb !== null && 
+                      currentPlan.mobileDataLimitMb !== undefined && 
+                      !isNaN(currentPlan.mobileDataLimitMb)
+                        ? `${currentPlan.mobileDataLimitMb}MB`
+                        : currentPlan.pricePerKb !== undefined && !isNaN(currentPlan.pricePerKb)
+                          ? `1KB당 ${currentPlan.pricePerKb}원 과금`
+                          : '정보 없음'
+                    }
                   </div>
-                  {currentPlan.mobileDataLimitMb !== null && currentPlan.mobileDataLimitMb !== undefined && (
-                    <div><b>월 요금:</b> {currentPlan.monthlyPrice.toLocaleString()}원</div>
+                  {currentPlan.monthlyPrice !== null && 
+                   currentPlan.monthlyPrice !== undefined && 
+                   !isNaN(currentPlan.monthlyPrice) && (
+                    <div><b>월 요금:</b> {Number(currentPlan.monthlyPrice).toLocaleString()}원</div>
                   )}
                   {Array.isArray(currentPlan.bundledBenefits) && currentPlan.bundledBenefits.length > 0 && (
                     <div style={{ marginTop: 8 }}>
                       <b>묶음 혜택:</b>
                       <ul>
                         {currentPlan.bundledBenefits.map((b, i) => (
-                          <li key={i}>{b}</li>
+                          <li key={i}>{String(b || '')}</li>
                         ))}
                       </ul>
                     </div>
@@ -159,7 +204,7 @@ const MyPage = () => {
                       <b>단일 혜택:</b>
                       <ul>
                         {currentPlan.singleBenefits.map((b, i) => (
-                          <li key={i}>{b}</li>
+                          <li key={i}>{String(b || '')}</li>
                         ))}
                       </ul>
                     </div>
