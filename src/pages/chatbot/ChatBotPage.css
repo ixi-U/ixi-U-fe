@@ -3,6 +3,7 @@
   font-family: 'Noto Sans KR', sans-serif;
   background-color: #f8f9fa;
   min-height: 100vh;
+  max-width: 1080px
 }
 
 /* 모바일 대응 */
@@ -28,19 +29,20 @@
 .chatbot-wrapper {
   display: flex;
   justify-content: center;
-  padding: 32px 16px;
+  padding: 48px 16px 16px;
+  height: calc(100vh - 120px);
 }
 
 .chatbot-container {
   background-color: #fff;
   width: 100%;
   max-width: 600px;
-  height: 600px;
+  height: calc(100vh - 100px); /* adjust 100px depending on external header height */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
 }
 
 /* 챗봇 상단 제목 */
@@ -56,8 +58,9 @@
 /* 메시지 영역 */
 .chatbot-messages {
   flex: 1;
-  padding: 16px;
+  padding: 16px 16px 0;
   overflow-y: auto;
+  scroll-behavior: smooth;
   background-color: #f9fafb;
   display: flex;
   flex-direction: column;
@@ -133,13 +136,15 @@
 }
 
 .spinner {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 14px;
   height: 14px;
   border: 2px solid #ccc;
   border-top-color: #ff007a;
   border-radius: 50%;
-  animation: spin 0.6s linear infinite;
+  animation: spin 1s linear infinite;
   margin-left: 8px;
   vertical-align: middle;
 }

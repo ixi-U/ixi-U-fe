@@ -31,25 +31,21 @@ export default function PlanCard({ plan }) {
         <dl className="specs-left">
           <dt>데이터</dt>
           <dd>
-            {mobileDataLimitMb === -1
-              ? '무제한'
-              : `${Math.round(mobileDataLimitMb / 1024)} GB`}
+            {mobileDataLimitMb}
           </dd>
           <dt>테더링/쉐어링</dt>
           <dd>
-            {sharedMobileDataLimitMb === -1
-              ? '무제한'
-              : `${Math.round(sharedMobileDataLimitMb / 1024)} GB`}
+            {sharedMobileDataLimitMb}
           </dd>
         </dl>
 
       {/* 오른쪽: 음성, 문자, 기본혜택 */}
         <dl className="specs-right">
           <dt>음성 통화</dt>
-          <dd>{callLimitMinutes === -1 ? '집/이동전화 무제한' : `${callLimitMinutes} 분`}</dd>
+          <dd>{callLimitMinutes}</dd>
 
           <dt>문자 메시지</dt>
-          <dd>{messageLimit === -1 ? '기본제공' : `${messageLimit} 건`}</dd>
+          <dd>{messageLimit}</dd>
 
           <dt>기본혜택</dt>
           <dd>

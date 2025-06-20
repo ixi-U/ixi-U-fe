@@ -11,11 +11,35 @@ const Header = () => {
   const location = useLocation();
 
   const handleLogout = async () => {
-    await fetch(`${process.env.REACT_APP_API_BASE}/api/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-    navigate("/plans");
+    if (!isLoggedIn) {
+      alert("현재 로그아웃 상태입니다.");
+      return;
+    }
+    
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      
+      if (res.ok) {
+        alert("로그아웃 되었습니다.");
+        window.location.href = "/";
+      } else {
+        // 401 에러가 발생해도 로그아웃 처리 (토큰이 만료된 경우)
+        if (res.status === 401) {
+          alert("로그아웃 되었습니다.");
+          window.location.href = "/";
+        } else {
+          alert("로그아웃 중 오류가 발생했습니다.");
+        }
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      // 네트워크 에러가 발생해도 로그아웃 처리
+      alert("로그아웃 되었습니다.");
+      window.location.href = "/";
+    }
   };
 
   const isLoginPage = location.pathname === "/login";
@@ -57,7 +81,6 @@ const Header = () => {
           </button>
         </div>
       </div>
-      {/* TODO: 로그인 제한 복구
       {!isLoginPage && !isLoading && (
         <div className="header-user" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <span className="user-icon">
@@ -72,8 +95,6 @@ const Header = () => {
           )}
         </div>
       )}
-      */}
-      {/* 로그인 여부와 상관없이 항상 컨텐츠 렌더 */}
     </header>
   );
 };

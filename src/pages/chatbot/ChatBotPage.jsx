@@ -15,6 +15,7 @@ const ChatBotPage = () => {
   const latestBotMessageRef = useRef(null);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
+  const inputRef = useRef(null);
 
   // 스크롤 위치 감지
   const handleScroll = () => {
@@ -25,28 +26,41 @@ const ChatBotPage = () => {
     }
   };
 
-  // 스크롤을 맨 아래로 이동
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+// 탭 눌렀을때 살짝 아래로 이동 (끝 요소를 부드럽게 노출)
+const scrollToBottom = () => {
+  if (messagesEndRef.current) {
+    messagesEndRef.current.scrollIntoView({
+      behavior: "smooth",
+    });
+  }
+};
 
   useEffect(() => {
-    // 새 메시지가 생기면 스크롤을 맨 아래로 이동
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      const container = messagesContainerRef.current;
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }, [messages]);
 
+    useEffect(() => {
+    if (!isStreaming) {
+      inputRef.current?.focus();
+    }
+  }, [isStreaming]);
+
   const updateBotMessage = (textChunk) => {
+    const safeChunk = textChunk === '' ? '\u00A0' : textChunk; // 공백 처리
+
     setMessages(prev => {
       const updated = [...prev];
       const index = latestBotMessageRef.current;
       if (index >= 0 && updated[index]) {
         updated[index] = {
           ...updated[index],
-          text: updated[index].text + textChunk,
+          text: updated[index].text + safeChunk,
           loading: false
         };
       }
@@ -60,6 +74,7 @@ const ChatBotPage = () => {
 
     const query = input.trim();
     setInput('');
+    inputRef.current?.focus();
     setIsStreaming(true);
 
     setMessages(prev => [...prev, { type: 'user', text: query }, { type: 'bot', text: '', loading: true }]);
@@ -77,6 +92,13 @@ const ChatBotPage = () => {
 
         eventSource.onmessage = (event) => {
           updateBotMessage(event.data);
+          // Welcome 메시지를 모두 받았는지 체크
+          if (event.data.includes('마지막 메시지')) { // 예시
+            eventSource.close();
+            setIsStreaming(false);
+            // 그 다음 recommend(POST) 요청을 보내는 로직
+            handleRecommendRequest(query);
+          }
           // Welcome 메시지를 모두 받았는지 체크
           if (event.data.includes('마지막 메시지')) { // 예시
             eventSource.close();
@@ -122,6 +144,17 @@ const ChatBotPage = () => {
             if (line.startsWith('data:')) {
               let text = line.replace(/^data:/, '').trim();
               if (text === '') text = '\u00A0'; // 공백 처리
+
+              // 배열 형태라면 합쳐서 문자열로 변환
+              try {
+                const parsed = JSON.parse(text);
+                if (Array.isArray(parsed)) {
+                  text = parsed.join('');
+                }
+              } catch (e) {
+                // JSON 파싱 실패 시 원본 text 그대로 사용
+              }
+
               if (text) updateBotMessage(text);
             }
           }
@@ -175,6 +208,17 @@ const ChatBotPage = () => {
           if (line.startsWith('data:')) {
             let text = line.replace(/^data:/, '').trim();
             if (text === '') text = '\u00A0'; // 공백 처리
+
+            // 배열 형태라면 합쳐서 문자열로 변환
+            try {
+              const parsed = JSON.parse(text);
+              if (Array.isArray(parsed)) {
+                text = parsed.join('');
+              }
+            } catch (e) {
+              // JSON 파싱 실패 시 원본 text 그대로 사용
+            }
+
             if (text) updateBotMessage(text);
           }
         }
@@ -235,6 +279,8 @@ const ChatBotPage = () => {
           <form onSubmit={handleSubmit} className="chatbot-input-form">
             <input
               type="text"
+              ref={inputRef}
+              autoFocus
               className="chatbot-input"
               placeholder="메시지를 입력하세요..."
               value={input}
