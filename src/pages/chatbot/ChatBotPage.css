@@ -30,7 +30,7 @@
   display: flex;
   justify-content: center;
   padding: 48px 16px 16px;
-  height: calc(100vh - 120px);
+  /* height: calc(100vh - 120px); */
 }
 
 .chatbot-container {
@@ -58,7 +58,7 @@
 /* 메시지 영역 */
 .chatbot-messages {
   flex: 1;
-  padding: 16px 16px 0;
+  padding: 20px 30px 20px;
   overflow-y: auto;
   scroll-behavior: smooth;
   background-color: #f9fafb;

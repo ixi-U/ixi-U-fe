@@ -35,6 +35,11 @@ const scrollToBottom = () => {
   }
 };
 
+useEffect(() => {
+  // 새로고침 직후 페이지를 최상단에서 약간 아래로 이동
+  window.scrollTo({ top: 150, left: 0, behavior: 'auto' });
+}, []);
+
   useEffect(() => {
     if (messagesContainerRef.current) {
       const container = messagesContainerRef.current;
