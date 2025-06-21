@@ -217,7 +217,7 @@ const MyPage = () => {
                       }}
                       onClick={openPlanModal}
                     >
-                      등록하기
+                      {currentPlan ? "수정하기" : "등록하기"}
                     </button>
                   </span>
                 }>
@@ -296,19 +296,6 @@ const MyPage = () => {
                   )}
                 </InfoCard>
 
-                {/* 선호 요금제 */}
-                <InfoCard title="선호 요금제">
-                  {preferredPlan ? (
-                    <div>{preferredPlan.name}</div>
-                  ) : (
-                    <div className="info-card-empty">
-                      <span>입력된 정보가 없습니다.</span>
-                      <a href="#" className="info-card-link">
-                        선호하시는 요금을 입력하면 더욱더 적합한 요금제를 추천할 수 있어요! 선호 요금제 입력하러가기
-                      </a>
-                    </div>
-                  )}
-                </InfoCard>
 
                 {/* 나의 정보 */}
                 {user && (
