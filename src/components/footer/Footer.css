@@ -17,7 +17,6 @@
   box-sizing: border-box; /* 패딩 포함 폭 계산 */
 }
 
-
 .footer-content {
   display: flex;
   justify-content: space-between;
