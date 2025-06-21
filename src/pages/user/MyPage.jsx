@@ -61,6 +61,13 @@ const MyPage = () => {
   };
 
   useEffect(() => {
+    // 로그인 상태가 확인된 후에만 데이터를 불러옵니다.
+    if (isLoading) return; // 로딩 중에는 아무것도 하지 않음
+    if (!isLoggedIn) {
+      setLoading(false); // 로딩 상태 종료
+      return;
+    }
+
     setLoading(true);
     setError(null);
     
@@ -118,7 +125,7 @@ const MyPage = () => {
         setError('유저 정보를 불러오지 못했습니다.');
         setLoading(false);
       });
-  }, []);
+  }, [isLoggedIn, isLoading]);
 
   // 회원 탈퇴 요청 함수
   const handleDeleteUser = async () => {
@@ -186,180 +193,181 @@ const MyPage = () => {
     <main className="container">
       <Header />
       <div className="mypage-body">
-        <Sidebar activeMenu={activeMenu} onMenuClick={setActiveMenu} />
-        <main className="mypage-main">
-          {activeMenu === "나의 정보" && <>
-            <h1 className="mypage-greeting">
-              {loading ? '로딩 중...' : error ? error : `${user?.name || ''}님, 안녕하세요.`}
-            </h1>
+        {isLoading ? (
+          <div className="mypage-message">
+            <h2>로딩 중...</h2>
+          </div>
+        ) : isLoggedIn ? (
+          <>
+            <Sidebar activeMenu={activeMenu} onMenuClick={setActiveMenu} />
+            <main className="mypage-main">
+              {activeMenu === "나의 정보" && <>
+                <h1 className="mypage-greeting">
+                  {loading ? '로딩 중...' : error ? error : `${user?.name || ''}님, 안녕하세요.`}
+                </h1>
 
-            {/* 사용중인 요금제 */}
-            <InfoCard title={
-              <span>
-                사용중인 요금제
-                <button
-                  style={{
-                    marginLeft: 16, fontSize: "1rem", padding: "6px 18px",
-                    borderRadius: 8, background: "#e91e63", color: "#fff", border: "none", cursor: "pointer"
-                  }}
-                  onClick={openPlanModal}
-                >
-                  등록하기
-                </button>
-              </span>
-            }>
-              {loading ? (
-                <div>로딩 중...</div>
-              ) : error ? (
-                <div>{error}</div>
-              ) : currentPlan && typeof currentPlan === 'object' && currentPlan !== null ? (
-                <div>
-                  <div><b>요금제 이름:</b> {String(currentPlan.name || '정보 없음')}</div>
-                  <div>
-                    <b>데이터:</b> {
-                      currentPlan.mobileDataLimitMb !== null && 
-                      currentPlan.mobileDataLimitMb !== undefined && 
-                      !isNaN(currentPlan.mobileDataLimitMb)
-                        ? `${currentPlan.mobileDataLimitMb}MB`
-                        : currentPlan.pricePerKb !== undefined && !isNaN(currentPlan.pricePerKb)
-                          ? `1KB당 ${currentPlan.pricePerKb}원 과금`
-                          : '정보 없음'
-                    }
-                  </div>
-                  {currentPlan.monthlyPrice !== null && 
-                   currentPlan.monthlyPrice !== undefined && 
-                   !isNaN(currentPlan.monthlyPrice) && (
-                    <div><b>월 요금:</b> {Number(currentPlan.monthlyPrice).toLocaleString()}원</div>
-                  )}
-                  {Array.isArray(currentPlan.bundledBenefits) && currentPlan.bundledBenefits.length > 0 && (
-                    <div style={{ marginTop: 8 }}>
-                      <b>묶음 혜택:</b>
-                      <ul>
-                        {currentPlan.bundledBenefits.map((bundledBenefit, i) => (
-                          <li key={i}>
-                            <div><strong>{bundledBenefit.name}</strong></div>
-                            {bundledBenefit.subscript && (
-                              <div style={{ fontSize: '0.9em', color: '#666', marginTop: 4 }}>
-                                {bundledBenefit.subscript}
-                              </div>
-                            )}
-                            {Array.isArray(bundledBenefit.singleBenefits) && bundledBenefit.singleBenefits.length > 0 && (
-                              <ul style={{ marginTop: 8, marginLeft: 20 }}>
-                                {bundledBenefit.singleBenefits.map((singleBenefit, j) => (
-                                  <li key={j} style={{ fontSize: '0.9em', marginBottom: 4 }}>
-                                    • {singleBenefit.name}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
+                {/* 사용중인 요금제 */}
+                <InfoCard title={
+                  <span>
+                    사용중인 요금제
+                    <button
+                      style={{
+                        marginLeft: 16, fontSize: "1rem", padding: "6px 18px",
+                        borderRadius: 8, background: "#e91e63", color: "#fff", border: "none", cursor: "pointer"
+                      }}
+                      onClick={openPlanModal}
+                    >
+                      등록하기
+                    </button>
+                  </span>
+                }>
+                  {loading ? (
+                    <div>로딩 중...</div>
+                  ) : error ? (
+                    <div>{error}</div>
+                  ) : currentPlan && typeof currentPlan === 'object' && currentPlan !== null ? (
+                    <div>
+                      <div><b>요금제 이름:</b> {String(currentPlan.name || '정보 없음')}</div>
+                      <div>
+                        <b>데이터:</b> {
+                          currentPlan.mobileDataLimitMb !== null && 
+                          currentPlan.mobileDataLimitMb !== undefined && 
+                          !isNaN(currentPlan.mobileDataLimitMb)
+                            ? `${currentPlan.mobileDataLimitMb}MB`
+                            : currentPlan.pricePerKb !== undefined && !isNaN(currentPlan.pricePerKb)
+                              ? `1KB당 ${currentPlan.pricePerKb}원 과금`
+                              : '정보 없음'
+                        }
+                      </div>
+                      {currentPlan.monthlyPrice !== null && 
+                       currentPlan.monthlyPrice !== undefined && 
+                       !isNaN(currentPlan.monthlyPrice) && (
+                        <div><b>월 요금:</b> {Number(currentPlan.monthlyPrice).toLocaleString()}원</div>
+                      )}
+                      {Array.isArray(currentPlan.bundledBenefits) && currentPlan.bundledBenefits.length > 0 && (
+                        <div style={{ marginTop: 8 }}>
+                          <b>묶음 혜택:</b>
+                          <ul>
+                            {currentPlan.bundledBenefits.map((bundledBenefit, i) => (
+                              <li key={i}>
+                                <div><strong>{bundledBenefit.name}</strong></div>
+                                {bundledBenefit.subscript && (
+                                  <div style={{ fontSize: '0.9em', color: '#666', marginTop: 4 }}>
+                                    {bundledBenefit.subscript}
+                                  </div>
+                                )}
+                                {Array.isArray(bundledBenefit.singleBenefits) && bundledBenefit.singleBenefits.length > 0 && (
+                                  <ul style={{ marginTop: 8, marginLeft: 20 }}>
+                                    {bundledBenefit.singleBenefits.map((singleBenefit, j) => (
+                                      <li key={j} style={{ fontSize: '0.9em', marginBottom: 4 }}>
+                                        • {singleBenefit.name}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {Array.isArray(currentPlan.singleBenefits) && currentPlan.singleBenefits.length > 0 && (
+                        <div style={{ marginTop: 8 }}>
+                          <b>단일 혜택:</b>
+                          <ul>
+                            {currentPlan.singleBenefits.map((singleBenefit, i) => (
+                              <li key={i}>
+                                <div>{singleBenefit.name}</div>
+                                {singleBenefit.subscript && (
+                                  <div style={{ fontSize: '0.9em', color: '#666', marginTop: 4 }}>
+                                    {singleBenefit.subscript}
+                                  </div>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="info-card-empty">
+                      <span>사용중인 요금제가 없습니다.</span>
+                      <a href="#" className="info-card-link">어떤 요금제를 선택할지 고민되시나요? 챗봇에게 물어보러가기</a>
                     </div>
                   )}
-                  {Array.isArray(currentPlan.singleBenefits) && currentPlan.singleBenefits.length > 0 && (
-                    <div style={{ marginTop: 8 }}>
-                      <b>단일 혜택:</b>
-                      <ul>
-                        {currentPlan.singleBenefits.map((singleBenefit, i) => (
-                          <li key={i}>
-                            <div>{singleBenefit.name}</div>
-                            {singleBenefit.subscript && (
-                              <div style={{ fontSize: '0.9em', color: '#666', marginTop: 4 }}>
-                                {singleBenefit.subscript}
-                              </div>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
+                </InfoCard>
+
+                
+
+                {/* 나의 정보 */}
+                {user && (
+                  <section className="info-card">
+                    <h2 className="info-card-title">나의 정보</h2>
+                    <div className="info-card-content info-card-grid">
+                      <div>
+                        <div>사용자 명 : {user.name}</div>
+                        <div>가입일 : {user.createdAt}</div>
+                      </div>
+
                     </div>
-                  )}
-                </div>
-              ) : (
-                <div className="info-card-empty">
-                  <span>사용중인 요금제가 없습니다.</span>
-                  <a href="#" className="info-card-link">어떤 요금제를 선택할지 고민되시나요? 챗봇에게 물어보러가기</a>
-                </div>
-              )}
-            </InfoCard>
-
-            {/* 선호 요금제 */}
-            <InfoCard title="선호 요금제">
-              {preferredPlan ? (
-                <div>{preferredPlan.name}</div>
-              ) : (
-                <div className="info-card-empty">
-                  <span>입력된 정보가 없습니다.</span>
-                  <a href="#" className="info-card-link">
-                    선호하시는 요금을 입력하면 더욱더 적합한 요금제를 추천할 수 있어요! 선호 요금제 입력하러가기
-                  </a>
+                  </section>
+                )}
+              </>}
+              {activeMenu === "요금제 히스토리" && <PlanHistoryList />}
+              {activeMenu === "회원 탈퇴" && (
+                <div style={{ textAlign: 'center', marginTop: 80 }}>
+                  <p style={{ fontSize: '1.1rem', marginBottom: 24 }}>정말 탈퇴하시겠습니까?</p>
+                  <button
+                    className="plan-history-change-btn"
+                    style={{ background: '#f3e1ec', color: '#e91e63', fontWeight: 600, fontSize: '1.1rem', padding: '12px 32px', border: 'none', borderRadius: 8, cursor: 'pointer' }}
+                    onClick={handleDeleteUser}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? '처리 중...' : '탈퇴 신청'}
+                  </button>
                 </div>
               )}
-            </InfoCard>
-
-            {/* 나의 정보 */}
-            {user && (
-              <section className="info-card">
-                <h2 className="info-card-title">나의 정보</h2>
-                <div className="info-card-content info-card-grid">
-                  <div>
-                    <div>사용자 명 : {user.name}</div>
-                    <div>가입일 : {user.createdAt}</div>
-                  </div>
-                  <div>
-                    <div>나와 결합된 사용자 : {user.partner}</div>
-                    <div>최근 작성한 리뷰 : {user.lastReview}</div>
+              {showPlanModal && (
+                <div className="plan-modal-backdrop">
+                  <div className="plan-modal">
+                    <h3>요금제 선택</h3>
+                    <div style={{marginBottom:16}}>
+                      <label style={{marginRight:8}}>플랜 타입:</label>
+                      <select value={planType} onChange={handlePlanTypeChange} style={{padding:'6px 12px', borderRadius:6}}>
+                        <option value="5G/LTE">5G/LTE</option>
+                        <option value="ONLINE">ONLINE</option>
+                        <option value="TABLET/SMARTWATCH">TABLET/SMARTWATCH</option>
+                        <option value="DUAL_NUMBER">DUAL_NUMBER</option>
+                      </select>
+                    </div>
+                    <ul>
+                      {allPlans.map(plan => (
+                        <li key={plan.id} style={{marginBottom:8}}>
+                          <span>{plan.name}</span>
+                          <button
+                            style={{marginLeft:12, padding:"4px 12px"}}
+                            disabled={registering}
+                            onClick={() => handleSubscribe(plan.id)}
+                          >
+                            선택
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                    <button onClick={() => setShowPlanModal(false)}>닫기</button>
                   </div>
                 </div>
-              </section>
-            )}
-          </>}
-          {activeMenu === "요금제 히스토리" && <PlanHistoryList />}
-          {activeMenu === "회원 탈퇴" && (
-            <div style={{ textAlign: 'center', marginTop: 80 }}>
-              <p style={{ fontSize: '1.1rem', marginBottom: 24 }}>정말 탈퇴하시겠습니까?</p>
-              <button
-                className="plan-history-change-btn"
-                style={{ background: '#f3e1ec', color: '#e91e63', fontWeight: 600, fontSize: '1.1rem', padding: '12px 32px', border: 'none', borderRadius: 8, cursor: 'pointer' }}
-                onClick={handleDeleteUser}
-                disabled={isDeleting}
-              >
-                {isDeleting ? '처리 중...' : '탈퇴 신청'}
-              </button>
-            </div>
-          )}
-          {showPlanModal && (
-            <div className="plan-modal-backdrop">
-              <div className="plan-modal">
-                <h3>요금제 선택</h3>
-                <div style={{marginBottom:16}}>
-                  <label style={{marginRight:8}}>플랜 타입:</label>
-                  <select value={planType} onChange={handlePlanTypeChange} style={{padding:'6px 12px', borderRadius:6}}>
-                    <option value="5G/LTE">5G/LTE</option>
-                    <option value="ONLINE">ONLINE</option>
-                    <option value="TABLET/SMARTWATCH">TABLET/SMARTWATCH</option>
-                    <option value="DUAL_NUMBER">DUAL_NUMBER</option>
-                  </select>
-                </div>
-                <ul>
-                  {allPlans.map(plan => (
-                    <li key={plan.id} style={{marginBottom:8}}>
-                      <span>{plan.name}</span>
-                      <button
-                        style={{marginLeft:12, padding:"4px 12px"}}
-                        disabled={registering}
-                        onClick={() => handleSubscribe(plan.id)}
-                      >
-                        선택
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <button onClick={() => setShowPlanModal(false)}>닫기</button>
-              </div>
-            </div>
-          )}
-        </main>
+              )}
+            </main>
+          </>
+        ) : (
+          <div className="mypage-message">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+            <h2>로그인이 필요한 서비스입니다.</h2>
+            <p>로그인 후 마이페이지의 모든 기능을 이용해보세요.</p>
+          </div>
+        )}
       </div>
       <ChatbotButton onClick={() => navigate('/chatbot')} />
     </main>

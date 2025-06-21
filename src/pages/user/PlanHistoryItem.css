@@ -17,6 +17,9 @@
 }
 .plan-history-title {
   color: #222;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .plan-history-badge {
   background: #e91e63;
@@ -26,6 +29,15 @@
   border-radius: 16px;
   padding: 4px 16px;
   margin-left: 8px;
+}
+.current-plan-badge {
+  background: #ff007a;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 2px 8px;
+  white-space: nowrap;
 }
 .plan-history-main {
   display: flex;

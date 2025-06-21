@@ -7,7 +7,7 @@ const ChatbotButton = ({ onClick }) => (
     onClick={onClick}
     aria-label="챗봇 버튼"
   >
-    챗봇<br/>버튼
+    챗봇
   </button>
 );
 

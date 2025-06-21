@@ -45,11 +45,38 @@ const scrollToBottom = () => {
     }
   }, [messages]);
 
-    useEffect(() => {
-    if (!isStreaming) {
-      inputRef.current?.focus();
+  // 진입 시 스크롤을 최상단으로 고정
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({ top: 0, behavior: 'auto' });
     }
-  }, [isStreaming]);
+  }, []);
+
+  useEffect(() => {
+    // 페이지 진입 시 자동으로 welcome 메시지 요청
+    const eventSource = new EventSource(`${API_BASE_URL}/api/chatbot/welcome`);
+    setIsStreaming(true);
+    setMessages(prev => [...prev, { type: 'bot', text: '', loading: true }]);
+    latestBotMessageRef.current = 0;
+
+    eventSourceRef.current = eventSource;
+    eventSource.onmessage = (event) => {
+      updateBotMessage(event.data);
+      // Welcome 메시지 종료 조건(예: 마지막 메시지) 필요시 아래 조건 수정
+      if (event.data.includes('마지막 메시지')) {
+        eventSource.close();
+        setIsStreaming(false);
+      }
+    };
+    eventSource.onerror = (error) => {
+      console.error('SSE 오류:', error);
+      eventSource.close();
+      setIsStreaming(false);
+    };
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   const updateBotMessage = (textChunk) => {
     const safeChunk = textChunk === '' ? '\u00A0' : textChunk; // 공백 처리

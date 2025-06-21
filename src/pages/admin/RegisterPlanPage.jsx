@@ -159,14 +159,20 @@ const RegisterPlan = () => {
     }
   };
   return (
-    <section className="admin-content">
-      <div className="plan-form-wrapper">
-        <label>
-          요금제 이름
-          <input name="name" value={form.name} onChange={handleChange} />
-        </label>
-        <label>
-          요금제 분류
+    <div className="plan-form-card">
+      <h3 className="plan-form-title">요금제 추가</h3>
+      <form className="plan-form">
+        <div className="plan-form-group">
+          <label>요금제 이름</label>
+          <input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            type="text"
+          />
+        </div>
+        <div className="plan-form-group">
+          <label>요금제 분류</label>
           <select name="type" value={form.type} onChange={handleChange}>
             <option value="">선택</option>
             <option value="FIVE_G_LTE">5G/LTE</option>
@@ -174,99 +180,117 @@ const RegisterPlan = () => {
             <option value="TABLET_SMARTWATCH">TABLET/SMARTWATCH</option>
             <option value="DUAL_NUMBER">DUAL NUMBER</option>
           </select>
-        </label>
-        <label>
-          요금제 설명
+        </div>
+        <div className="plan-form-group">
+          <label>요금제 설명</label>
           <input
             name="usageCautions"
             value={form.usageCautions}
             onChange={handleChange}
+            type="text"
           />
-        </label>
-        <label>
-          데이터량(MB)
+        </div>
+        <div className="plan-form-group">
+          <label>데이터량(MB)</label>
           <input
             name="mobileDataLimitMb"
             value={form.mobileDataLimitMb}
             onChange={handleChange}
+            type="text"
           />
-        </label>
-        <label>
-          음성(통화량, 분)
+        </div>
+        <div className="plan-form-group">
+          <label>음성(통화량, 분)</label>
           <input
             name="callLimitMinutes"
             value={form.callLimitMinutes}
             onChange={handleChange}
+            type="text"
           />
-        </label>
-        <label>
-          문자량
+        </div>
+        <div className="plan-form-group">
+          <label>문자량</label>
           <input
             name="messageLimit"
             value={form.messageLimit}
             onChange={handleChange}
+            type="text"
           />
-        </label>
-        <label>
-          월금액(정가)
+        </div>
+        <div className="plan-form-group">
+          <label>월금액(정가)</label>
           <input
             name="monthlyPrice"
             value={form.monthlyPrice}
             onChange={handleChange}
+            type="text"
           />
-        </label>
-        <label>
-          판매 우선순위
+        </div>
+        <div className="plan-form-group">
+          <label>판매 우선순위</label>
           <input
             name="priority"
             value={form.priority}
             onChange={handleChange}
+            type="text"
           />
-        </label>
-        <label>
-          요금제 상태
+        </div>
+        <div className="plan-form-group">
+          <label>요금제 상태</label>
           <select name="state" value={form.state} onChange={handleChange}>
             <option value="ABLE">ABLE</option>
             <option value="DISABLE">DISABLE</option>
           </select>
-        </label>
-        <label>
-          공유 데이터량(MB)
+        </div>
+        <div className="plan-form-group">
+          <label>공유 데이터량(MB)</label>
           <input
             name="sharedMobileDataLimitMb"
             value={form.sharedMobileDataLimitMb}
             onChange={handleChange}
+            type="text"
           />
-        </label>
-        <label>
-          속도제한(Kbps)
+        </div>
+        <div className="plan-form-group">
+          <label>속도제한(Kbps)</label>
           <input
             name="mobileDataThrottleSpeedKbps"
             value={form.mobileDataThrottleSpeedKbps}
             onChange={handleChange}
-          />
-        </label>
-        <label>
-          최소 연령
-          <input name="minAge" value={form.minAge} onChange={handleChange} />
-        </label>
-        <label>
-          최대 연령
-          <input name="maxAge" value={form.maxAge} onChange={handleChange} />
-        </label>
-        <div className="form-group-inline">
-          <label htmlFor="isActiveDuty">현역 여부 (군인 혜택)</label>
-          <input
-            id="isActiveDuty"
-            type="checkbox"
-            name="isActiveDuty"
-            checked={form.isActiveDuty}
-            onChange={handleChange}
-            className="checkbox-input"
+            type="text"
           />
         </div>
-        <label>
-          단일 혜택 (Single Benefit)
+        <div className="plan-form-group">
+          <label>최소 연령</label>
+          <input
+            name="minAge"
+            value={form.minAge}
+            onChange={handleChange}
+            type="text"
+          />
+        </div>
+        <div className="plan-form-group">
+          <label>최대 연령</label>
+          <input
+            name="maxAge"
+            value={form.maxAge}
+            onChange={handleChange}
+            type="text"
+          />
+        </div>
+        <div className="plan-form-group plan-form-checkbox-group">
+          <label>
+            <input
+              type="checkbox"
+              name="isActiveDuty"
+              checked={form.isActiveDuty}
+              onChange={handleChange}
+            />
+            현역 여부 (군인 혜택)
+          </label>
+        </div>
+        <div className="plan-form-group">
+          <label>단일 혜택 (Single Benefit)</label>
           <input
             type="text"
             name="singleBenefitInput"
@@ -280,9 +304,9 @@ const RegisterPlan = () => {
             }
             className="single-benefit-input"
           />
-        </label>
-        <label>
-          묶음 혜택 (Bundled)
+        </div>
+        <div className="plan-form-group">
+          <label>묶음 혜택 (Bundled)</label>
           <div className="form-group">
             {bundledBenefitOptions.map((benefit) => (
               <div key={benefit.id} className="benefit-row">
@@ -302,24 +326,30 @@ const RegisterPlan = () => {
               </div>
             ))}
           </div>
-        </label>
-        <label>
-          1KB당 요금
+        </div>
+        <div className="plan-form-group">
+          <label>1KB당 요금</label>
           <input
             name="pricePerKb"
             value={form.pricePerKb}
             onChange={handleChange}
+            type="text"
           />
-        </label>
-        <label>
-          기타 정보
-          <input name="etcInfo" value={form.etcInfo} onChange={handleChange} />
-        </label>
-        <div className="button-right">
-          <button onClick={handleSubmit}>저장</button>
         </div>
-      </div>
-    </section>
+        <div className="plan-form-group">
+          <label>기타 정보</label>
+          <input
+            name="etcInfo"
+            value={form.etcInfo}
+            onChange={handleChange}
+            type="text"
+          />
+        </div>
+        <div className="button-right">
+          <button onClick={handleSubmit} className="plan-form-btn">등록하기</button>
+        </div>
+      </form>
+    </div>
   );
 };
 export default RegisterPlan;
