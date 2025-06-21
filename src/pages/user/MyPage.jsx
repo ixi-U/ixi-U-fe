@@ -296,19 +296,7 @@ const MyPage = () => {
                   )}
                 </InfoCard>
 
-                {/* 선호 요금제 */}
-                <InfoCard title="선호 요금제">
-                  {preferredPlan ? (
-                    <div>{preferredPlan.name}</div>
-                  ) : (
-                    <div className="info-card-empty">
-                      <span>입력된 정보가 없습니다.</span>
-                      <a href="#" className="info-card-link">
-                        선호하시는 요금을 입력하면 더욱더 적합한 요금제를 추천할 수 있어요! 선호 요금제 입력하러가기
-                      </a>
-                    </div>
-                  )}
-                </InfoCard>
+                
 
                 {/* 나의 정보 */}
                 {user && (
@@ -319,10 +307,7 @@ const MyPage = () => {
                         <div>사용자 명 : {user.name}</div>
                         <div>가입일 : {user.createdAt}</div>
                       </div>
-                      <div>
-                        <div>나와 결합된 사용자 : {user.partner}</div>
-                        <div>최근 작성한 리뷰 : {user.lastReview}</div>
-                      </div>
+
                     </div>
                   </section>
                 )}

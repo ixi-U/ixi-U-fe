@@ -1,94 +1,4 @@
-/* --- 상단 로고 + 탭 + 로그인 버튼 --- */
-.service-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #eee;
-  background-color: #fff;
-}
-
-.logo {
-  width: 140px;
-  height: auto;
-}
-
-.service-tabs {
-  display: flex;
-  gap: 16px;
-}
-
-.service-tabs .tab {
-  background: none;
-  border: none;
-  font-size: 16px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-weight: 600;
-  border-bottom: 2px solid transparent;
-  color: #444;
-}
-
-.service-tabs .tab.active {
-  color: #ff007a;
-  border-bottom: 2px solid #ff007a;
-}
-
-.login-btn {
-  background: white;
-  border: 2px solid #ff007a;
-  color: #ff007a;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.login-btn:hover {
-  background: #ff007a;
-  color: white;
-}
-
-
-
-/* --- 콘텐츠 영역 --- */
-.admin-content {
-  flex: 1;
-  background: #fff;
-  padding: 32px 16px 32px 0;
-  margin: 0;
-}
-
-/* 페이지 전체 wrapper */
-.plan-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: #fff;
-}
-
-.admin-main {
-  display: flex;
-  align-items: flex-start;
-  gap: 32px;
-  max-width: 1100px;
-  margin: 40px auto 0 auto;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-  padding: 40px 32px;
-}
-
-.admin-main > .sidebar {
-  flex-shrink: 0;
-}
-
-.admin-main > .admin-content-wrap {
-  flex: 1;
-  min-width: 0;
-  padding: 0 16px;
-}
+/* --- 어드민 전용 스타일 --- */
 
 .admin-header {
   margin-bottom: 32px;
@@ -107,6 +17,7 @@
   gap: 40px;
 }
 
+/* 어드민 메인 콘텐츠 영역 */
 .admin-main .mypage-main {
   max-width: 1400px;
   width: 100%;

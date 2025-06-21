@@ -1,10 +1,15 @@
 import React from 'react';
 import './PlanHistoryItem.css';
 
-const PlanHistoryItem = ({ plan }) => (
+const PlanHistoryItem = ({ plan, isCurrentPlan }) => (
   <div className="plan-history-card">
     <div className="plan-history-card-header">
-      <span className="plan-history-title">{plan.planName} &gt;</span>
+      <span className="plan-history-title">
+        {plan.planName} &gt;
+        {isCurrentPlan && (
+          <span className="current-plan-badge">사용중</span>
+        )}
+      </span>
     </div>
     <div className="plan-history-main">
       <div className="plan-history-main-left">

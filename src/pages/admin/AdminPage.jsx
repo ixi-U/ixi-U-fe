@@ -23,22 +23,22 @@ export default function AdminPage() {
     return null; // Footer도 렌더링 안 됨
   }
   return (
-    <>
-    <Header />
-      <main>
-        <div className="mypage-body">
-          <AdminSidebar activeMenu={activeMenu} onMenuClick={setActiveMenu} />
-          <main className="mypage-main">
-            <div className="admin-header">
-              <h2>관리자 <span style={{color: '#222'}}>{admin ? admin.name : ''}</span></h2>
-            </div>
-            <div className="admin-content">
-              {activeMenu === '요금제 추가' && <RegisterPlanPage />}
-              {activeMenu === '요금제 수정&삭제' && <DeletePlanPage />}
-            </div>
-          </main>
-        </div>
-      </main>
-    </>
+    <main className="container">
+      {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
+      <Header />
+      
+      <div className="mypage-body">
+        <AdminSidebar activeMenu={activeMenu} onMenuClick={setActiveMenu} />
+        <main className="mypage-main">
+          <div className="admin-header">
+            <h2>관리자 <span style={{color: '#222'}}>{admin ? admin.name : ''}</span></h2>
+          </div>
+          <div className="admin-content">
+            {activeMenu === '요금제 추가' && <RegisterPlanPage />}
+            {activeMenu === '요금제 수정&삭제' && <DeletePlanPage />}
+          </div>
+        </main>
+      </div>
+    </main>
   );
 } 
