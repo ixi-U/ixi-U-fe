@@ -7,18 +7,18 @@ const client = axios.create({
 });
 
 export const fetchPlans = async ({
-  size = 10,
-  planType,
-  sortOption,
+  size = 20,
+  planTypeStr,
+  planSortOptionStr,
   searchKeyword,
   planId,
   cursorSortValue,
 }) => {
-  const res = await client.get("/plans", {
+  const res = await client.get(`/plans`, {
     params: {
       size,
-      planTypeStr: planType,
-      planSortOptionStr: sortOption,
+      planTypeStr,
+      planSortOptionStr,
       searchKeyword,
       planId,
       cursorSortValue,
@@ -31,4 +31,10 @@ export const fetchPlans = async ({
 export const fetchPlanHistory = async () => {
   const res = await client.get(`/subscribed/history`);
   return res.data; // [{subscribedId, planName, subscribedAt}]
+};
+
+
+export const fetchPlanCount = async () => {
+  const res = await client.get(`/plans/count`);
+  return res.data;
 };
