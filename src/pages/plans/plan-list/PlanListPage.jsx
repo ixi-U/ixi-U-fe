@@ -11,7 +11,15 @@ import Header from "../../../components/header/Header";
 import "../../../assets/styles/layout.css";
 import useAuth from "../../../hooks/useAuth";
 import { getMyInfo } from "../../../api/userApi";
+import axios from "axios";
 
+// planCounts 키 매핑
+const snakeToCamel = {
+  "5G/LTE":       "fiveGLte",
+  "ONLINE":           "online",
+  "TABLET/SMARTWATCH":"tabletSmartwatch",
+  "DUAL_NUMBER":      "dualNumber",
+};
 // 데이터 양을 포맷하는 헬퍼 함수
 const formatData = (mb) => {
   if (mb === -1) return "무제한";
@@ -38,7 +46,13 @@ export default function PlanListPage() {
   const [isPlanLoading, setIsPlanLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
   const [isPlansLoading, setIsPlansLoading] = useState(false);
-
+  const [planCounts, setPlanCounts] = useState({
+    all: 0,
+    fiveGLte: 0,
+    online: 0,
+    tabletSmartwatch: 0,
+    dualNumber: 0,
+  });
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
   const { isLoggedIn, isLoading } = useAuth();
@@ -94,6 +108,21 @@ export default function PlanListPage() {
     },
     [planType, sortOption, keyword]
   );
+
+  useEffect(() => {
+    const loadPlanCounts = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL || "http://localhost:8080"}/plans/count`,
+          { withCredentials: true }
+        );
+        setPlanCounts(res.data);
+      } catch (err) {
+        console.error("플랜 카운트 불러오기 실패", err);
+      }
+    };
+    loadPlanCounts();
+  }, []);
 
   useEffect(() => {
     // reset when filters change
@@ -189,15 +218,25 @@ export default function PlanListPage() {
 
       {/* 플랜 종류 네비게이션 */}
       <ul className="plan-type-nav">
-        {PLAN_TYPES.map((pt) => (
-          <li
-            key={pt.value}
-            className={pt.value === planType ? "active" : ""}
-            onClick={() => setPlanType(pt.value)}
-          >
-            {pt.label}
-          </li>
-        ))}
+        <li
+          className={planType == null ? "active" : ""}
+          onClick={() => setPlanType(null)}
+        >
+          전체 ({planCounts.all ?? 0})
+        </li>
+        {PLAN_TYPES.map((pt) => {
+          const key = snakeToCamel[pt.value];
+          const count = planCounts[key] ?? 0;
+          return (
+            <li
+              key={pt.value}
+              className={pt.value === planType ? "active" : ""}
+              onClick={() => setPlanType(pt.value)}
+            >
+              {pt.label} ({count})
+            </li>
+          );
+        })}
       </ul>
 
       {/* 검색어 입력 + 정렬 */}

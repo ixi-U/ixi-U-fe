@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE,
+  baseURL: process.env.REACT_APP_API_BASE || 'http://localhost:8080',
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
 
 export const fetchPlans = async ({
-  size = 10,
+  size = 20,
   planType,
   sortOption,
   searchKeyword,
@@ -31,4 +31,10 @@ export const fetchPlans = async ({
 export const fetchPlanHistory = async () => {
   const res = await client.get(`/subscribed/history`);
   return res.data; // [{subscribedId, planName, subscribedAt}]
+};
+
+
+export const fetchPlanCount = async () => {
+  const res = await client.get(`/plans/count`);
+  return res.data;
 };
