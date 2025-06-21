@@ -17,6 +17,7 @@ import DeletePlan from "./pages/admin/DeletePlanPage";
 import SingleBenefitRegisterForm from "./pages/admin/SingleBenefitRegisterForm";
 import BundledBenefitRegisterForm from "./pages/admin/BundledBenefitRegisterForm";
 import AdminPage from './pages/admin/AdminPage';
+import ReportedReviewsPage from './pages/admin/ReportedReviewsPage';
 import Header from "./components/header/Header";
 
 function App() {
@@ -49,8 +50,9 @@ function App() {
           element={<BundledBenefitRegisterForm />}
         />
         <Route path="/admin" element={<AdminPage />} />
-          <Route path="register" element={<RegisterPlan />} />
-          <Route path="delete" element={<DeletePlan />} />
+        <Route path="/admin/reported-reviews" element={<ReportedReviewsPage />} />
+        <Route path="register" element={<RegisterPlan />} />
+        <Route path="delete" element={<DeletePlan />} />
       </Routes>
       <Footer />
     </Router>
