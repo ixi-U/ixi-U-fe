@@ -7,7 +7,7 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("마이페이지");
   return (
-    <div className="plan-page">
+    <main className="container">
       <Header />
       <div
         className="admin-body"
@@ -51,7 +51,7 @@ const AdminLayout = () => {
           <Outlet />
         </main>
       </div>
-    </div>
+    </main>
   );
 };
 export default AdminLayout;

@@ -8,10 +8,15 @@
   justify-content: space-between;
   height: 100px;
   padding: 10px 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #bdbdbd !important;
   background: #fff;
   gap: 32px;
   box-sizing: border-box;
+}
+
+/* 더 구체적인 선택자로 확실하게 적용 */
+header.service-header {
+  border-bottom: 1px solid #bdbdbd !important;
 }
 
 /* ─ logo ─────────────────────────────────── */
@@ -19,6 +24,13 @@
   width: 120px;
   height: auto;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  caret-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ─ 좌측 영역: logo + tabs ───────────────── */
@@ -32,7 +44,7 @@
 .tab-group {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 48px;
 }
 
 .tab {
