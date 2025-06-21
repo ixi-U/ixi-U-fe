@@ -37,6 +37,7 @@ export default function PlanListPage() {
   const [currentPlan, setCurrentPlan] = useState(null);
   const [isPlanLoading, setIsPlanLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
+  const [isPlansLoading, setIsPlansLoading] = useState(false);
 
   // sentinel ref for infinite scroll
   const sentinelRef = useRef(null);
@@ -44,33 +45,52 @@ export default function PlanListPage() {
 
   const loadPlans = useCallback(
     async (cursor = null, isNext = false) => {
-      const query = {
-        size: 10,
-        planType,
-        sortOption,
-        searchKeyword: keyword,
-      };
+      try {
+        if (!isNext) {
+          setIsPlansLoading(true);
+        }
+        
+        const query = {
+          size: 10,
+          planType,
+          sortOption,
+          searchKeyword: keyword,
+        };
 
-      if (isNext && cursor?.planId != null && cursor.sortValue != null) {
-        query.planId = cursor.planId;
-        query.cursorSortValue = cursor.sortValue;
+        if (isNext && cursor?.planId != null && cursor.sortValue != null) {
+          query.planId = cursor.planId;
+          query.cursorSortValue = cursor.sortValue;
+        }
+
+        const data = await fetchPlans(query);
+
+        /* ====== 디버그용 출력 ====== */
+        console.log("[loadPlans] query →", query);
+        console.log("[loadPlans] response →", data);
+        /* ========================= */
+
+        // API 응답이 예상과 다를 때를 대비한 안전한 처리
+        const plansContent = data?.plans || [];
+        const lastPlanId = data?.lastPlanId || null;
+        const lastSortValue = data?.lastSortValue || null;
+        const isLast = !data?.hasNext;
+
+        setPlans((prev) =>
+          isNext ? [...prev, ...plansContent] : plansContent
+        );
+        setLastCursor({
+          planId: lastPlanId,
+          sortValue: lastSortValue,
+        });
+        setHasNext(!isLast);
+      } catch (error) {
+        console.error("Failed to load plans:", error);
+        // 에러 발생 시 빈 배열로 설정
+        setPlans([]);
+        setHasNext(false);
+      } finally {
+        setIsPlansLoading(false);
       }
-
-      const data = await fetchPlans(query);
-
-      /* ====== 디버그용 출력 ====== */
-      console.log("[loadPlans] query →", query);
-      console.log("[loadPlans] response →", data);
-      /* ========================= */
-
-      setPlans((prev) =>
-        isNext ? [...prev, ...data.plans.content] : data.plans.content
-      );
-      setLastCursor({
-        planId: data.lastPlanId,
-        sortValue: data.lastSortValue,
-      });
-      setHasNext(data.plans.last === false);
     },
     [planType, sortOption, keyword]
   );
@@ -193,15 +213,21 @@ export default function PlanListPage() {
 
       {/* 카드 리스트 */}
       <section className="card-list">
-        {plans.map((plan) => (
-          <PlanCard key={plan.id} plan={plan} />
-        ))}
+        {isPlansLoading && !plans.length ? (
+          <p className="loading-plans">요금제를 불러오는 중...</p>
+        ) : plans && plans.length > 0 ? (
+          plans.map((plan) => (
+            <PlanCard key={plan.id} plan={plan} />
+          ))
+        ) : (
+          <p className="no-plans">조회할 수 있는 요금제가 없습니다.</p>
+        )}
 
         {/* 추가 데이터 로드 sentinel */}
         {hasNext && <div ref={sentinelRef} style={{ height: 1 }} />}
 
         {/* 더 이상 데이터가 없을 때 메시지 */}
-        {!hasNext && plans.length > 0 && (
+        {!hasNext && plans && plans.length > 0 && (
           <p className="no-more">더 조회할 수 있는 요금제가 없습니다!</p>
         )}
       </section>
