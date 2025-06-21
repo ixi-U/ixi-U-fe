@@ -1,0 +1,286 @@
+.reported-reviews-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.reported-reviews-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.reported-reviews-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.error-container {
+  text-align: center;
+  padding: 48px 24px;
+  color: #dc3545;
+}
+
+.error-container p {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.retry-btn {
+  padding: 8px 16px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.retry-btn:hover {
+  background: #c82333;
+}
+
+.empty-container {
+  text-align: center;
+  padding: 48px 24px;
+  color: #666;
+}
+
+.empty-container p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.reported-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.reported-review-item {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fff;
+  transition: box-shadow 0.2s;
+}
+
+.reported-review-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.review-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.review-id {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.review-user {
+  font-weight: 500;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.review-date {
+  color: #adb5bd;
+  font-size: 12px;
+}
+
+.review-rating {
+  color: #ffc107;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.review-content {
+  margin-bottom: 16px;
+}
+
+.review-content h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 8px;
+}
+
+.review-content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 4px;
+  border-left: 4px solid #ffc107;
+}
+
+.review-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.view-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.view-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.dismiss-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.dismiss-btn:hover {
+  background-color: #5a6268;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 48px 24px;
+  color: #666;
+}
+
+.loading-container p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.load-more-container {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid #e9ecef;
+}
+
+.load-more-btn {
+  padding: 12px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.load-more-btn:hover {
+  background: #0056b3;
+}
+
+.load-more-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .reported-reviews-container {
+    padding: 16px;
+  }
+  
+  .page-header {
+    padding: 16px;
+  }
+  
+  .page-header h1 {
+    font-size: 24px;
+  }
+  
+  .reported-reviews-list {
+    padding: 16px;
+  }
+  
+  .review-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .review-actions {
+    justify-content: flex-start;
+  }
+  
+  .action-btn {
+    flex: 1;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reported-reviews-container {
+    padding: 12px;
+  }
+  
+  .reported-review-item {
+    padding: 16px;
+  }
+  
+  .action-btn {
+    flex: 1;
+    min-width: 80px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+} 
