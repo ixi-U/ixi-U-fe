@@ -211,11 +211,7 @@ const MyPage = () => {
                   <span>
                     사용중인 요금제
                     <button
-                      style={{
-                        marginLeft: 16, fontSize: "1rem", padding: "6px 18px",
-                        borderRadius: 8, background: "#e91e63", color: "#fff", border: "none", cursor: "pointer"
-                      }}
-                      onClick={openPlanModal}
+                      onClick={openPlanModal} className="register"
                     >
                       등록하기
                     </button>
@@ -318,7 +314,6 @@ const MyPage = () => {
                   <p style={{ fontSize: '1.1rem', marginBottom: 24 }}>정말 탈퇴하시겠습니까?</p>
                   <button
                     className="plan-history-change-btn"
-                    style={{ background: '#f3e1ec', color: '#e91e63', fontWeight: 600, fontSize: '1.1rem', padding: '12px 32px', border: 'none', borderRadius: 8, cursor: 'pointer' }}
                     onClick={handleDeleteUser}
                     disabled={isDeleting}
                   >
@@ -353,7 +348,7 @@ const MyPage = () => {
                         </li>
                       ))}
                     </ul>
-                    <button onClick={() => setShowPlanModal(false)}>닫기</button>
+                    <button onClick={() => setShowPlanModal(false)} className="register-select">닫기 </button>
                   </div>
                 </div>
               )}
@@ -369,7 +364,7 @@ const MyPage = () => {
           </div>
         )}
       </div>
-      <ChatbotButton onClick={() => navigate('/chatbot')} />
+      {/* <ChatbotButton onClick={() => navigate('/chatbot')} /> */}
     </main>
   );
 };

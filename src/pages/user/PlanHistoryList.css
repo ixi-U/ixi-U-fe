@@ -46,5 +46,5 @@
 
 @media (max-width: 768px) {
   .plan-history-list-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-  .plan-history-change-btn { margin-left: 0; }
+  .plan-history-change-btn { margin-left: 0; background-color: #ff007a; }
 } 
