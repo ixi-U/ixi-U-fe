@@ -217,7 +217,7 @@ const MyPage = () => {
                       }}
                       onClick={openPlanModal}
                     >
-                      {currentPlan ? "수정하기" : "등록하기"}
+                      등록하기
                     </button>
                   </span>
                 }>
@@ -296,6 +296,7 @@ const MyPage = () => {
                   )}
                 </InfoCard>
 
+                
 
                 {/* 나의 정보 */}
                 {user && (
@@ -306,10 +307,7 @@ const MyPage = () => {
                         <div>사용자 명 : {user.name}</div>
                         <div>가입일 : {user.createdAt}</div>
                       </div>
-                      <div>
-                        <div>나와 결합된 사용자 : {user.partner}</div>
-                        <div>최근 작성한 리뷰 : {user.lastReview}</div>
-                      </div>
+
                     </div>
                   </section>
                 )}
