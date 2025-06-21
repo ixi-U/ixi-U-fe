@@ -4,6 +4,7 @@ import {
   fetchReviews,
   fetchReviewStats,
   deleteReview,
+  createReport,
 } from "../../../api/planReviewApi";
 import ReviewModal from "./ReviewModal";
 import Header from "../../../components/header/Header";
@@ -149,6 +150,18 @@ const PlanDetailPage = () => {
 
   const handleReviewUpdated = () => {
     loadReviews(0, sort); // 리뷰 목록 새로고침
+  };
+
+  const handleReportClick = async (reviewId) => {
+    if (window.confirm("이 리뷰를 신고하시겠습니까?")) {
+      try {
+        await createReport(reviewId);
+        alert("신고가 접수되었습니다.");
+      } catch (err) {
+        console.error("리뷰 신고 실패:", err);
+        alert(err.response?.data?.message || "리뷰 신고에 실패했습니다.");
+      }
+    }
   };
 
   if(!planData && !planError) {
@@ -386,6 +399,14 @@ const PlanDetailPage = () => {
                       <span className="review-date">
                         {r.createdAt?.slice(0, 10)}
                       </span>
+                    </div>
+                    <div className="review-actions">
+                      <button
+                        className="report-btn"
+                        onClick={() => handleReportClick(r.reviewId)}
+                      >
+                        신고
+                      </button>
                     </div>
                   </div>
                   <div className="review-content">{r.comment}</div>
