@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import logoImg from "../../../assets/imgs/ixi-u.png";
 import { useNavigate } from "react-router-dom";
-import { fetchPlans } from "../../../api/planApi";
+import { fetchPlans, fetchPlanCount } from "../../../api/planApi";
 import { getMyPlan } from "../../../api/userApi";
 import { PLAN_TYPES, SORT_OPTIONS } from "../../../constants/planOptions";
 import PlanCard from "./PlanCard";
@@ -11,7 +10,6 @@ import Header from "../../../components/header/Header";
 import "../../../assets/styles/layout.css";
 import useAuth from "../../../hooks/useAuth";
 import { getMyInfo } from "../../../api/userApi";
-import axios from "axios";
 
 // planCounts 키 매핑
 const snakeToCamel = {
@@ -20,6 +18,7 @@ const snakeToCamel = {
   "TABLET/SMARTWATCH":"tabletSmartwatch",
   "DUAL_NUMBER":      "dualNumber",
 };
+
 // 데이터 양을 포맷하는 헬퍼 함수
 const formatData = (mb) => {
   if (mb === -1) return "무제한";
@@ -32,7 +31,8 @@ const formatData = (mb) => {
 export default function PlanListPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("모바일"); // 모바일 / 마이데이터
-  const [planType, setPlanType] = useState("5G/LTE");
+  // 기본으로 전체 요금제 조회
+  const [planType, setPlanType] = useState();
   const [sortOption, setSortOption] = useState("PRIORITY");
   const [plans, setPlans] = useState([]);
   // Pagination state
@@ -65,9 +65,9 @@ export default function PlanListPage() {
         }
 
         const query = {
-          size: 10,
-          planType,
-          sortOption,
+          size: 20,
+          planTypeStr: planType,
+          planSortOptionStr: sortOption,
           searchKeyword: keyword,
         };
 
@@ -75,11 +75,11 @@ export default function PlanListPage() {
           query.planId = cursor.planId;
           query.cursorSortValue = cursor.sortValue;
         }
+        console.log("[loadPlans] query →", query);
 
         const data = await fetchPlans(query);
 
         /* ====== 디버그용 출력 ====== */
-        console.log("[loadPlans] query →", query);
         console.log("[loadPlans] response →", data);
         /* ========================= */
 
@@ -112,17 +112,19 @@ export default function PlanListPage() {
   useEffect(() => {
     const loadPlanCounts = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL || "http://localhost:8080"}/plans/count`,
-          { withCredentials: true }
-        );
-        setPlanCounts(res.data);
+        const data = await fetchPlanCount();
+        setPlanCounts(data);
       } catch (err) {
         console.error("플랜 카운트 불러오기 실패", err);
       }
     };
     loadPlanCounts();
   }, []);
+
+  // 초기 요금제 목록 로드
+  useEffect(() => {
+    loadPlans(null, false);
+  }, []); // 컴포넌트 마운트 시 한 번만 실행
 
   useEffect(() => {
     // reset when filters change
