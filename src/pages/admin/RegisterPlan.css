@@ -152,7 +152,7 @@
 .plan-form-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #e91e63;
+  color: #ff007a;
   margin-bottom: 32px;
   text-align: left;
 }
@@ -186,7 +186,7 @@
 }
 .plan-form-group input:focus,
 .plan-form-group select:focus {
-  border: 1.5px solid #e91e63;
+  border: 1.5px solid #ff007a;
   outline: none;
 }
 
@@ -197,7 +197,7 @@
 }
 
 .plan-form-btn {
-  background: #e91e63;
+  background: #ff007a;
   color: #fff;
   font-weight: 700;
   font-size: 1.1rem;

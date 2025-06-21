@@ -121,9 +121,19 @@
 }
 
 /* 서비스 섹션 */
-.services-section {
+/* .services-section {
   padding: 80px 0;
   background: #f8f9fa;
+} */
+
+.services-section {
+  padding-top: 20px;
+  padding-bottom: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+  background: #f8f9fa;
+  border-radius: 16px;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); */
 }
 
 .services-grid {

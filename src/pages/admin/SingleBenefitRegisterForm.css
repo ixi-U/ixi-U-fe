@@ -59,7 +59,7 @@ button[type='submit'] {
 }
 
 button[type='submit']:hover {
-  background-color: #e6006d;
+  background-color: #ff007a;
 }
 
 button[disabled] {

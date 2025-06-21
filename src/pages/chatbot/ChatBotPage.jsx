@@ -35,6 +35,11 @@ const scrollToBottom = () => {
   }
 };
 
+useEffect(() => {
+  // 새로고침 직후 페이지를 최상단에서 약간 아래로 이동
+  window.scrollTo({ top: 150, left: 0, behavior: 'auto' });
+}, []);
+
   useEffect(() => {
     if (messagesContainerRef.current) {
       const container = messagesContainerRef.current;
@@ -112,36 +117,7 @@ const scrollToBottom = () => {
     }
 
     try {
-      if (isFirstMessage) {
-        // welcome은 GET + EventSource
-        const eventSource = new EventSource(`${API_BASE_URL}/api/chatbot/welcome`);
-        eventSourceRef.current = eventSource;
-
-        eventSource.onmessage = (event) => {
-          updateBotMessage(event.data);
-          // Welcome 메시지를 모두 받았는지 체크
-          if (event.data.includes('마지막 메시지')) { // 예시
-            eventSource.close();
-            setIsStreaming(false);
-            // 그 다음 recommend(POST) 요청을 보내는 로직
-            handleRecommendRequest(query);
-          }
-          // Welcome 메시지를 모두 받았는지 체크
-          if (event.data.includes('마지막 메시지')) { // 예시
-            eventSource.close();
-            setIsStreaming(false);
-            // 그 다음 recommend(POST) 요청을 보내는 로직
-            handleRecommendRequest(query);
-          }
-        };
-
-        eventSource.onerror = (error) => {
-          console.error('SSE 오류:', error);
-          eventSource.close();
-          setIsStreaming(false);
-        };
-      } else {
-        // recommend는 POST + fetch + stream
+      // recommend는 POST + fetch + stream
         const response = await fetch(`${API_BASE_URL}/api/chatbot/recommend`, {
           method: 'POST',
           headers: {
@@ -185,8 +161,7 @@ const scrollToBottom = () => {
               if (text) updateBotMessage(text);
             }
           }
-        }
-      }
+        }        
     } catch (error) {
       console.error('SSE 오류:', error);
       setIsStreaming(false);

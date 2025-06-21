@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import MainPage from "./pages/MainPage";
-import Footer from "./components/Footer";
+import Footer from "./components/footer/Footer";
 import SocialLogin from "./pages/login/SocialLogin";
 import LoginStatus from "./pages/login/LoginStatus";
 import MyPage from "./pages/user/MyPage";
