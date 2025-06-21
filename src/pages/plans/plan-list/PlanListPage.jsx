@@ -159,7 +159,7 @@ export default function PlanListPage() {
         <section className="current-plan-banner loading">
           <span>사용자 정보를 확인하는 중...</span>
         </section>
-      ) : isLoggedIn && currentPlan ? (
+      ) : isLoggedIn && currentPlan && userRole !== 'ROLE_ADMIN' ? (
         <section className="current-plan-banner">
           <div className="plan-info-item">
             <span className="label">이용중인 요금제</span>
@@ -174,7 +174,7 @@ export default function PlanListPage() {
             <span className="value">{formatData(currentPlan.mobileDataLimitMb)}</span>
           </div>
         </section>
-      ) : !isLoggedIn && (
+      ) : !isLoggedIn && userRole !== 'ROLE_ADMIN' && (
         <section className="login-banner">
           <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
         </section>
