@@ -109,11 +109,11 @@ const Onboarding = ({ onSubmit }) => {
           회원가입
         </button>
 
-        <button className="chatbot-button">
+        {/* <button className="chatbot-button">
           챗봇
           <br />
           버튼
-        </button>
+        </button> */}
       </div>
     </main>
   );

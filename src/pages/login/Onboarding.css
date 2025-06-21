@@ -7,18 +7,24 @@
 
 .onboarding-label {
   font-size: 14px;
-  margin: 10px 0 4px;
+  margin: 40px 0 4px;
   display: block;
 }
 
 .onboarding-input,
 .onboarding-select {
-  width: 100%;
-  padding: 12px;
+  width: 400px;
+  padding: 12px 16px;
   border: 1px solid #ddd;
   border-radius: 6px;
   margin-bottom: 20px;
   margin-top: 10px;
+  font-size: 16px;
+  height: 48px;
+  box-sizing: border-box;
+  display: block;
+  appearance: none; /* ✅ select 스타일 브라우저 통일 */
+  background-color: #fff;
 }
 
 .onboarding-skip-btn {
@@ -30,6 +36,7 @@
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  margin-top: 40px;
 }
 
 .onboarding-skip-btn:disabled {
