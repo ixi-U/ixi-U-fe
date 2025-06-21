@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import logoImg from "../../../assets/imgs/ixi-u.png";
 import { useNavigate } from "react-router-dom";
-import { fetchPlans } from '../../../api/planApi';
-import { getMyPlan } from '../../../api/userApi';
-import { PLAN_TYPES, SORT_OPTIONS } from '../../../constants/planOptions';
-import PlanCard from './PlanCard';
-import SortDropDown from './SortDropdown';
-import './PlanListPage.css';
-import Header from '../../../components/header/Header';
-import "../../../assets/styles/layout.css"
-import useAuth from '../../../hooks/useAuth';
-import { getMyInfo } from '../../../api/userApi';
+import { fetchPlans } from "../../../api/planApi";
+import { getMyPlan } from "../../../api/userApi";
+import { PLAN_TYPES, SORT_OPTIONS } from "../../../constants/planOptions";
+import PlanCard from "./PlanCard";
+import SortDropDown from "./SortDropdown";
+import "./PlanListPage.css";
+import Header from "../../../components/header/Header";
+import "../../../assets/styles/layout.css";
+import useAuth from "../../../hooks/useAuth";
+import { getMyInfo } from "../../../api/userApi";
 
 // 데이터 양을 포맷하는 헬퍼 함수
 const formatData = (mb) => {
@@ -18,8 +18,8 @@ const formatData = (mb) => {
   if (!mb) return "0MB";
   if (mb < 1024) return `${mb}MB`;
   const gb = (mb / 1024).toFixed(1);
-  return `${gb.endsWith('.0') ? Math.floor(mb / 1024) : gb}GB`;
-}
+  return `${gb.endsWith(".0") ? Math.floor(mb / 1024) : gb}GB`;
+};
 
 export default function PlanListPage() {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ export default function PlanListPage() {
         if (!isNext) {
           setIsPlansLoading(true);
         }
-        
+
         const query = {
           size: 10,
           planType,
@@ -122,10 +122,10 @@ export default function PlanListPage() {
     if (isLoggedIn) {
       setIsPlanLoading(true);
       getMyPlan()
-        .then(data => {
+        .then((data) => {
           setCurrentPlan(data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error("Failed to fetch current plan", err);
           setCurrentPlan(null); // 플랜이 없거나 에러 발생
         })
@@ -140,26 +140,25 @@ export default function PlanListPage() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      getMyInfo().then(data => setUserRole(data.userRole)).catch(() => setUserRole(null));
+      getMyInfo()
+        .then((data) => setUserRole(data.userRole))
+        .catch(() => setUserRole(null));
     } else {
       setUserRole(null);
     }
   }, [isLoggedIn]);
 
-
-
   return (
-    
-      <main className="container">
+    <main className="container">
       {/* 상단 바: 로고 | 탭 메뉴 | 로그인 */}
       <Header />
-      
+
       {/* 로딩 상태에 따른 배너 렌더링 */}
       {isLoading || isPlanLoading ? (
         <section className="current-plan-banner loading">
           <span>사용자 정보를 확인하는 중...</span>
         </section>
-      ) : isLoggedIn && currentPlan && userRole !== 'ROLE_ADMIN' ? (
+      ) : isLoggedIn && currentPlan && userRole !== "ROLE_ADMIN" ? (
         <section className="current-plan-banner">
           <div className="plan-info-item">
             <span className="label">이용중인 요금제</span>
@@ -167,17 +166,25 @@ export default function PlanListPage() {
           </div>
           <div className="plan-info-item">
             <span className="label">월정액</span>
-            <span className="value">월 {currentPlan.monthlyPrice.toLocaleString()}원</span>
+            <span className="value">
+              월 {currentPlan?.monthlyPrice?.toLocaleString?.() ?? "정보 없음"}
+              원
+            </span>
           </div>
           <div className="plan-info-item">
             <span className="label">데이터</span>
-            <span className="value">{formatData(currentPlan.mobileDataLimitMb)}</span>
+            <span className="value">
+              {formatData(currentPlan.mobileDataLimitMb)}
+            </span>
           </div>
         </section>
-      ) : !isLoggedIn && userRole !== 'ROLE_ADMIN' && (
-        <section className="login-banner">
-          <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
-        </section>
+      ) : (
+        !isLoggedIn &&
+        userRole !== "ROLE_ADMIN" && (
+          <section className="login-banner">
+            <span>로그인하고 현재 가입 조건으로 이용하세요.</span>
+          </section>
+        )
       )}
 
       {/* 플랜 종류 네비게이션 */}
@@ -216,9 +223,7 @@ export default function PlanListPage() {
         {isPlansLoading && !plans.length ? (
           <p className="loading-plans">요금제를 불러오는 중...</p>
         ) : plans && plans.length > 0 ? (
-          plans.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} />
-          ))
+          plans.map((plan) => <PlanCard key={plan.id} plan={plan} />)
         ) : (
           <p className="no-plans">조회할 수 있는 요금제가 없습니다.</p>
         )}
