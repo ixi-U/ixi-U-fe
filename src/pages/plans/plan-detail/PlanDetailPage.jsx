@@ -165,7 +165,7 @@ const PlanDetailPage = () => {
   // 에러 상태 처리
   if (planError) {
     return (
-      <div className="plan-page">
+      <div className="container">
         <Header />
         <div className="error-container">
           <div className="error">{planError}</div>
@@ -176,7 +176,7 @@ const PlanDetailPage = () => {
   }
 
   return (
-    <div className="plan-page">
+    <div className="container">
       <Header />
 
       {/* 로그인 안내 배너 */}
@@ -186,15 +186,7 @@ const PlanDetailPage = () => {
           <button onClick={() => window.location.href = '/login'}>로그인하기</button>
         </div>
       )}
-
-      <ul className="plan-type-nav">
-        <li className="active">전체</li>
-        <li>5G 요금제</li>
-        <li>LTE 요금제</li>
-        <li>청소년 요금제</li>
-        <li>시니어 요금제</li>
-      </ul>
-
+      
       <div className="plan-title">
         <h1>{planData.name}</h1>
         <p className="monthly-price">
