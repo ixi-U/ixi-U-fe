@@ -474,3 +474,41 @@
 .report-btn:hover {
   background-color: #e0a800;
 }
+
+.bundled-benefit-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.bundled-benefit-group {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  background-color: #fafafa;
+}
+
+.bundled-benefit-header {
+  margin-bottom: 1rem;
+}
+
+.group-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.group-choice-info {
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.group-choice-info strong {
+  color: #0070f3;
+}
+
+.group-description {
+  font-size: 0.9rem;
+  color: #666;
+}
