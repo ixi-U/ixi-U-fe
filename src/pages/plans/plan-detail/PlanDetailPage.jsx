@@ -10,8 +10,8 @@ import ReviewModal from "./ReviewModal";
 import Header from "../../../components/header/Header";
 import { fetchPlanDetail } from "../../../api/planDetail";
 import { useParams } from "react-router-dom";
-import './PlanDetailPage.css';
-import useAuth from '../../../hooks/useAuth';
+import "./PlanDetailPage.css";
+import useAuth from "../../../hooks/useAuth";
 
 const sortOptions = [
   { label: "최신순", value: "createdAt,desc" },
@@ -21,7 +21,6 @@ const sortOptions = [
 
 const PlanDetailPage = () => {
   const { planId } = useParams();
-
 
   const [planData, setPlanData] = useState(null);
   const [planError, setPlanError] = useState(null);
@@ -164,7 +163,7 @@ const PlanDetailPage = () => {
     }
   };
 
-  if(!planData && !planError) {
+  if (!planData && !planError) {
     return (
       <div className="plan-page">
         <Header />
@@ -196,10 +195,12 @@ const PlanDetailPage = () => {
       {!authLoading && !isLoggedIn && (
         <div className="login-banner">
           <span>로그인하고 더 많은 혜택을 확인하세요!</span>
-          <button onClick={() => window.location.href = '/login'}>로그인하기</button>
+          <button onClick={() => (window.location.href = "/login")}>
+            로그인하기
+          </button>
         </div>
       )}
-      
+
       <div className="plan-title">
         <h1>{planData.name}</h1>
         <p className="monthly-price">
@@ -250,27 +251,27 @@ const PlanDetailPage = () => {
 
       <section className="benefits-section">
         <h2 className="section-title">묶음 혜택</h2>
-        <div className="benefits-grid">
-          {planData.bundledBenefits?.flatMap((group, groupIndex) =>
-            group.singleBenefits.map((benefit, index) => (
-              <div key={`${groupIndex}-${index}`} className="benefit-card">
-                <span className="benefit-tag">{benefit.benefitType}</span>
-                <h3 className="benefit-title">{benefit.name}</h3>
-                <p className="benefit-desc">{benefit.description}</p>
+        <div className="bundled-benefit-group-list">
+          {planData.bundledBenefits?.map((group, groupIndex) => (
+            <div key={groupIndex} className="bundled-benefit-group">
+              <div className="bundled-benefit-header">
+                <h3 className="group-title">{group.name}</h3>
+                <p className="group-choice-info">
+                  <strong>아래 혜택 중 {group.choice}개 선택</strong>
+                </p>
+                {group.description && (
+                  <p className="group-description">{group.description}</p>
+                )}
               </div>
-            ))
-          )}
-        </div>
-      </section>
-
-      <section className="benefits-section">
-        <h2 className="section-title">기본 혜택</h2>
-        <div className="benefits-grid">
-          {planData.singleBenefits.map((benefit, index) => (
-            <div key={index} className="benefit-card">
-              <span className="benefit-tag">{benefit.benefitType}</span>
-              <h3 className="benefit-title">{benefit.name}</h3>
-              <p className="benefit-desc">{benefit.description}</p>
+              <div className="benefits-grid">
+                {group.singleBenefits.map((benefit, index) => (
+                  <div key={`${groupIndex}-${index}`} className="benefit-card">
+                    <span className="benefit-tag">{benefit.benefitType}</span>
+                    <h3 className="benefit-title">{benefit.name}</h3>
+                    <p className="benefit-desc">{benefit.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
