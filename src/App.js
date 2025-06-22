@@ -27,34 +27,38 @@ function App() {
 
   return (
     <Router>
-      {/* {!shouldHideHeader && <Header />} */}
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<SocialLogin />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/login/status" element={<LoginStatus />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/plans" element={<PlanListPage />} />
-        <Route path="/plans/details" element={<PlanDetailPage />} />
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/chatbot" element={<ChatBotPage />} />
-        <Route path="/mypage/plan" element={<AdminLayout />}>
-        </Route>
-        <Route path="/plans/details/:planId" element={<PlanDetailPage />} />
-        <Route
-          path="/admin/benefits/single-benefits"
-          element={<SingleBenefitRegisterForm />}
-        />
-        <Route
-          path="/admin/benefits/bundled-benefits"
-          element={<BundledBenefitRegisterForm />}
-        />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/admin/reported-reviews" element={<ReportedReviewsPage />} />
-        <Route path="register" element={<RegisterPlan />} />
-        <Route path="delete" element={<DeletePlan />} />
-      </Routes>
-      <Footer />
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        {/* {!shouldHideHeader && <Header />} */}
+        <div style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/login" element={<SocialLogin />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/login/status" element={<LoginStatus />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/plans" element={<PlanListPage />} />
+            <Route path="/plans/details" element={<PlanDetailPage />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/chatbot" element={<ChatBotPage />} />
+            <Route path="/mypage/plan" element={<AdminLayout />}>
+            </Route>
+            <Route path="/plans/details/:planId" element={<PlanDetailPage />} />
+            <Route
+              path="/admin/benefits/single-benefits"
+              element={<SingleBenefitRegisterForm />}
+            />
+            <Route
+              path="/admin/benefits/bundled-benefits"
+              element={<BundledBenefitRegisterForm />}
+            />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/reported-reviews" element={<ReportedReviewsPage />} />
+            <Route path="register" element={<RegisterPlan />} />
+            <Route path="delete" element={<DeletePlan />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </Router>
   );
 }
