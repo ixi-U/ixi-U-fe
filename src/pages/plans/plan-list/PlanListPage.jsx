@@ -21,7 +21,7 @@ const snakeToCamel = {
 
 // 데이터 양을 포맷하는 헬퍼 함수
 const formatData = (mb) => {
-  if (mb === -1) return "무제한";
+  if (mb === 2147483647) return "무제한"; // Java의 Integer.MAX_VALUE
   if (!mb) return "0MB";
   if (mb < 1024) return `${mb}MB`;
   const gb = (mb / 1024).toFixed(1);
