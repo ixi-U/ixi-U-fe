@@ -13,8 +13,11 @@ export default function SocialLogin() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth2/authorization/kakao?role=${selectedRole}`;
-    const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&prompt=login`;
+    const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth2/authorization/kakao?role=${selectedRole}`;
+    // const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+    // const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+    // const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&prompt=login`;
+
     window.location.href = kakaoAuthUrl;
   };
 
