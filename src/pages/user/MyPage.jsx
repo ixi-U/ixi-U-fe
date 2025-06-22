@@ -11,6 +11,7 @@ import useAuth from '../../hooks/useAuth';
 import { fetchPlans } from "../../api/planApi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import '../login/Logout.css';
 
 // // 예시 데이터 (향후 API 연동 예정)
 // const user = {
@@ -143,15 +144,39 @@ const MyPage = () => {
 
   const openPlanModal = async () => {
     setShowPlanModal(true);
-    const data = await fetchPlans({ size: 100, planType: planType, sortOption: 'PRIORITY' });
-    setAllPlans(data.plans?.content || []);
+    try {
+      console.log('Fetching plans with params:', { 
+        size: 100, 
+        planTypeStr: planType, 
+        planSortOptionStr: 'PRIORITY' 
+      });
+      
+      const data = await fetchPlans({ 
+        size: 100, 
+        planTypeStr: planType, 
+        planSortOptionStr: 'PRIORITY' 
+      });
+      
+      console.log('Fetched plans data:', data);
+      console.log('Plans array:', data.plans);
+      
+      setAllPlans(data.plans || []);
+    } catch (error) {
+      console.error('Error fetching plans:', error);
+      alert('요금제 목록을 불러오는데 실패했습니다.');
+      setShowPlanModal(false);
+    }
   };
 
   const handlePlanTypeChange = async (e) => {
     const newType = e.target.value;
     setPlanType(newType);
-    const data = await fetchPlans({ size: 100, planType: newType, sortOption: 'PRIORITY' });
-    setAllPlans(data.plans?.content || []);
+    const data = await fetchPlans({ 
+      size: 100, 
+      planTypeStr: newType, 
+      planSortOptionStr: 'PRIORITY' 
+    });
+    setAllPlans(data.plans || []);
   };
 
   const handleSubscribe = async (planId) => {
@@ -213,7 +238,7 @@ const MyPage = () => {
                     <button
                       onClick={openPlanModal} className="register"
                     >
-                      등록하기
+                      {currentPlan && typeof currentPlan === 'object' && currentPlan !== null ? '수정하기' : '등록하기'}
                     </button>
                   </span>
                 }>
@@ -334,20 +359,34 @@ const MyPage = () => {
                         <option value="DUAL_NUMBER">DUAL_NUMBER</option>
                       </select>
                     </div>
-                    <ul>
-                      {allPlans.map(plan => (
-                        <li key={plan.id} style={{marginBottom:8}}>
-                          <span>{plan.name}</span>
-                          <button
-                            style={{marginLeft:12, padding:"4px 12px"}}
-                            disabled={registering}
-                            onClick={() => handleSubscribe(plan.id)}
-                          >
-                            선택
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                    {allPlans.length > 0 ? (
+                      <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
+                        {allPlans.map(plan => (
+                          <li key={plan.id} style={{marginBottom:12, padding:'8px', border:'1px solid #eee', borderRadius:'4px'}}>
+                            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                              <div>
+                                <div style={{fontWeight:'bold', marginBottom:'4px'}}>{plan.name}</div>
+                                <div style={{fontSize:'0.9em', color:'#666'}}>
+                                  {plan.monthlyPrice && `${Number(plan.monthlyPrice).toLocaleString()}원/월`}
+                                  {plan.mobileDataLimitMb && ` • ${plan.mobileDataLimitMb}`}
+                                </div>
+                              </div>
+                              <button
+                                className="logout-btn"
+                                disabled={registering}
+                                onClick={() => handleSubscribe(plan.id)}
+                              >
+                                {registering ? '처리중...' : '선택'}
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div style={{textAlign: 'center', padding: '20px', color: '#666'}}>
+                        해당 타입의 요금제가 없습니다.
+                      </div>
+                    )}
                     <button onClick={() => setShowPlanModal(false)} className="register-select">닫기 </button>
                   </div>
                 </div>

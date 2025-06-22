@@ -7,6 +7,7 @@ import RegisterPlanPage from './RegisterPlanPage';
 import DeletePlanPage from './DeletePlanPage';
 import AdminSidebar from './AdminSidebar';
 import Header from '../../components/header/Header';
+import ReportedReviewsPage from './ReportedReviewsPage';
 
 export default function AdminPage() {
   const [admin, setAdmin] = useState(null);
@@ -36,6 +37,7 @@ export default function AdminPage() {
           <div className="admin-content">
             {activeMenu === '요금제 추가' && <RegisterPlanPage />}
             {activeMenu === '요금제 수정&삭제' && <DeletePlanPage />}
+            {activeMenu === '신고된 리뷰 조회' && <ReportedReviewsPage/>}
           </div>
         </main>
       </div>
