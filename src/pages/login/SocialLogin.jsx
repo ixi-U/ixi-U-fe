@@ -11,9 +11,10 @@ export default function SocialLogin() {
   const [adminKey, setAdminKey] = useState("");
   const [isAdminVerified, setIsAdminVerified] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleLogin = () => {
-    const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth2/authorization/kakao?role=${selectedRole}`;
+    // const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth2/authorization/kakao?role=${selectedRole}`;
+    const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&prompt=login`;
     window.location.href = kakaoAuthUrl;
   };
 
