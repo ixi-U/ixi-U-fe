@@ -52,9 +52,9 @@ function App() {
               element={<BundledBenefitRegisterForm />}
             />
             <Route path="/admin" element={<AdminPage />} />
-            <Route path="/admin/reported-reviews" element={<ReportedReviewsPage />} />
             <Route path="register" element={<RegisterPlan />} />
             <Route path="delete" element={<DeletePlan />} />
+            <Route path="reported-reviews" element={<ReportedReviewsPage />} />
           </Routes>
         </div>
         <Footer />
