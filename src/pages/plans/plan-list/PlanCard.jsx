@@ -24,7 +24,7 @@ export default function PlanCard({ plan }) {
   const shouldRender = (value) => {
     const normalized =
       typeof value === 'string' ? value.trim().toUpperCase() : value;
-    const excludedValues = ['0 GB', '0 건', '0 분'];
+    const excludedValues = ['0 GB', '0 건', '0 분', '-1 건', '-1 분'];
     return !excludedValues.includes(normalized);
   };
 
