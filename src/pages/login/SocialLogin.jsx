@@ -99,7 +99,7 @@ export default function SocialLogin() {
         />
       </section>
 
-      <ChatbotButton onClick={() => navigate('/chatbot')} />
+      {/* <ChatbotButton onClick={() => navigate('/chatbot')} /> */}
     </main>
   );
 }

@@ -6,6 +6,7 @@ const Logout = () => {
   const SERVER_URL = process.env.REACT_APP_API_BASE;
 
   const handleLogout = async () => {
+    alert("정말 로그아웃하시겠습니까?");
     if (!isLoggedIn) {
       alert("현재 로그아웃 상태입니다.");
       return;

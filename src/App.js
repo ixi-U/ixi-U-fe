@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import MainPage from "./pages/MainPage";
-import Footer from "./components/Footer";
+import Footer from "./components/footer/Footer";
 import SocialLogin from "./pages/login/SocialLogin";
 import LoginStatus from "./pages/login/LoginStatus";
 import MyPage from "./pages/user/MyPage";
@@ -17,6 +17,7 @@ import DeletePlan from "./pages/admin/DeletePlanPage";
 import SingleBenefitRegisterForm from "./pages/admin/SingleBenefitRegisterForm";
 import BundledBenefitRegisterForm from "./pages/admin/BundledBenefitRegisterForm";
 import AdminPage from './pages/admin/AdminPage';
+import ReportedReviewsPage from './pages/admin/ReportedReviewsPage';
 import Header from "./components/header/Header";
 
 function App() {
@@ -49,8 +50,9 @@ function App() {
           element={<BundledBenefitRegisterForm />}
         />
         <Route path="/admin" element={<AdminPage />} />
-          <Route path="register" element={<RegisterPlan />} />
-          <Route path="delete" element={<DeletePlan />} />
+        <Route path="/admin/reported-reviews" element={<ReportedReviewsPage />} />
+        <Route path="register" element={<RegisterPlan />} />
+        <Route path="delete" element={<DeletePlan />} />
       </Routes>
       <Footer />
     </Router>

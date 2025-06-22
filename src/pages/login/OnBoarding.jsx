@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import logoImg from "../../assets/imgs/ixi-u.png";
 import { useNavigate } from "react-router-dom";
 import "../../pages/login/Onboarding.css";
-import useAuth from '../../hooks/useAuth';
+import useAuth from "../../hooks/useAuth";
+import Header from "../../components/header/Header"; // 새로 추가된 Header 컴포넌트 import
 
 const Onboarding = ({ onSubmit }) => {
   const [email, setEmail] = useState("");
   const [selectedPlanId, setSelectedPlanId] = useState("");
-  const [activeTab, setActiveTab] = useState("모바일");
   const [plans, setPlans] = useState([]);
 
   const navigate = useNavigate();
@@ -41,12 +40,11 @@ const Onboarding = ({ onSubmit }) => {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, planId: selectedPlanId }), // planid가 null로 가는 문제 -> dto 변수랑 맞춰줌
+          body: JSON.stringify({ email, planId: selectedPlanId }),
         }
       );
 
       if (!response.ok) {
-        // try-catch로 하니까 둘 다 실행되는 문제 발생
         const errorText = await response.text();
         throw new Error(errorText || "회원가입 실패");
       }
@@ -54,14 +52,12 @@ const Onboarding = ({ onSubmit }) => {
       alert("회원가입 완료!");
 
       try {
-        console.log("onSubmit 호출");
         onSubmit({ email, selectedPlanId });
       } catch (submitErr) {
         console.error("onSubmit 중 오류:", submitErr);
       }
 
       try {
-        console.log("navigate 호출");
         navigate("/plans");
       } catch (navErr) {
         console.error("navigate 중 오류:", navErr);
@@ -72,34 +68,10 @@ const Onboarding = ({ onSubmit }) => {
     }
   };
 
-  // TODO: 로그인 제한 복구
-  if (isLoading) return <div>로그인 상태 확인 중...</div>;
-  if (isLoggedIn) return <div style={{padding:40, textAlign:'center'}}>이미 로그인된 사용자입니다.<br/><a href="/plans">요금제 페이지로 이동</a></div>;
-  // 로그인 여부와 상관없이 항상 컨텐츠 렌더
-
   return (
     <main className="plan-page">
-      {/* 상단 바 */}
-      <header className="service-header">
-        <div className="header-left">
-          <img src={logoImg} alt="ixi-U logo" className="logo" />
-          <nav className="service-tabs">
-            {["모바일", "마이페이지"].map((tab) => (
-              <button
-                key={tab}
-                className={tab === activeTab ? "tab active" : "tab"}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        <button className="login-btn" onClick={() => navigate("/")}>
-          로그인
-        </button>
-      </header>
+      {/* ✅ 공통 Header 컴포넌트 삽입 */}
+      <Header />
 
       {/* 온보딩 폼 */}
       <div className="onboarding-container">
@@ -137,11 +109,11 @@ const Onboarding = ({ onSubmit }) => {
           회원가입
         </button>
 
-        <button className="chatbot-button">
+        {/* <button className="chatbot-button">
           챗봇
           <br />
           버튼
-        </button>
+        </button> */}
       </div>
     </main>
   );

@@ -46,3 +46,20 @@ export const deleteReview = async (reviewId) => {
   const res = await client.delete(`/api/reviews/${reviewId}`);
   return res.data;
 };
+
+export const createReport = async (reviewId) => {
+  const res = await client.post('/api/reports', {
+    reviewId
+  });
+  return res.data;
+};
+
+export const fetchReportedReviews = async (page = 0, size = 10) => {
+  const res = await client.get('/api/reports', {
+    params: {
+      page,
+      size,
+    },
+  });
+  return res.data;
+};

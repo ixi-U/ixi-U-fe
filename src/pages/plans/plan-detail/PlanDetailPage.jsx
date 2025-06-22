@@ -4,6 +4,7 @@ import {
   fetchReviews,
   fetchReviewStats,
   deleteReview,
+  createReport,
 } from "../../../api/planReviewApi";
 import ReviewModal from "./ReviewModal";
 import Header from "../../../components/header/Header";
@@ -151,6 +152,18 @@ const PlanDetailPage = () => {
     loadReviews(0, sort); // 리뷰 목록 새로고침
   };
 
+  const handleReportClick = async (reviewId) => {
+    if (window.confirm("이 리뷰를 신고하시겠습니까?")) {
+      try {
+        await createReport(reviewId);
+        alert("신고가 접수되었습니다.");
+      } catch (err) {
+        console.error("리뷰 신고 실패:", err);
+        alert(err.response?.data?.message || "리뷰 신고에 실패했습니다.");
+      }
+    }
+  };
+
   if(!planData && !planError) {
     return (
       <div className="plan-page">
@@ -165,7 +178,7 @@ const PlanDetailPage = () => {
   // 에러 상태 처리
   if (planError) {
     return (
-      <div className="plan-page">
+      <div className="container">
         <Header />
         <div className="error-container">
           <div className="error">{planError}</div>
@@ -176,7 +189,7 @@ const PlanDetailPage = () => {
   }
 
   return (
-    <div className="plan-page">
+    <div className="container">
       <Header />
 
       {/* 로그인 안내 배너 */}
@@ -186,15 +199,7 @@ const PlanDetailPage = () => {
           <button onClick={() => window.location.href = '/login'}>로그인하기</button>
         </div>
       )}
-
-      <ul className="plan-type-nav">
-        <li className="active">전체</li>
-        <li>5G 요금제</li>
-        <li>LTE 요금제</li>
-        <li>청소년 요금제</li>
-        <li>시니어 요금제</li>
-      </ul>
-
+      
       <div className="plan-title">
         <h1>{planData.name}</h1>
         <p className="monthly-price">
@@ -386,6 +391,14 @@ const PlanDetailPage = () => {
                       <span className="review-date">
                         {r.createdAt?.slice(0, 10)}
                       </span>
+                    </div>
+                    <div className="review-actions">
+                      <button
+                        className="report-btn"
+                        onClick={() => handleReportClick(r.reviewId)}
+                      >
+                        신고
+                      </button>
                     </div>
                   </div>
                   <div className="review-content">{r.comment}</div>
