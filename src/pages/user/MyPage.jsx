@@ -360,28 +360,30 @@ const MyPage = () => {
                       </select>
                     </div>
                     {allPlans.length > 0 ? (
-                      <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
-                        {allPlans.map(plan => (
-                          <li key={plan.id} style={{marginBottom:12, padding:'8px', border:'1px solid #eee', borderRadius:'4px'}}>
-                            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                              <div>
-                                <div style={{fontWeight:'bold', marginBottom:'4px'}}>{plan.name}</div>
-                                <div style={{fontSize:'0.9em', color:'#666'}}>
-                                  {plan.monthlyPrice && `${Number(plan.monthlyPrice).toLocaleString()}원/월`}
-                                  {plan.mobileDataLimitMb && ` • ${plan.mobileDataLimitMb}`}
+                      <div style={{maxHeight: '300px', overflowY: 'auto', marginBottom: '16px'}}>
+                        <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
+                          {allPlans.map(plan => (
+                            <li key={plan.id} style={{marginBottom:12, padding:'8px', border:'1px solid #eee', borderRadius:'4px'}}>
+                              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                                <div>
+                                  <div style={{fontWeight:'bold', marginBottom:'4px'}}>{plan.name}</div>
+                                  <div style={{fontSize:'0.9em', color:'#666'}}>
+                                    {plan.monthlyPrice && `${Number(plan.monthlyPrice).toLocaleString()}원/월`}
+                                    {plan.mobileDataLimitMb && ` • ${plan.mobileDataLimitMb}`}
+                                  </div>
                                 </div>
+                                <button
+                                  className="logout-btn"
+                                  disabled={registering}
+                                  onClick={() => handleSubscribe(plan.id)}
+                                >
+                                  {registering ? '처리중...' : '선택'}
+                                </button>
                               </div>
-                              <button
-                                className="logout-btn"
-                                disabled={registering}
-                                onClick={() => handleSubscribe(plan.id)}
-                              >
-                                {registering ? '처리중...' : '선택'}
-                              </button>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     ) : (
                       <div style={{textAlign: 'center', padding: '20px', color: '#666'}}>
                         해당 타입의 요금제가 없습니다.
