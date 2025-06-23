@@ -4,22 +4,115 @@
 .plan-card {
   position: relative;
   background: #fff;
-  border: 1px solid #ebebeb;
+  border: 1px solid #ebebeb00;
   border-radius: 12px;
-  padding: 24px 40px;
+  padding: 32px 40px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  display: flex;
-  flex-direction: column;
-
-  /* ⇣ 새로 추가 */
+  cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-/* ⇣ 새로 추가 */
 .plan-card:hover {
-  transform: translateY(-6px);                /* 살짝 띄우기 */
+  transform: translateY(-6px);
   border-color: #ff007a;
-  box-shadow: 0 6px 14px rgba(255, 0, 122, 0.25); /* 그림자 강조 */
+  box-shadow: 0 6px 14px rgba(255, 0, 122, 0.25);
+}
+
+.plan-card-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  align-items: stretch;
+}
+
+.plan-card-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-category {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  margin: 0 0 8px 0;
+}
+
+.plan-main-feature {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.plan-sub-feature {
+  font-size: 24px;
+  font-weight: 500;
+  color: #000000;
+  margin: 4px 0 0 0;
+}
+
+.plan-card-left .price {
+  margin-top: auto;
+  padding-top: 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.plan-card-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 3px solid #eee;
+  padding-left: 40px;
+  flex-shrink: 0;
+  width: 480px;
+}
+
+.specs-right {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  row-gap: 10px;
+  column-gap: 16px;
+  font-size: 14px;
+}
+
+.specs-right dt {
+  color: #666;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.specs-right dd {
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.price-area {
+  margin-top: 24px;
+  text-align: right;
+}
+
+.change-button {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ff007a;
+  background-color: #fff;
+  border: 1.5px solid #ff007a;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.change-button:hover {
+  background-color: #ff007a;
+  color: #fff;
 }
 
 /* ---- 상단 배지 & 제목 ------------------------------------------------- */
@@ -122,7 +215,7 @@
   background: #e7006e;
 }
 
-/* ---- “첫 달 반값” 프로모션 뱃지 ------------------------------------- */
+/* ---- "첫 달 반값" 프로모션 뱃지 ------------------------------------- */
 
 .promo {
   position: absolute;

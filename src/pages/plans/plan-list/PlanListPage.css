@@ -107,13 +107,15 @@
   box-shadow: 0 0 0 3px rgba(255, 0, 122, 0.2);
 }
 
-/* ---- 카드 리스트 ------------------------------------------------------ */
+/* ---- 카드 리스트 -------------------------------------------------------- */
 
 .card-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px 32px;
-  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
 }
 
 @media (max-width: 900px) {
