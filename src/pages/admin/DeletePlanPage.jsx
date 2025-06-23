@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import "../plans/plan-list/PlanCard.css";
-import "../plans/plan-list/PlanListPage.css";
+import "./DeletePlan.css";
 
 const formatData = (mb) => {
   if (typeof mb === "string") return mb; // 이미 문자열(단위 포함)로 오면 그대로 반환
@@ -13,6 +12,7 @@ const formatData = (mb) => {
 
 const DeletePlanPage = () => {
   const [plans, setPlans] = useState([]);
+  const [activeTab, setActiveTab] = useState("all"); // "all", "active", "inactive"
 
   // 요금제 id 목록만 받아오기
   const loadAdminPlanIds = useCallback(async () => {
@@ -103,13 +103,48 @@ const DeletePlanPage = () => {
     }
   };
 
+  // 탭에 따른 필터링된 요금제 목록
+  const filteredPlans = plans.filter(plan => {
+    switch (activeTab) {
+      case "active":
+        return plan.planState === "ABLE";
+      case "inactive":
+        return plan.planState === "DISABLE";
+      default:
+        return true; // "all" - 모든 요금제
+    }
+  });
+
   return (
     <section className="admin-content">
-       <main className="container">
-        <h2 className="section-title">요금제 비활성화</h2>
-        <div className="card-list">
-          {plans.map((plan) => (
-            <article key={plan.id} className="plan-card">
+       <main className="delete-plan-container">
+        <h2 className="section-title">요금제 상태 변경</h2>
+        
+        {/* 탭 네비게이션 */}
+        <ul className="delete-plan-nav">
+          <li 
+            className={activeTab === "all" ? "active" : ""}
+            onClick={() => setActiveTab("all")}
+          >
+            전체 ({plans.length})
+          </li>
+          <li 
+            className={activeTab === "active" ? "active" : ""}
+            onClick={() => setActiveTab("active")}
+          >
+            활성화 ({plans.filter(p => p.planState === "ABLE").length})
+          </li>
+          <li 
+            className={activeTab === "inactive" ? "active" : ""}
+            onClick={() => setActiveTab("inactive")}
+          >
+            비활성화 ({plans.filter(p => p.planState === "DISABLE").length})
+          </li>
+        </ul>
+
+        <div className="delete-plan-card-list">
+          {filteredPlans.map((plan) => (
+            <article key={plan.id} className="delete-plan-card">
               <div className="card-head">
                 <h3>{plan.name}</h3>
                     </div>
@@ -164,6 +199,17 @@ const DeletePlanPage = () => {
             </article>
           ))}
         </div>
+        
+        {/* 필터링된 결과가 없을 때 메시지 */}
+        {filteredPlans.length === 0 && (
+          <div style={{ textAlign: "center", margin: "40px 0", color: "#666" }}>
+            {activeTab === "all" 
+              ? "등록된 요금제가 없습니다." 
+              : activeTab === "active" 
+                ? "활성화된 요금제가 없습니다." 
+                : "비활성화된 요금제가 없습니다."}
+          </div>
+        )}
         </main>
     </section>
   );

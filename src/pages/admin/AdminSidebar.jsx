@@ -4,7 +4,7 @@ import '../user/Sidebar.css';
 const AdminSidebar = ({ activeMenu = "요금제 추가", onMenuClick }) => {
   const menus = [
     "요금제 추가",
-    "요금제 수정&삭제",
+    "요금제 활성화/비활성화",
     "신고된 리뷰 조회"
   ];
   return (

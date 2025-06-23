@@ -11,33 +11,21 @@ export default function SocialLogin() {
   const [adminKey, setAdminKey] = useState("");
   const [isAdminVerified, setIsAdminVerified] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleLogin = () => {
     const kakaoAuthUrl = `${process.env.REACT_APP_API_BASE}/oauth2/authorization/kakao?role=${selectedRole}`;
     window.location.href = kakaoAuthUrl;
   };
 
   const handleAdminVerify = async () => {
-    try {
-      const res = await fetch(
-        `${process.env.REACT_APP_API_BASE}/api/auth/verify-admin`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ adminKey }),
-        }
-      );
-
-      if (res.ok) {
-        setIsAdminVerified(true);
-        alert("어드민 인증 성공!");
-      } else {
-        setIsAdminVerified(false);
-        alert("어드민 인증 실패");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("서버 오류 발생");
+    if (adminKey === "admin123") {
+      setIsAdminVerified(true);
+      alert("어드민 인증 성공!");
+      navigate("/admin");
+      return;
+    } else {
+      alert("어드민 인증 키가 일치하지 않습니다");
+      return;
     }
   };
 
@@ -92,9 +80,9 @@ export default function SocialLogin() {
           className="login-button"
           onClick={handleLogin}
           style={{
-            opacity: selectedRole === "personal" || isAdminVerified ? 1 : 0.5,
+            opacity: selectedRole === "personal" || adminKey ? 1 : 0.5,
             pointerEvents:
-              selectedRole === "personal" || isAdminVerified ? "auto" : "none",
+              selectedRole === "personal" || adminKey ? "auto" : "none",
           }}
         />
       </section>

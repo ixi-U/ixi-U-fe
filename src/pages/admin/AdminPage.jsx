@@ -36,7 +36,7 @@ export default function AdminPage() {
           </div>
           <div className="admin-content">
             {activeMenu === '요금제 추가' && <RegisterPlanPage />}
-            {activeMenu === '요금제 수정&삭제' && <DeletePlanPage />}
+            {activeMenu === '요금제 활성화/비활성화' && <DeletePlanPage />}
             {activeMenu === '신고된 리뷰 조회' && <ReportedReviewsPage/>}
           </div>
         </main>
