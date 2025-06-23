@@ -312,7 +312,16 @@ const MyPage = () => {
                   ) : (
                     <div className="info-card-empty">
                       <span>사용중인 요금제가 없습니다.</span>
-                      <a href="#" className="info-card-link">어떤 요금제를 선택할지 고민되시나요? 챗봇에게 물어보러가기</a>
+                      <a 
+                      href="#" 
+                      className="info-card-link"
+                      onClick={(e)=>{
+                        e.preventDefault();
+                        navigate('/chatbot');
+                      }}
+                      >
+                        어떤 요금제를 선택할지 고민되시나요? 챗봇에게 물어보러가기
+                        </a>
                     </div>
                   )}
                 </InfoCard>
