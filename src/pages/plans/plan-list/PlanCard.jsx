@@ -20,6 +20,30 @@ export default function PlanCard({ plan }) {
     navigate(`/plans/details/${id}`);
   };
 
+  // 값이 렌더링 제외 대상인지 판단하는 함수
+  const shouldRender = (value) => {
+    const normalized =
+      typeof value === 'string' ? value.trim().toUpperCase() : value;
+    const excludedValues = ['0 GB', '0 건', '0 분', '-1 건', '-1 분'];
+    return !excludedValues.includes(normalized);
+  };
+
+  // 조건부 필드 렌더링 함수
+  const renderField = (label, value) => {
+    if (!shouldRender(value)) return null;
+    return (
+      <>
+        <dt>{label}</dt>
+        <dd>{value}</dd>
+      </>
+    );
+  };
+
+  const hasValidSingleBenefits =
+    Array.isArray(singleBenefits) && singleBenefits.length > 0;
+  const hasValidBundledBenefits =
+    Array.isArray(bundledBenefits) && bundledBenefits.length > 0;
+
   return (
     <article className="plan-card" onClick={handleClick}>
       <div className="card-head">
@@ -27,37 +51,26 @@ export default function PlanCard({ plan }) {
       </div>
 
       <div className="specs">
-        {/* 왼쪽: 데이터, 테더링 */}
         <dl className="specs-left">
-          <dt>데이터</dt>
-          <dd>
-            {mobileDataLimitMb}
-          </dd>
-          <dt>테더링/쉐어링</dt>
-          <dd>
-            {sharedMobileDataLimitMb}
-          </dd>
+          {renderField('데이터', mobileDataLimitMb)}
+          {renderField('테더링/쉐어링', sharedMobileDataLimitMb)}
         </dl>
 
-      {/* 오른쪽: 음성, 문자, 기본혜택 */}
         <dl className="specs-right">
-          <dt>음성 통화</dt>
-          <dd>{callLimitMinutes}</dd>
+          {renderField('음성 통화', callLimitMinutes)}
+          {renderField('문자 메시지', messageLimit)}
 
-          <dt>문자 메시지</dt>
-          <dd>{messageLimit}</dd>
+          {hasValidSingleBenefits && (
+            <>
+              <dt>기본혜택</dt>
+              <dd>{singleBenefits.map((b) => b.name).join(', ')}</dd>
+            </>
+          )}
 
-          <dt>기본혜택</dt>
-          <dd>
-            {(!singleBenefits || singleBenefits.length === 0)
-            ? '기본제공'
-            : singleBenefits.map(b => b.name).join(', ')}
-          </dd>
-
-          {bundledBenefits && bundledBenefits.length > 0 && (
+          {hasValidBundledBenefits && (
             <>
               <dt>프리미엄 혜택</dt>
-              <dd>{bundledBenefits.map(b => b.name).join(', ')}</dd>
+              <dd>{bundledBenefits.map((b) => b.name).join(', ')}</dd>
             </>
           )}
         </dl>
@@ -68,10 +81,6 @@ export default function PlanCard({ plan }) {
           월&nbsp;
           {monthlyPrice.toLocaleString()}원
         </strong>
-        {/* <div className="actions">
-          <button className="ghost">비교하기</button>
-          <button className="primary">변경하기</button>
-        </div> */}
       </div>
     </article>
   );

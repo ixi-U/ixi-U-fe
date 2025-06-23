@@ -5,7 +5,6 @@ const Sidebar = ({ activeMenu = "나의 정보", onMenuClick }) => {
   const menus = [
     "나의 정보",
     "요금제 히스토리",
-    "대화 내역",
     "회원 탈퇴",
   ];
   return (

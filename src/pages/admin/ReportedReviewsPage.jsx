@@ -54,7 +54,6 @@ const ReportedReviewsPage = () => {
 
   return (
     <div className="reported-reviews-page">
-      <Header />
       
       <div className="reported-reviews-container">
         <div className="page-header">
