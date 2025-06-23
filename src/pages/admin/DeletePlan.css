@@ -1,259 +1,175 @@
-.section-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.2rem;
-}
-
-.plan-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-
-.plan-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.6rem;
-}
-
-.plan-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.plan-description {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-}
-
-.plan-price {
-  font-weight: 500;
-  color: #222;
-}
-
-.plan-disable-btn {
-  background-color: #ff007a;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.plan-disable-btn:disabled {
-  background-color: #aaa;
-  cursor: default;
-}
-
 /* DeletePlan.css */
 
-/* 컨테이너 스타일 조정 */
+/* ... 기존 delete-plan-container, nav 등 스타일 ... */
 .delete-plan-container {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  flex: 1;
-  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 24px;
 }
 
-/* 섹션 타이틀 스타일 */
 .section-title {
-  margin: 0;
-  padding: 0;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #000000;
-  text-align: left;
+  font-size: 24px;
+  margin-bottom: 24px;
 }
 
-/* 탭 네비게이션 스타일 */
 .delete-plan-nav {
-  padding-left: 0;
-  list-style: none;
   display: flex;
   gap: 12px;
-  overflow-x: auto;
-  margin: 0 0 24px 0;
+  margin-bottom: 24px;
+  list-style: none;
+  padding: 0;
+  border-bottom: 2px solid #eee;
 }
 
 .delete-plan-nav li {
-  padding: 6px 12px;
-  white-space: nowrap;
-  border-radius: 20px;
+  padding: 12px 16px;
   cursor: pointer;
-  border: 1px solid #ddd;
-  transition: all 0.15s;
-  color: #222;
+  font-weight: 600;
+  color: #888;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-bottom-color 0.2s;
 }
 
 .delete-plan-nav li:hover {
-  background: #fff0f8;
-  color: #ff007a;
-  border-color: #ff007a;
+  color: #333;
 }
 
-.delete-plan-nav .active {
-  background: transparent;
+.delete-plan-nav li.active {
   color: #ff007a;
-  border-color: #ff007a;
-  font-weight: 700;
+  border-bottom-color: #ff007a;
 }
 
-/* 카드 리스트 스타일 */
+/* ---- 카드 리스트 -------------------------------------------------------- */
+
 .delete-plan-card-list {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 24px 32px;
-  align-items: stretch;
-  width: 100%;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 8px;
 }
 
-/* 카드 스타일 */
+/* ---- 카드 ------------------------------------------------------------- */
+/* PlanCard.css와 유사한 스타일 적용 */
+
 .delete-plan-card {
-  position: relative;
   background: #fff;
   border: 1px solid #ebebeb;
   border-radius: 12px;
-  padding: 24px 40px;
+  padding: 32px 32px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.delete-plan-card-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  align-items: stretch;
+}
+
+.delete-plan-card-left {
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  width: 800px !important;
-  max-width: 800px !important;
-  min-width: 800px !important;
-  margin: 0 auto;
-  box-sizing: border-box;
 }
 
-.delete-plan-card:hover {
-  transform: translateY(-6px);
-  border-color: #ff007a;
-  box-shadow: 0 6px 14px rgba(255, 0, 122, 0.25);
+.delete-plan-category {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  margin: 0 0 16px 0;
 }
 
-/* 카드 헤더 */
-.delete-plan-card .card-head {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.delete-plan-card .card-head h3 {
-  font-size: 18px;
+.delete-plan-main-feature {
+  font-size: 24px;
   font-weight: 700;
   margin: 0;
+  line-height: 1.2;
 }
 
-/* 스펙 영역 */
-.delete-plan-card .specs {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 20px;
+.delete-plan-sub-feature {
+  font-size: 15px;
+  color: #333;
+  margin: 4px 0 0 0;
 }
 
-.delete-plan-card .specs-left,
-.delete-plan-card .specs-right {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  row-gap: 2px;
-}
-
-.delete-plan-card .specs dt {
-  color: #666;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 14px;
-}
-
-.delete-plan-card .specs dd {
-  margin: 0;
-  font-weight: 600;
-  max-width: 160px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 14px;
-}
-
-/* 가격 영역 */
-.delete-plan-card .price-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
+.delete-plan-card-left .delete-price {
   margin-top: auto;
-}
-
-.delete-plan-card .price {
+  padding-top: 16px;
   font-size: 22px;
   font-weight: 700;
-  margin: 0;
 }
 
-/* 버튼 스타일 */
-.delete-plan-card .plan-disable-btn {
-  padding: 6px 14px;
+.delete-plan-card-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid #eee;
+  padding-left: 40px;
+  flex-shrink: 0;
+  width: 420px;
+}
+
+.delete-specs-right {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  row-gap: 10px;
+  column-gap: 16px;
+  font-size: 14px;
+}
+
+.delete-specs-right dt {
+  color: #666;
+  font-weight: 500;
+}
+
+.delete-specs-right dd {
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* 상태 및 버튼 스타일 */
+
+.delete-specs-right .delete-state-able {
+  font-weight: 700;
+  color: #4caf50;
+}
+
+.delete-specs-right .delete-state-disabled {
+  font-weight: 700;
+  color: #e91e63;
+}
+
+.delete-price-area {
+  margin-top: 24px;
+  text-align: right;
+}
+
+.delete-plan-toggle-btn {
+  padding: 8px 20px;
   border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
-  transition: background 0.2s, color 0.2s;
-  cursor: pointer;
+  color: #fff;
   border: none;
-  min-width: 80px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.delete-plan-card .plan-disable-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.delete-plan-toggle-btn.disable {
+  background-color: #e91e63;
+}
+.delete-plan-toggle-btn.disable:hover {
+  background-color: #c2185b;
 }
 
-/* 활성화 버튼 (비활성화된 요금제를 활성화할 때) */
-.delete-plan-card .plan-disable-btn.activate {
-  background: #4caf50;
-  color: white;
+.delete-plan-toggle-btn.enable {
+  background-color: #4caf50;
 }
-
-.delete-plan-card .plan-disable-btn.activate:hover {
-  background: #45a049;
-}
-
-/* 비활성화 버튼 (활성화된 요금제를 비활성화할 때) */
-.delete-plan-card .plan-disable-btn.deactivate {
-  background: #e91e63;
-  color: white;
-}
-
-.delete-plan-card .plan-disable-btn.deactivate:hover {
-  background: #d81b60;
-}
-
-/* 반응형 */
-@media (max-width: 900px) {
-  .delete-plan-card-list {
-    grid-template-columns: 1fr;
-  }
-  
-  .delete-plan-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    padding: 20px 24px;
-  }
-  
-  .delete-plan-card .specs {
-    flex-direction: column;
-    gap: 16px;
-  }
+.delete-plan-toggle-btn.enable:hover {
+  background-color: #388e3c;
 }

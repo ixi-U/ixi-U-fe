@@ -51,7 +51,7 @@ const RegisterPlan = () => {
     const isLengthIn = (value, min, max) =>
       value.length >= min && value.length <= max;
     const isValidNumberOrUnlimited = (value) =>
-      /^[0-9]{1,10000}$/.test(value) || value === "무제한";
+      /^(-1|2147483647|[0-9]{1,10000})$/.test(value);
     const isValidNumber = (value) => /^\d*$/.test(value);
     const isValidPricePerKb = (value) =>
       /^\d+(\.\d+)?$/.test(value) || value === "";
@@ -198,6 +198,7 @@ const RegisterPlan = () => {
             onChange={handleChange}
             type="text"
           />
+          <small className="input-guide">-1: 제공 안함, 2147483647: 무제한, 그 외는 MB 단위의 숫자 입력</small>
         </div>
         <div className="plan-form-group">
           <label>음성(통화량, 분)</label>
@@ -207,6 +208,7 @@ const RegisterPlan = () => {
             onChange={handleChange}
             type="text"
           />
+          <small className="input-guide">-1: 제공 안함, 2147483647: 무제한, 그 외는 분 단위의 숫자 입력</small>
         </div>
         <div className="plan-form-group">
           <label>문자량</label>
@@ -216,6 +218,7 @@ const RegisterPlan = () => {
             onChange={handleChange}
             type="text"
           />
+          <small className="input-guide">-1: 제공 안함, 2147483647: 무제한, 그 외는 건 단위의 숫자 입력</small>
         </div>
         <div className="plan-form-group">
           <label>월금액(정가)</label>
@@ -250,6 +253,7 @@ const RegisterPlan = () => {
             onChange={handleChange}
             type="text"
           />
+          <small className="input-guide">숫자만 입력 (MB 단위, 0 입력 시 미제공)</small>
         </div>
         <div className="plan-form-group">
           <label>속도제한(Kbps)</label>

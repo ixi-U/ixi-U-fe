@@ -115,6 +115,134 @@ const DeletePlanPage = () => {
     }
   });
 
+  // PlanCard 로직 적용
+  const renderPlanCard = (plan) => {
+    const isUnlimitedData = plan.mobileDataLimitMb === 2147483647;
+
+    let dataText;
+    if (isUnlimitedData) {
+      dataText = '데이터 무제한';
+    } else if (typeof plan.mobileDataLimitMb === 'string') {
+      dataText = `데이터 ${plan.mobileDataLimitMb}`;
+    } else if (typeof plan.mobileDataLimitMb === 'number') {
+      dataText = `데이터 ${plan.mobileDataLimitMb / 1024}GB`;
+    } else {
+      dataText = '데이터 정보 없음';
+    }
+
+    // 쉐어링 데이터 변환
+    let sharingText = null;
+    let sharingValue = null;
+    if (plan.sharedMobileDataLimitMb !== undefined && plan.sharedMobileDataLimitMb !== null && plan.sharedMobileDataLimitMb !== '' && !isNaN(Number(plan.sharedMobileDataLimitMb))) {
+      const gb = Number(plan.sharedMobileDataLimitMb) / 1024;
+      sharingValue = gb + 'GB';
+    }
+    if (sharingValue && Number(plan.sharedMobileDataLimitMb) > 0) {
+      if (isUnlimitedData) {
+        sharingText = `기본 제공량 내 쉐어링 ${sharingValue}`;
+      } else {
+        sharingText = `쉐어링 데이터 ${sharingValue}`;
+      }
+    }
+
+    // 음성/문자 변환
+    const getCallText = (val) => {
+      if (val === 2147483647 || val === '2147483647') return '기본제공';
+      if (val === undefined || val === null || val === '') return '';
+      return val + '분';
+    };
+    const getMessageText = (val) => {
+      if (val === 2147483647 || val === '2147483647') return '기본제공';
+      if (val === undefined || val === null || val === '') return '';
+      return val + '건';
+    };
+
+    const shouldRender = (value) => {
+      if (!value) return false;
+      const normalized =
+        typeof value === 'string' ? value.trim().toUpperCase() : value;
+      const excludedValues = ['0 GB', '0 건', '0 분', '-1 건', '-1 분'];
+      return !excludedValues.includes(normalized);
+    };
+
+    const renderField = (label, value) => {
+      if (!shouldRender(value)) return null;
+      return (
+        <>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </>
+      );
+    };
+
+    const singleBenefitNames =
+      Array.isArray(plan.singleBenefits) &&
+      plan.singleBenefits
+        .map((b) => b && b.name)
+        .filter(Boolean)
+        .join(', ');
+
+    const bundledBenefitNames =
+      Array.isArray(plan.bundledBenefits) &&
+      plan.bundledBenefits
+        .map((b) => b && b.name)
+        .filter(Boolean)
+        .join(', ');
+
+    return (
+      <article key={plan.id} className="delete-plan-card">
+        <div className="delete-plan-card-body">
+          <div className="delete-plan-card-left">
+            <p className="delete-plan-category">{plan.name} &gt;</p>
+            <h3 className="delete-plan-main-feature">{dataText}</h3>
+            {sharingText && <p className="delete-plan-sub-feature">{sharingText}</p>}
+            <strong className="delete-price">
+              월&nbsp;
+              {plan.monthlyPrice.toLocaleString()}원
+            </strong>
+          </div>
+
+          <div className="delete-plan-card-right">
+            <dl className="delete-specs-right">
+              {renderField('음성통화', getCallText(plan.callLimitMinutes))}
+              {renderField('문자메시지', getMessageText(plan.messageLimit))}
+              {singleBenefitNames && (
+                <>
+                  <dt>기본혜택</dt>
+                  <dd>{singleBenefitNames}</dd>
+                </>
+              )}
+              {bundledBenefitNames && (
+                <>
+                  <dt>프리미엄 혜택</dt>
+                  <dd>{bundledBenefitNames}</dd>
+                </>
+              )}
+              <dt>상태</dt>
+              <dd
+                className={
+                  plan.planState === 'DISABLE' ? 'delete-state-disabled' : 'delete-state-able'
+                }
+              >
+                {plan.planState === 'DISABLE' ? '비활성화' : '활성화'}
+              </dd>
+            </dl>
+            <div className="delete-price-area">
+              <button
+                className={`delete-plan-toggle-btn ${
+                  plan.planState === 'DISABLE' ? 'enable' : 'disable'
+                }`}
+                onClick={() => togglePlanState(plan.id)}
+              >
+                {plan.planState === 'DISABLE' ? '활성화' : '비활성화'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+    );
+  };
+
   return (
     <section className="admin-content">
        <main className="delete-plan-container">
@@ -143,61 +271,7 @@ const DeletePlanPage = () => {
         </ul>
 
         <div className="delete-plan-card-list">
-          {filteredPlans.map((plan) => (
-            <article key={plan.id} className="delete-plan-card">
-              <div className="card-head">
-                <h3>{plan.name}</h3>
-                    </div>
-              <div className="specs">
-                <dl className="specs-left">
-                  <dt>데이터</dt>
-                  <dd>{plan.mobileDataLimitMb !== undefined && plan.mobileDataLimitMb !== null && plan.mobileDataLimitMb !== '' ? plan.mobileDataLimitMb : '-'}</dd>
-                  <dt>테더링/쉐어링</dt>
-                  <dd>{plan.sharedMobileDataLimitMb !== undefined && plan.sharedMobileDataLimitMb !== null && plan.sharedMobileDataLimitMb !== '' ? plan.sharedMobileDataLimitMb : '-'}</dd>
-                </dl>
-                <dl className="specs-right">
-                  <dt>음성 통화</dt>
-                  <dd>{plan.callLimitMinutes !== undefined && plan.callLimitMinutes !== null && plan.callLimitMinutes !== '' ? plan.callLimitMinutes : '-'}</dd>
-                  <dt>문자 메시지</dt>
-                  <dd>{plan.messageLimit !== undefined && plan.messageLimit !== null && plan.messageLimit !== '' ? plan.messageLimit : '-'}</dd>
-                  <dt>기본혜택</dt>
-                  <dd>{(!plan.singleBenefits || plan.singleBenefits.length === 0)
-                    ? '기본제공'
-                    : plan.singleBenefits.map(b => b.name).join(', ')}</dd>
-                  {plan.bundledBenefits && plan.bundledBenefits.length > 0 && (
-                    <>
-                      <dt>프리미엄 혜택</dt>
-                      <dd>{plan.bundledBenefits.map(b => b.name).join(', ')}</dd>
-                    </>
-                  )}
-                  <dt>상태</dt>
-                  <dd>{plan.planState === "DISABLE" ? "비활성화" : "활성화"}</dd>
-                </dl>
-                  </div>
-              <div className="price-area">
-                <strong className="price">
-                  월&nbsp;
-                  {plan.monthlyPrice ? plan.monthlyPrice.toLocaleString() : '-'}원
-                </strong>
-                <button
-                  className="plan-disable-btn primary"
-                  onClick={() => togglePlanState(plan.id)}
-                  disabled={false}
-                  style={{
-                    backgroundColor: plan.planState === "DISABLE" ? "#4caf50" : "#e91e63",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "6px 12px",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                  }}
-                >
-                  {plan.planState === "DISABLE" ? "활성화" : "비활성화"}
-                </button>
-              </div>
-            </article>
-          ))}
+          {filteredPlans.map((plan) => renderPlanCard(plan))}
         </div>
         
         {/* 필터링된 결과가 없을 때 메시지 */}

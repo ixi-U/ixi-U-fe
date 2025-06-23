@@ -163,6 +163,27 @@ const PlanDetailPage = () => {
     }
   };
 
+  // 데이터 변환 함수 추가
+  const getDataText = (val) => {
+    if (val === -1 || val === '-1') return '제공 안함';
+    if (val === 2147483647 || val === '2147483647') return '무제한';
+    if (typeof val === 'string') return val;
+    if (typeof val === 'number') return (val / 1024) + 'GB';
+    return '';
+  };
+  const getCallText = (val) => {
+    if (val === -1 || val === '-1') return '제공 안함';
+    if (val === 2147483647 || val === '2147483647') return '무제한';
+    if (val === undefined || val === null || val === '') return '';
+    return val + '분';
+  };
+  const getMessageText = (val) => {
+    if (val === -1 || val === '-1') return '제공 안함';
+    if (val === 2147483647 || val === '2147483647') return '무제한';
+    if (val === undefined || val === null || val === '') return '';
+    return val + '건';
+  };
+
   if (!planData && !planError) {
     return (
       <div className="plan-page">
@@ -214,68 +235,63 @@ const PlanDetailPage = () => {
             <div className="service-icon">📱</div>
             <div className="service-name">데이터</div>
             <div className="service-value">
-              {planData.mobileDataLimitMb === -1
-                ? "무제한"
-                : `${Math.round(planData.mobileDataLimitMb / 1024)} GB`}
+              {getDataText(planData.mobileDataLimitMb)}
             </div>
           </div>
           <div className="service-card">
             <div className="service-icon">🔄</div>
             <div className="service-name">테더링/공유</div>
             <div className="service-value">
-              {planData.sharedMobileDataLimitMb === -1
-                ? "무제한"
-                : `${Math.round(planData.sharedMobileDataLimitMb / 1024)} GB`}
+              {getDataText(planData.sharedMobileDataLimitMb)}
             </div>
           </div>
           <div className="service-card">
             <div className="service-icon">📞</div>
             <div className="service-name">음성통화</div>
             <div className="service-value">
-              {planData.callLimitMinutes === -1
-                ? "무제한"
-                : `${planData.callLimitMinutes}분`}
+              {getCallText(planData.callLimitMinutes)}
             </div>
           </div>
           <div className="service-card">
             <div className="service-icon">✉️</div>
             <div className="service-name">문자</div>
             <div className="service-value">
-              {planData.messageLimit === -1
-                ? "무제한"
-                : `${planData.messageLimit}건`}
+              {getMessageText(planData.messageLimit)}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="benefits-section">
-        <h2 className="section-title">묶음 혜택</h2>
-        <div className="bundled-benefit-group-list">
-          {planData.bundledBenefits?.map((group, groupIndex) => (
-            <div key={groupIndex} className="bundled-benefit-group">
-              <div className="bundled-benefit-header">
-                <h3 className="group-title">{group.name}</h3>
-                <p className="group-choice-info">
-                  <strong>아래 혜택 중 {group.choice}개 선택</strong>
-                </p>
-                {group.description && (
-                  <p className="group-description">{group.description}</p>
-                )}
+      {/* 묶음 혜택 섹션 조건부 렌더링 */}
+      {planData.bundledBenefits && planData.bundledBenefits.length > 0 && (
+        <section className="benefits-section">
+          <h2 className="section-title">묶음 혜택</h2>
+          <div className="bundled-benefit-group-list">
+            {planData.bundledBenefits.map((group, groupIndex) => (
+              <div key={groupIndex} className="bundled-benefit-group">
+                <div className="bundled-benefit-header">
+                  <h3 className="group-title">{group.name}</h3>
+                  <p className="group-choice-info">
+                    <strong>아래 혜택 중 {group.choice}개 선택</strong>
+                  </p>
+                  {group.description && (
+                    <p className="group-description">{group.description}</p>
+                  )}
+                </div>
+                <div className="benefits-grid">
+                  {group.singleBenefits.map((benefit, index) => (
+                    <div key={`${groupIndex}-${index}`} className="benefit-card">
+                      <span className="benefit-tag">{benefit.benefitType}</span>
+                      <h3 className="benefit-title">{benefit.name}</h3>
+                      <p className="benefit-desc">{benefit.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="benefits-grid">
-                {group.singleBenefits.map((benefit, index) => (
-                  <div key={`${groupIndex}-${index}`} className="benefit-card">
-                    <span className="benefit-tag">{benefit.benefitType}</span>
-                    <h3 className="benefit-title">{benefit.name}</h3>
-                    <p className="benefit-desc">{benefit.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="info-section">
         <h2 className="section-title">이용 안내</h2>

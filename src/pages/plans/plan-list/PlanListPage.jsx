@@ -266,7 +266,7 @@ export default function PlanListPage() {
         ) : plans && plans.length > 0 ? (
           plans.map((plan) => <PlanCard key={plan.id} plan={plan} />)
         ) : (
-          <p className="no-plans">조회할 수 있는 요금제가 없습니다.</p>
+          <p className="no-plans"></p>
         )}
 
         {/* 추가 데이터 로드 sentinel */}
@@ -274,7 +274,7 @@ export default function PlanListPage() {
 
         {/* 더 이상 데이터가 없을 때 메시지 */}
         {!hasNext && plans && plans.length > 0 && (
-          <p className="no-more">더 조회할 수 있는 요금제가 없습니다!</p>
+          <p className="no-more"></p>
         )}
       </section>
     </main>
